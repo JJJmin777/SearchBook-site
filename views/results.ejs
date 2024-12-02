@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+</head>
+<body>
+    <h1>Results for "<%= query %>"</h1>
+    <% if (books.length > 0) { %>
+        <ul>
+            <% books.forEach(book => { %>
+                <li>
+                    <h2><%= book.title %></h2>
+                    <p><strong>Author:</strong> <%= book.author %></p>
+                    <p><strong>Publisher:</strong> <%= book.publisher %></p>
+                    <p><strong>Price:</strong> <%= book.discount || book.price %></p>
+                    <a href="<%= book.link %>" target="_blank">View Details</a>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No results found.</p>
+    <% } %>
+    <a href="/">Search Again</a>
+</body>
+</html>
