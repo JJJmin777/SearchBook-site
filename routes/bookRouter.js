@@ -22,7 +22,7 @@ async function searchBook(query) {
     try {
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log(data.items);
+        console.log(data.items[0]["isbn"]);
         return data.items;
     } catch (error) {
         console.error('Error:', error);
@@ -33,18 +33,22 @@ async function searchBook(query) {
 // 라우터 정의
 // 1. 홈 페이지
 router.get('/', (req, res) => {
-    res.render('home'); // 검색 폼
+    res.render('search/home'); // 검색 폼
 });
 
 // 2. 검색 결과 처리
-router.post('/search', async (req, res) => {
-    const query = req.body.query; // 폼에서 검색어 가져오기
+router.post('/results', async (req, res) => {
+    // console.log(req.body)
+    const query = req.body["bookTitle"]; // 폼에서 검색어 가져오기
     if (!query) {
         return res.render('home', { error: '검색어를 입력해주세요.' });
     }
 
     const books = await searchBook(query); // API 호출
-    res.render('results', { books, query }); // 결과 페이지 렌더링
+    res.render('search/results', { books, query }); // 결과 페이지 렌더링
 });
 
-export default { router };
+// 3. 리뷰
+router.get(`/:`)
+
+export default   router  ;

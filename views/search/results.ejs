@@ -1,0 +1,29 @@
+<div>
+    <h3>Results for "<%= query %>"</h3>
+    <% if (books.length> 0) { %>
+        <div class="container mt-4">
+    <ul class="list-unstyled">
+        <% books.forEach(book => { %>
+            <li class="row align-items-center mb-4">
+                <!-- 썸네일 이미지 -->
+                <div class="col-md-3 text-center">
+                    <img class="img-thumbnail" alt="<%= book.title %>" src="<%= book.image %>">
+                </div>
+                <!-- 책 정보 -->
+                <div class="col-md-9">
+                    <h2><%= book.title %></h2>
+                    <p><strong>Author:</strong> <%= book.author %></p>
+                    <p><strong>Publisher:</strong> <%= book.publisher %></p>
+                    <p><strong>Price:</strong> <%= book.discount || book.price %></p>
+                    <a href="<%= book.link %>" target="_blank" class="btn btn-primary btn-sm">View Details</a>
+                </div>
+            </li>
+        <% }) %>
+    </ul>
+</div>
+        <% } else { %>
+            <p>No results found.</p>
+            <% } %>
+                <a href="/">Search Again</a>
+</div>
+    
