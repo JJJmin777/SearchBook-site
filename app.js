@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 import express from 'express';
 import path from 'path';
 import expressLayouts from 'express-ejs-layouts';

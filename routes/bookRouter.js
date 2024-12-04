@@ -1,6 +1,7 @@
 import express from 'express';
 import fetch from 'node-fetch'; // API 호출용
-const router = express.Router();
+import router from express.Router();
+import Book from '../models/book.js'; // 책 모델
 
 // 네이버 API 설정
 const clientId = 'r82p_IhMGiHs3wOV4HAs';
@@ -48,7 +49,35 @@ router.post('/results', async (req, res) => {
     res.render('search/results', { books, query }); // 결과 페이지 렌더링
 });
 
-// 3. 리뷰
-router.get(`/:`)
+// 3. 책 정보 저장 및 조회
+router.post('/save', async (req, res) => {
+    const { title, author, publisher, price, image, link } = req.body;
+
+    try {
+        // 책이 이미 저장되어 있는지 확인
+        let book = await Book.findOne({ title });
+        if (!book) {
+            // 저장되지 않은 경우 새로 저장
+            book = new Book({ title, author, publisher, price, image, link });
+            await book.save();
+        }
+        res.redirect(`/books/${book._id}`); // 책 상세 페이지로 이동
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error saving book');
+    }
+});
+
+// 4. 책 상세 페이지
+router.get('/books/:id', async (req, res) => {
+    try {
+        const book = await Book.findById(req.params.id).populate('reviews');
+        res.render('bookDetail', { book }); // EJS 템플릿 렌더링
+    } catch (error) {
+        console.error(error);
+        res.status(404).send('Book not found');
+    }
+});
+
 
 export default   router  ;
