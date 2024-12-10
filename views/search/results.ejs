@@ -15,8 +15,18 @@
                     <p><strong>Author:</strong> <%= book.author %></p>
                     <p><strong>Publisher:</strong> <%= book.publisher %></p>
                     <p><strong>Price:</strong> <%= book.discount || book.price %></p>
-                    <a href="<%= book.link %>" target="_blank" class="btn btn-primary btn-sm">View Details</a>
-                </div>
+                    <!-- target="_blank" 이거 새로운 링크 생기면서 <a> 쓰는거 -->
+                    <form action="/save" method="POST">
+                        <input type="hidden" name="title" value="<%= book.title %>">
+                        <input type="hidden" name="author" value="<%= book.author %>">
+                        <input type="hidden" name="publisher" value="<%= book.publisher %>">
+                        <input type="hidden" name="price" value="<%= book.discount || book.price %>">
+                        <input type="hidden" name="link" value="<%= book.link %>">
+                        <!-- 이미지 업로드 -->
+                        <input type="hidden" name="image" value="<%= book.image%>">
+                        <button type="submit" class="btn btn-success">Write Your Review</button>
+                    </form>
+                </div>       
             </li>
         <% }) %>
     </ul>

@@ -1,7 +1,13 @@
 import express from 'express';
 import fetch from 'node-fetch'; // API 호출용
-import router from express.Router();
-import Book from '../models/book.js'; // 책 모델
+import Book from '../models/search.js'; // 책 모델
+import multer from 'multer';
+import { cloudinary, storage } from '../cloudinary/index.js';
+
+// 업로드된 파일을 서버 디스크에 저장
+const upload = multer({ storage });
+
+const router = express.Router();
 
 // 네이버 API 설정
 const clientId = 'r82p_IhMGiHs3wOV4HAs';
@@ -23,7 +29,7 @@ async function searchBook(query) {
     try {
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log(data.items[0]["isbn"]);
+        // console.log(data.items);
         return data.items;
     } catch (error) {
         console.error('Error:', error);
@@ -49,30 +55,49 @@ router.post('/results', async (req, res) => {
     res.render('search/results', { books, query }); // 결과 페이지 렌더링
 });
 
-// 3. 책 정보 저장 및 조회
+// 3. 책 상세 페이지 책 정보 저장 및 조회
 router.post('/save', async (req, res) => {
-    const { title, author, publisher, price, image, link } = req.body;
-
     try {
-        // 책이 이미 저장되어 있는지 확인
+        const { title, author, publisher, price, link } = req.body;
+        const imagePath = req.file ? req.file.path : req.body.image; // Cloudinary URL 또는 기존 URL
+
+        // MongoDB에서 동일한 책 확인
         let book = await Book.findOne({ title });
+
         if (!book) {
-            // 저장되지 않은 경우 새로 저장
-            book = new Book({ title, author, publisher, price, image, link });
+            // 책이 없으면 새로 저장
+            book = new Book({
+                title,
+                author,
+                publisher,
+                price,
+                image: imagePath,
+                link,
+            });
             await book.save();
         }
-        res.redirect(`/books/${book._id}`); // 책 상세 페이지로 이동
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error saving book');
+        res.redirect(`/books/${book._id}`);
+    } catch(err) {
+        console.log(err);
+        res.status(500).send('Error saving the book');
     }
 });
+            // // 리뷰 추가
+            // const newReview = {
+            //     comment: review,
+            //     rating: Number(rating),
+            // };
+            // book.reviews.push(newReview);
+            // await book.save();
+
+
 
 // 4. 책 상세 페이지
 router.get('/books/:id', async (req, res) => {
     try {
-        const book = await Book.findById(req.params.id).populate('reviews');
-        res.render('bookDetail', { book }); // EJS 템플릿 렌더링
+        const book = await Book.findById(req.params.id);
+        console.log(book)
+        res.render('search/bookdetails', { book }); // EJS 템플릿 렌더링
     } catch (error) {
         console.error(error);
         res.status(404).send('Book not found');
@@ -80,4 +105,4 @@ router.get('/books/:id', async (req, res) => {
 });
 
 
-export default   router  ;
+export default router;

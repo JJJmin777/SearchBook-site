@@ -11,12 +11,16 @@
     <!-- 기본 Style CSS -->
     <link rel="stylesheet" href="/stylesheets/app.css">
 
+
     <title>Book</title>
   </head>
   <body>
     <!-- Include the navbar -->
     <%- include('../partials/navbar') %>
 
+    <!-- Include flash -->
+    <%- include('../partials/flash')%>
+    
     <!-- Main content -->
     <div class="container mt-4">
         <%- body %>
