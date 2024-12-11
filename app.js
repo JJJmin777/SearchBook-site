@@ -20,6 +20,7 @@ import User from './models/user.js'
 // import MongoStore = from 'connect-mongo'
 import session from 'express-session';
 import flash from 'connect-flash'
+import { isLoggedIn } from './middleware.js';
 
 const dbUrl = 'mongodb://127.0.0.1:27017/search-book';
 
@@ -57,6 +58,14 @@ app.use(session({
     resave: false,          // 매 요청마다 세션 저장 방지
     saveUninitialized: false, // 초기화되지 않은 세션 저장 방지
 }));
+
+// Passport 초기화
+app.use(passport.initialize());
+app.use(passport.session()); //이 세션에서 데이터를 읽고 호출, 복원
+passport.use(new LocalStrategy(User.authenticate())); // 인증 전략 사용
+passport.serializeUser(User.serializeUser()); // 세션에 사용자 정보 저장
+passport.deserializeUser(User.deserializeUser()); // 세션에서 사용자 정보 복원
+
 // Flash 메시지 미들웨어 설정
 app.use(flash())
 app.use((req, res, next) => {
@@ -70,13 +79,12 @@ app.use((req, res, next) => {
 // 레이아웃 파일 경로 설정
 app.set('layout', 'layouts/boilerplate'); // 기본 레이아웃 지정
 
-// Passport 초기화
-passport.use(new LocalStrategy(User.authenticate())); // 인증 전략 사용
-passport.serializeUser(User.serializeUser()); // 세션에 사용자 정보 저장
-passport.deserializeUser(User.deserializeUser()); // 세션에서 사용자 정보 복원
-
 // app.use(express.json()); 
 // app.use(express.urlencoded({ extended: false }));
+
+app.get('/dashboard', isLoggedIn, (req, res) => {
+    res.send('Welcome to your dashboard!');
+});
 
 // 라우터 등록
 app.use('/', userRouters);

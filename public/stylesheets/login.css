@@ -13,6 +13,7 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     max-width: 400px;
+    margin: 0 auto; /* 추가적으로 여백 제거 */
 }
 .form-title {
     text-align: center;

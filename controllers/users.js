@@ -1,4 +1,4 @@
-import User from "../models/user";
+import User from "../models/user.js";
 
 export const renderRegister = (req, res) => {
     res.render('users/register');
@@ -26,13 +26,17 @@ export const renderLogin = async (req, res) => {
 
 export const login = (req, res) => {
     req.flash('success', 'Welcome Back');
-    const redirectUrl = res.locals.returnTo; // || '/' 이거 나중에 붙여보던가??
-    // delete req.session.returnTo
-    res.redirect(redirectUrl);
+    console.log('Session in login:', req.session);
+    const redirectUrl = req.session.returnTo || '/'; // 저장된 경로 가져오기
+    delete req.session.returnTo; // 세션에서 경로 제거
+    req.session.save(err => {
+        if (err) console.error('Error saving session:', err);
+    }); // 세션 저장
+    res.redirect(redirectUrl); //저장된 경로로 
 }
 
-export const logout = (req, res) => {
-    req.logout(function (err) {
+export const logout = (req, res, next) => {
+    req.logOut(function (err) {
         if (err) {
             return next(err);
         }
