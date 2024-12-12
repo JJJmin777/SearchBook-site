@@ -21,6 +21,12 @@ import User from './models/user.js'
 import session from 'express-session';
 import flash from 'connect-flash'
 import { isLoggedIn } from './middleware.js';
+import methodOverride from 'method-override'
+
+// 라우터 가져오기
+import bookRouters from './routes/bookRouter.js';
+import userRouters from './routes/users.js'
+import reviewRouters from './routes/reviews.js'
 
 const dbUrl = 'mongodb://127.0.0.1:27017/search-book';
 
@@ -36,10 +42,6 @@ db.once("open", () => {
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// 라우터 가져오기
-import bookRouters from './routes/bookRouter.js';
-import userRouters from './routes/users.js'
 
 // EJS 설정
 app.set('view engine', 'ejs');// EJS 템플릿 엔진 설정
@@ -79,16 +81,20 @@ app.use((req, res, next) => {
 // 레이아웃 파일 경로 설정
 app.set('layout', 'layouts/boilerplate'); // 기본 레이아웃 지정
 
+app.use(methodOverride('_method'));
+
 // app.use(express.json()); 
 // app.use(express.urlencoded({ extended: false }));
 
-app.get('/dashboard', isLoggedIn, (req, res) => {
-    res.send('Welcome to your dashboard!');
-});
-
 // 라우터 등록
 app.use('/', userRouters);
-app.use('/', bookRouters); // 기본 경로에 라우터 연결
+app.use('/books', bookRouters); // 만약 movie나 drama등이 리뷰로 추가 될 수 있어서 books로 묶음
+app.use('/books/:id/reviews', reviewRouters)
+
+// 홈 페이지
+app.get('/', (req, res) => {
+    res.render('search/home'); // 검색 폼
+});
 
 const port = 3000;
 app.listen(port, () => {

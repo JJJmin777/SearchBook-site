@@ -26,7 +26,7 @@ export const renderLogin = async (req, res) => {
 
 export const login = (req, res) => {
     req.flash('success', 'Welcome Back');
-    console.log('Session in login:', req.session);
+    // console.log('Session in login:', req.session);
     const redirectUrl = req.session.returnTo || '/'; // 저장된 경로 가져오기
     delete req.session.returnTo; // 세션에서 경로 제거
     req.session.save(err => {

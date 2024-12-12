@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { reviewSchema }  from './review.js';
+import { reviewSchema } from './review.js';
 //빠르게 Schema 사용
 const Schema = mongoose.Schema;
 
@@ -20,9 +20,14 @@ const bookSchema = new Schema({
     author: String,
     publisher: String,
     price: Number,
-    image: {type: String},
+    image: { type: String },
     link: String,
-    reviews: [reviewSchema] // 리뷰 배열
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ] // 리뷰 배열
 });
 
 const Book = mongoose.model('Book', bookSchema);

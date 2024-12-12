@@ -13,7 +13,7 @@
                 </p>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">
+                <li class="list-group-item text-muted">
                     <%= book.publisher%>
                 </li>
                 <li class="list-group-item"><a href="<%= book.link %>" target="_blank" class="btn btn-primary mt-3">Buy
@@ -25,7 +25,8 @@
         </div>
     </div>
     <div class="col-6">
-        <h2>Leave a Review</h2>
+        <% if (currentUser) { %>
+        <h2>Leave Your Review</h2>
         <form action="/books/<%=book._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
             <!-- <div class="mb-3">
                         <label class="form-label" for="rating">Rating</label>
@@ -57,7 +58,7 @@
             <button class="btn btn-success">Submit
             </button>
         </form>
-
+        <% } %>
         <% for(let review of book.reviews) { %>
             <div class="card mb-3">
                 <div class="card-body">
@@ -67,16 +68,16 @@
                     <p class="starability-result" data-rating="<%= review.rating %>">
                         Rated: <%= review.rating %> stars
                     </p>
-                    <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username %>
+                    <!-- <h6 class="card-subtitle mb-2 text-muted">By <%= review.author.username %> -->
                     </h6>
                     <p class="card-text">Review: <%= review.body %>
                     </p>
-                    <!-- <% if(currentUser && review.author.equals(currentUser)) {%>
+                    <% if(currentUser && review.author.equals(currentUser)) {%>
                             <form action="/books/<%=book._id%>/reviews/<%=review._id%>?_method=DELETE"
                                 method="POST">
                                 <button class="btn btn-sm btn-danger">Delete</button>
                             </form>
-                            <% } %> -->
+                    <% } %>
                 </div>
             </div>
             <% } %>

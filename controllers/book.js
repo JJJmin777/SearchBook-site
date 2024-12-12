@@ -1,11 +1,6 @@
 import { searchBook } from "../utils/naverApi.js";
 import Book from '../models/search.js'
 
-// 홈 페이지
-export const renderhome = (req, res) => {
-    res.render('search/home'); // 검색 폼
-};
-
 // 검색 결과
 export const handleSearchResults = async (req, res) => {
     // console.log(req.body)
@@ -37,6 +32,7 @@ export const saveBook = async (req, res) => {
                 image: imagePath,
                 link,
             });
+            console.log(book)
             await book.save();
         }
         res.redirect(`/books/${book._id}`);
@@ -57,7 +53,10 @@ export const saveBook = async (req, res) => {
 // 책 상세 페이지
 export const getBookDetails = async (req, res) => {
     try {
-        const book = await Book.findById(req.params.id);
+        const book = await Book.findById(req.params.id).populate({
+            path: 'reviews',
+            populate: {path:'author'}
+        });
         // console.log(book)
         res.render('search/bookdetails', { book }); // EJS 템플릿 렌더링
     } catch (error) {
