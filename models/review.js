@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { deflate } from 'zlib';
 
 const Schema = mongoose.Schema;
 
@@ -8,6 +9,10 @@ export const reviewSchema = new Schema({
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 });
 

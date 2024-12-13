@@ -1,11 +1,14 @@
 import express from 'express';
 // import User from '../models/user.js'
 import passport from 'passport';
-import { renderRegister, register, renderLogin, login, logout } from '../controllers/users.js'
+import { showMyBooks, renderRegister, register, renderLogin, login, logout } from '../controllers/users.js'
 import catchAsync from '../utils/catchAsync.js';
 import { storeReturnTo } from '../middleware.js';
 
 const router = express.Router();
+
+// 내가 쓴 책 리뷰들
+router.get('/mybooks', showMyBooks)
 
 // Resiter 
 router.route('/register')

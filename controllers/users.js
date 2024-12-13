@@ -1,7 +1,14 @@
 import User from "../models/user.js";
+import Book from "../models/search.js";
 
 export const renderRegister = (req, res) => {
     res.render('users/register');
+}
+
+// 내가 쓴 책 리뷰들
+export const showMyBooks = async (req, res) => {
+    const book = await Book.findById(req.params.id)
+    res.render('bookreviews/mybooks')
 }
 
 export const register = async(req, res, next) => {

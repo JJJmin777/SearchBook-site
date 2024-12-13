@@ -17,5 +17,4 @@ router.post('/save', saveBook)
 // 책 상세 페이지
 router.get('/:id', getBookDetails)
 
-
 export default router;

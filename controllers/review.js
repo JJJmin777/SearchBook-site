@@ -1,8 +1,11 @@
 import Book from '../models/search.js'
 import Review from "../models/review.js";
+import User from '../models/user.js';
 
+// 리뷰 만들기
 export const createReview = async (req, res) => {
     const book = await Book.findById(req.params.id); // 주소에 있는 책의 - :id
+    const user = await User.findById(req.params.id);
     const review = new Review(req.body.review); // 값을 입력하면 post로 전달받는 req.body - (두 개)
     review.author = req.user._id; // 현재 user의 _id
     book.reviews.push(review);
@@ -12,6 +15,7 @@ export const createReview = async (req, res) => {
     res.redirect(`/books/${book._id}`);
 }
 
+// 리뷰 지우기
 export const deleteReview = async (req, res) => {
     const { id, reviewId } = req.params;
     await Book.findByIdAndUpdate(id, { $pull: { reviews: reviewId}}) // reviews 배열에서 reviewId 제거
