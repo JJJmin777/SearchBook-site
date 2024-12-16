@@ -1,16 +1,30 @@
 import User from "../models/user.js";
 import Book from "../models/search.js";
 
+
+
+// 사용자가 쓴 책 리뷰 불러오기
+export const showMyBooks = async (req, res) => {
+    try {
+        const userId = req.user._id //로그인 된 사용자 
+    const user = await User.findById(userId).populate({
+        path: 'reviews',
+        populate: {path: 'book', select: 'title image' } // 리뷰에 연결된 책 제목 불러오기
+    });
+    res.render('bookreviews/mybooks', { reviews: user.reviews });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Failed to load reviews');
+    }
+    
+}
+
+// 등록 페이지
 export const renderRegister = (req, res) => {
     res.render('users/register');
 }
 
-// 내가 쓴 책 리뷰들
-export const showMyBooks = async (req, res) => {
-    const book = await Book.findById(req.params.id)
-    res.render('bookreviews/mybooks')
-}
-
+// 아이디 등록
 export const register = async(req, res, next) => {
     try {
         const { username, password, email } = req.body;
@@ -27,10 +41,12 @@ export const register = async(req, res, next) => {
     }
 }
 
+// 로그인 페이지
 export const renderLogin = async (req, res) => {
     res.render('users/login');
 }
 
+// 로그인 
 export const login = (req, res) => {
     req.flash('success', 'Welcome Back');
     // console.log('Session in login:', req.session);
@@ -42,6 +58,7 @@ export const login = (req, res) => {
     res.redirect(redirectUrl); //저장된 경로로 
 }
 
+// 로그아웃 
 export const logout = (req, res, next) => {
     req.logOut(function (err) {
         if (err) {

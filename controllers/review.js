@@ -5,12 +5,18 @@ import User from '../models/user.js';
 // 리뷰 만들기
 export const createReview = async (req, res) => {
     const book = await Book.findById(req.params.id); // 주소에 있는 책의 - :id
-    const user = await User.findById(req.params.id);
     const review = new Review(req.body.review); // 값을 입력하면 post로 전달받는 req.body - (두 개)
     review.author = req.user._id; // 현재 user의 _id
+    review.book = req.params.id // review에 책 위치 설정
     book.reviews.push(review);
     await review.save(); // 이 작업이 없으면 book.reviews가 참조하는 ObjectId에 대한 실제 데이터가 존재하지 않음
     await book.save(); // book 데이터를 업데이트하여 reviews 배열에 새로운 리뷰의 ObjectId를 포함
+
+    // user에 자기가 쓴 review 저장
+    const user = await User.findById(req.user._id);
+    user.reviews.push(review);
+    await user.save();
+
     req.flash('success', 'Created new review')
     res.redirect(`/books/${book._id}`);
 }

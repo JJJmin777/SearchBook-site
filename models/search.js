@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { reviewSchema } from './review.js';
+import reviewSchema from './review.js';
 //빠르게 Schema 사용
 const Schema = mongoose.Schema;
 
@@ -19,8 +19,17 @@ const bookSchema = new Schema({
     title: { type: String, required: true },
     author: String,
     publisher: String,
-    price: Number,
-    image: { type: String },
+    price: {
+        type: Number,
+        get: (value) => {
+            // 가격을 가져올 때 쉼표를 추가
+            return value.toLocaleString(); 
+        }
+    },
+    image: { 
+        type: String,
+        default: 'https://via.placeholder.com/150' //기본 이미지지
+     },
     link: String,
     reviews: [
         {

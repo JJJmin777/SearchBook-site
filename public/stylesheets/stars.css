@@ -1,4 +1,4 @@
-.starability-result {
+/* .starability-result {
     position: relative;
     width: 150px;
     height: 30px;
@@ -195,4 +195,64 @@ screen and (min-resolution: 192dpi) {
     .starability-basic>label::after {
         display: none;
     }
+} */
+
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css");
+
+/* Basic styles */
+/* 특정 클래스나 ID를 가진 fieldset 내부에서만 스타일 적용 */
+fieldset.rating {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+fieldset.rating .rate {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+fieldset.rating input {
+    display: none;
+}
+
+fieldset.rating label {
+    float: right;
+    font-size: 0;
+    color: #d9d9d9;
+}
+
+fieldset.rating label:before {
+    content: "\f005";
+    font-family: FontAwesome;
+    font-size: 40px;
+}
+
+fieldset.rating label:hover,
+fieldset.rating label:hover~label {
+    color: #ccac00;
+    transition: 0.2s;
+}
+
+fieldset.rating input:checked~label {
+    color: #fcd000;
+}
+
+fieldset.rating input:checked~label:hover,
+fieldset.rating input:checked~label:hover~label {
+    color: #ccac00;
+    transition: 0.2s;
+}
+
+/* Half-star */
+fieldset.rating .star-half {
+    position: relative;
+}
+
+fieldset.rating .star-half:before {
+    position: absolute;
+    content: "\f089";
+    padding-right: 0;
 }

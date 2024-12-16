@@ -4,11 +4,14 @@ import passport from 'passport';
 import { showMyBooks, renderRegister, register, renderLogin, login, logout } from '../controllers/users.js'
 import catchAsync from '../utils/catchAsync.js';
 import { storeReturnTo } from '../middleware.js';
+import { isLoggedIn } from '../middleware.js';
 
 const router = express.Router();
 
 // 내가 쓴 책 리뷰들
-router.get('/mybooks', showMyBooks)
+router.route('/mybooks')
+    .get(isLoggedIn, showMyBooks)
+    
 
 // Resiter 
 router.route('/register')

@@ -1,5 +1,6 @@
 import { searchBook } from "../utils/naverApi.js";
 import Book from '../models/search.js'
+import mongoose from "mongoose";
 
 // 검색 결과
 export const handleSearchResults = async (req, res) => {
@@ -10,6 +11,7 @@ export const handleSearchResults = async (req, res) => {
     }
 
     const books = await searchBook(query); // API 호출
+    
     res.render('search/results', { books, query }); // 결과 페이지 렌더링
 };
 

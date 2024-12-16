@@ -1,39 +1,62 @@
-<div>
-    <h3>Results for "<%= query %>"</h3>
-    <% if (books.length> 0) { %>
-        <div class="container mt-4">
-    <ul class="list-unstyled">
-        <% books.forEach(book => { %>
-            <li class="row align-items-center mb-4">
-                <!-- 썸네일 이미지 -->
-                <div class="col-md-3 text-center">
-                    <img class="img-thumbnail" alt="<%= book.title %>" src="<%= book.image %>">
-                </div>
-                <!-- 책 정보 -->
-                <div class="col-md-9">
-                    <h2><%= book.title %></h2>
-                    <p><strong>Author:</strong> <%= book.author %></p>
-                    <p><strong>Publisher:</strong> <%= book.publisher %></p>
-                    <p><strong>Price:</strong> <%= book.discount || book.price %></p>
-                    <!-- target="_blank" 이거 새로운 링크 생기면서 <a> 쓰는거 -->
-                    <form action="/books/save" method="POST">
-                        <input type="hidden" name="title" value="<%= book.title %>">
-                        <input type="hidden" name="author" value="<%= book.author %>">
-                        <input type="hidden" name="publisher" value="<%= book.publisher %>">
-                        <input type="hidden" name="price" value="<%= book.discount || book.price %>">
-                        <input type="hidden" name="link" value="<%= book.link %>">
-                        <!-- 이미지 업로드 -->
-                        <input type="hidden" name="image" value="<%= book.image%>">
-                        <button type="submit" class="btn btn-success">Write Your Review</button>
-                    </form>
-                </div>       
-            </li>
-        <% }) %>
-    </ul>
-</div>
-        <% } else { %>
-            <p>No results found.</p>
-            <% } %>
-                <a href="/">Search Again</a>
-</div>
+<link rel="stylesheet" href="/stylesheets/results.css">
+
+<div class="container my-5">
+    <!-- 검색어 표시 -->
+    <h3 class="mb-4">Results for "<%= query %>"</h3>
     
+    <% if (books.length > 0) { %>
+        <div class="row">
+            <% books.forEach(book => { %>
+                <!-- 개별 책 항목 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <!-- 책 이미지 -->
+                        <img
+                            src="<%= book.image %>"
+                            class="card-img-top"
+                            alt="<%= book.title %>"
+                            style="height: 250px; object-fit: cover"
+                        />
+                        <div class="card-body d-flex flex-column">
+                            <!-- 책 제목 -->
+                            <h5 class="card-title font-weight-bold text-primary">
+                                <%= book.title %>
+                            </h5>
+                            <!-- 책 저자 -->
+                            <p class="card-text mb-1">
+                                <strong>Author:</strong> <%= book.author %>
+                            </p>
+                            <!-- 출판사 -->
+                            <p class="card-text mb-1">
+                                <strong>Publisher:</strong> <%= book.publisher %>
+                            </p>
+                            <!-- 가격 -->
+                            <p class="card-text text-success mb-3">
+                                <strong>Price:</strong> ₩<%= (Number(book.discount || book.price)).toLocaleString() %>
+                            </p>
+
+                            <!-- 리뷰 작성 버튼 -->
+                            <form action="/books/save" method="POST" class="mt-auto">
+                                <input type="hidden" name="title" value="<%= book.title %>" />
+                                <input type="hidden" name="author" value="<%= book.author %>" />
+                                <input type="hidden" name="publisher" value="<%= book.publisher %>" />
+                                <input type="hidden" name="price" value="<%= book.discount || book.price %>" />
+                                <input type="hidden" name="link" value="<%= book.link %>" />
+                                <input type="hidden" name="image" value="<%= book.image %>" />
+                                <button type="submit" class="btn btn-success btn-block">
+                                    Write Your Review
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <!-- 검색 결과 없을 때 -->
+        <p class="text-center text-muted">No results found.</p>
+        <div class="text-center">
+            <a href="/" class="btn btn-outline-primary mt-3">Search Again</a>
+        </div>
+    <% } %>
+</div>

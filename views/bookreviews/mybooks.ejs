@@ -1,3 +1,28 @@
-<div>
-    <h1>hi</h1>
+<link rel="stylesheet" href="stylesheets/mybooks.css">
+
+<!-- Header -->
+<header>My Book Reviews</header>
+
+<!-- Content Container -->
+<div class="container">
+    <% if (reviews.length > 0) { %>
+        <% reviews.forEach(review => { %>
+            <div class="review-card">
+                <!-- Book Image -->
+                <img src="<%= review.book.image %>" alt="Book Image" class="book-image">
+
+                <!-- Review Content -->
+                <div class="review-content">
+                    <h3><%= review.book.title %></h3>
+                    <p><strong>Rating:</strong> <%= review.rating %>/5 ⭐</p>
+                    <p><strong>Review:</strong> <%= review.body %></p>
+                    <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
+                    <!-- Button to Book Details -->
+                    <a href="/books/<%= review.book._id %>" class="btn">View Book Details</a>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <div class="empty">You haven't written any reviews yet. Start reviewing books now! 📚</div>
+    <% } %>
 </div>
