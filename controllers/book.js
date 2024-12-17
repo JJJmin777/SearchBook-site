@@ -11,7 +11,7 @@ export const handleSearchResults = async (req, res) => {
     }
 
     const books = await searchBook(query); // API 호출
-    
+
     res.render('search/results', { books, query }); // 결과 페이지 렌더링
 };
 
@@ -34,7 +34,7 @@ export const saveBook = async (req, res) => {
                 image: imagePath,
                 link,
             });
-            console.log(book)
+            // console.log(book)
             await book.save();
         }
         res.redirect(`/books/${book._id}`);
@@ -42,14 +42,6 @@ export const saveBook = async (req, res) => {
         console.log(err);
         res.status(500).send('Error saving the book');
     }
-
-     // // 리뷰 추가
-            // const newReview = {
-            //     comment: review,
-            //     rating: Number(rating),
-            // };
-            // book.reviews.push(newReview);
-            // await book.save();
 };
 
 // 책 상세 페이지

@@ -2,14 +2,16 @@
 import Review from './models/review.js'
 
 // 사용자가 요청했던 경로 저장
-export const storeReturnTo = (req, res, next) => {
-    // 세션에 returnTo가 없고, 현재 요청이 로그인 또는 회원가입 경로가 아닐 때만 저장
-    if (!req.session.returnTo && req.originalUrl !== '/login' && req.originalUrl !== '/register') {
-        req.session.returnTo = req.originalUrl; // 요청한 URL 저장
-    }
-    // console.log('Updated session in storeReturnTo:', req.session); // 디버깅용 로그 추가
-    next();
-};
+// export const storeReturnTo = (req, res, next) => {
+//     console.log(req.query.returnTo);
+//     if (!req.user && req.originalUrl !== '/login') {
+//         const returnTo = req.query.returnTo || req.originalUrl; // 쿼리 매개변수 또는 현재 URL
+//         // 사용자가 인증되지 않았고, 요청이 로그인 페이지가 아니면
+//         req.session.returnTo = returnTo; // 원래 URL을 세션에 저장
+//         console.log('Storing returnTo in session:', req.session.returnTo);
+//     }
+//     next(); // 다음 미들웨어로 이동
+// };
 
 export const isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -22,7 +24,8 @@ export const isLoggedIn = (req, res, next) => {
 export const isReviewAuthor = async (req, res, next) => {
     const { id, reviewId } = req.params;
     const review = await Review.findById(reviewId);
-    if (!review.author.equals(req.params.id)) {
+    if (!review.author.equals(req.user._id)) {
         req.flash('error', 'You do not have permission to do that!')
     }
+    next();
 }

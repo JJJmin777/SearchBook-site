@@ -11,10 +11,12 @@ const userSchema = new Schema({
         require: true,
         unique: true
     },
-    reviews: [{
+    reviews: [
+        {
         type: Schema.Types.ObjectId,
         ref: 'Review'
-    }],
+    }
+],
     
 });
 

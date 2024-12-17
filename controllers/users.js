@@ -43,18 +43,16 @@ export const register = async(req, res, next) => {
 
 // 로그인 페이지
 export const renderLogin = async (req, res) => {
+    const returnUrl = req.query.return_url || '/';
+    req.session.returnTo = returnUrl; // 세션에 저장
     res.render('users/login');
 }
 
 // 로그인 
 export const login = (req, res) => {
     req.flash('success', 'Welcome Back');
-    // console.log('Session in login:', req.session);
     const redirectUrl = req.session.returnTo || '/'; // 저장된 경로 가져오기
     delete req.session.returnTo; // 세션에서 경로 제거
-    req.session.save(err => {
-        if (err) console.error('Error saving session:', err);
-    }); // 세션 저장
     res.redirect(redirectUrl); //저장된 경로로 
 }
 

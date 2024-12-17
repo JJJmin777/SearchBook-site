@@ -3,7 +3,7 @@ import express from 'express';
 import passport from 'passport';
 import { showMyBooks, renderRegister, register, renderLogin, login, logout } from '../controllers/users.js'
 import catchAsync from '../utils/catchAsync.js';
-import { storeReturnTo } from '../middleware.js';
+// import { storeReturnTo } from '../middleware.js';
 import { isLoggedIn } from '../middleware.js';
 
 const router = express.Router();
@@ -23,7 +23,6 @@ router.route('/register')
 router.route('/login')
     .get(renderLogin)
     .post(
-        storeReturnTo, 
         passport.authenticate('local', {failureFlash: 'Invalid username or password.', failureRedirect: '/login'}), 
         login
     );

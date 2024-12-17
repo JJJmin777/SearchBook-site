@@ -7,6 +7,6 @@ const router = express.Router({mergeParams: true});
 
 router.post('/', isLoggedIn, catchAsync(createReview));
 
-router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(deleteReview))
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, deleteReview)
 
 export default router

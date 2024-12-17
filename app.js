@@ -20,7 +20,6 @@ import User from './models/user.js'
 // import MongoStore = from 'connect-mongo'
 import session from 'express-session';
 import flash from 'connect-flash'
-import { isLoggedIn } from './middleware.js';
 import methodOverride from 'method-override'
 
 // 라우터 가져오기
@@ -50,23 +49,29 @@ app.set('views', path.join(__dirname, 'views')); // 템플릿 경로 설정
 app.use(express.static(path.join(__dirname, 'public'))); // 정적 파일 경로
 app.use(bodyParser.urlencoded({ extended: true })); // 폼 데이터 처리 (POST 요청 데이터를 처리하기 위해 필요)
 
+app.use((req, res, next) => {
+    res.locals.currentUrl = req.originalUrl; // 현재 URL을 템플릿 변수에 저장
+    next();
+});
+
 // express-ejs-layouts 사용
 app.use(expressLayouts);
 
+passport.use(new LocalStrategy(User.authenticate())); // 인증 전략 사용
+passport.serializeUser(User.serializeUser()); // 세션에 사용자 정보 저장
+passport.deserializeUser(User.deserializeUser()); // 세션에서 사용자 정보 복원
 
 // 세션 미들웨어 설정
 app.use(session({
     secret: 'yourSecretKey', // 세션 암호화를 위한 키
     resave: false,          // 매 요청마다 세션 저장 방지
     saveUninitialized: false, // 초기화되지 않은 세션 저장 방지
+    cookie: { secure: false } // http 환경에선 true로 설정
 }));
 
 // Passport 초기화
 app.use(passport.initialize());
 app.use(passport.session()); //이 세션에서 데이터를 읽고 호출, 복원
-passport.use(new LocalStrategy(User.authenticate())); // 인증 전략 사용
-passport.serializeUser(User.serializeUser()); // 세션에 사용자 정보 저장
-passport.deserializeUser(User.deserializeUser()); // 세션에서 사용자 정보 복원
 
 // Flash 메시지 미들웨어 설정
 app.use(flash())
@@ -89,7 +94,7 @@ app.use(methodOverride('_method'));
 // 라우터 등록
 app.use('/', userRouters);
 app.use('/books', bookRouters); // 만약 movie나 drama등이 리뷰로 추가 될 수 있어서 books로 묶음
-app.use('/books/:id/reviews', reviewRouters)
+app.use('/books/:bookId/reviews', reviewRouters)
 
 // 홈 페이지
 app.get('/', (req, res) => {
