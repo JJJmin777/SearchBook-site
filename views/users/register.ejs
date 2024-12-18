@@ -1,7 +1,6 @@
     <title>회원가입</title>
     <link rel="stylesheet" href="stylesheets/login.css">
 
-
     <div class="form-container">
         <h2 class="form-title">회원가입</h2>
         <form action="/register" method="POST">
@@ -25,6 +24,8 @@
                 <label for="confirmPassword" class="form-label">비밀번호 확인</label>
                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" required>
             </div>
+            <!-- reCAPTCHA -->
+            <div class="g-recaptcha" data-sitekey=""></div><!-- Google에서 발급받은 사이트키 사용 -->
             <!-- Submit Button -->
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">회원가입</button>

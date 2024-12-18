@@ -38,8 +38,8 @@ export const saveBook = async (req, res) => {
             await book.save();
         }
         res.redirect(`/books/${book._id}`);
-    } catch(err) {
-        console.log(err);
+    } catch(error) {
+        console.log(error);
         res.status(500).send('Error saving the book');
     }
 };

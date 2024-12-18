@@ -66,7 +66,12 @@ app.use(session({
     secret: 'yourSecretKey', // 세션 암호화를 위한 키
     resave: false,          // 매 요청마다 세션 저장 방지
     saveUninitialized: false, // 초기화되지 않은 세션 저장 방지
-    cookie: { secure: false } // http 환경에선 true로 설정
+    // cookie: {
+    //     httpOnly: true,
+    //     // secure: true,
+    //     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    //     maxAge: 1000 * 60 * 60 * 24 * 7
+    // }
 }));
 
 // Passport 초기화
