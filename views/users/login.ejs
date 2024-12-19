@@ -15,6 +15,8 @@
             <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요"
                 required>
         </div>
+        <!-- reCAPTCHA -->
+        <div class="g-recaptcha" data-sitekey="<%= siteKey %>"></div> <!-- Google에서 발급받은 사이트키 사용 -->
         <!-- Submit Button -->
         <div class="d-grid">
             <button type="submit" class="btn btn-primary">로그인</button>

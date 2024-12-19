@@ -1,11 +1,13 @@
 body {
+    height: 100%;
     background: linear-gradient(to right, #a8def9, #53c1fc);
     min-height: 100vh;
-    /* display: flex; */
-    align-items: center;
-    justify-content: center;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     font-family: 'Roboto', sans-serif;
 }
+
 .form-container {
     background: white;
     padding: 2rem;

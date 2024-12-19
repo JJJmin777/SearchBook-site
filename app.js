@@ -1,8 +1,9 @@
-import { config } from 'dotenv';
+import dotenv from 'dotenv';
+dotenv.config();
 
-if (process.env.NODE_ENV !== "production") {
-    config();
-}
+// if (process.env.NODE_ENV !== "production") {
+//     dotenv.config();
+// }
 // if (process.env.NODE_ENV !== "production") {
 //     require('dotenv').config();
 // }
@@ -27,7 +28,7 @@ import bookRouters from './routes/bookRouter.js';
 import userRouters from './routes/users.js'
 import reviewRouters from './routes/reviews.js'
 
-const dbUrl = 'mongodb://127.0.0.1:27017/search-book';
+const dbUrl ='mongodb://127.0.0.1:27017/search-book'; // process.env.DB_URL || 나중에 사용하기
 
 mongoose.set('strictQuery', true);
 mongoose.connect(dbUrl)

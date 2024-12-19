@@ -5,8 +5,8 @@ const sendEmail = async (to, subject, html) => {
     const transporter = nodemailer.createTransport({
         service: 'Gmail', // Gmail 사용
         auth: {
-            user: 'jmin.office777@gmail.com', // 이메일 주소
-            pass: '', // 이메일 비밀번호 또는 앱 비밀번호
+            user: process.env.GMAIL_USER, // 이메일 주소
+            pass: process.env.GMAIL_PASSWORD, // 이메일 비밀번호 또는 앱 비밀번호
         },
     });
 

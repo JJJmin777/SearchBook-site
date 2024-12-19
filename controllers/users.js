@@ -23,28 +23,16 @@ export const showMyBooks = async (req, res) => {
 
 // 등록 페이지
 export const renderRegister = (req, res) => {
-    res.render('users/register');
+    res.render('users/register', {
+        siteKey: process.env.SITE_KEY // .env 파일의 SITE_KEY
+        });
 }
 
 // 아이디 등록
 export const register = async (req, res, next) => {
     const { username, password, email } = req.body;
 
-     // reCAPTCHA 검증
-     const secretKey = ''; // Google에서 발급받은 비밀키
-     const recaptchaToken = req.body['g-recaptcha-response']; // 클라이언트의 reCAPTCHA 응답 토큰
-     const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
-
     try {
-
-        const response = await fetch(verificationUrl, { method: 'POST' });
-        const data = await response.json();
-
-        if (!data.success) {
-            req.flash('error', 'reCAPTCHA verification failed. Please try again.');
-            return res.redirect('/register');
-        }
-
         // 새 사용자 생성
         const user = new User({
             username,
@@ -125,12 +113,14 @@ export const verifyEmail = async (req, res) => {
 
 // 로그인 페이지
 export const renderLogin = async (req, res) => {
-    res.render('users/login');
+    res.render('users/login', {
+        siteKey: process.env.SITE_KEY // .env 파일의 SITE_KEY
+    });
 }
 
 // 로그인 
 export const login = async (req, res) => {
-
+    
     try {
         const { username } = req.body;
 
