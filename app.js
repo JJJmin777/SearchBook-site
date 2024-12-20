@@ -94,8 +94,8 @@ app.set('layout', 'layouts/boilerplate'); // 기본 레이아웃 지정
 
 app.use(methodOverride('_method'));
 
-// app.use(express.json()); 
-// app.use(express.urlencoded({ extended: false }));
+app.use(express.json()); // JSON 요청 본문 처리
+app.use(express.urlencoded({ extended: true })); // 폼 데이터 파싱
 
 // 라우터 등록
 app.use('/', userRouters);

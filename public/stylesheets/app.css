@@ -72,3 +72,8 @@ footer {
     height: 200px; 
     object-fit: cover;
 }
+
+.sticky-top {
+    position: sticky;
+    top: 20px; /* 화면 위에서 20px 떨어진 상태로 고정 */
+}

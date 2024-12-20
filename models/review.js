@@ -14,6 +14,16 @@ export const reviewSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
+    likes: {
+        type: Number,
+        default: 0 // 초기값 0
+    },
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment' // 댓글 참조
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now

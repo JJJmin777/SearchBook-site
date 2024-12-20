@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="stylesheets/mybooks.css">
 
 <!-- Header -->
-<header>My Book Reviews</header>
+<header class="mybook-header">My Book Reviews</header>
 
 <!-- Content Container -->
-<div class="container">
+<div class="review-container">
     <% if (reviews.length > 0) { %>
         <% reviews.forEach(review => { %>
             <div class="review-card">
@@ -26,3 +26,4 @@
         <div class="empty">You haven't written any reviews yet. Start reviewing books now! 📚</div>
     <% } %>
 </div>
+

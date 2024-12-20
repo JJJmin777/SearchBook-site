@@ -38,7 +38,7 @@ export const saveBook = async (req, res) => {
             await book.save();
         }
         res.redirect(`/books/${book._id}`);
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         res.status(500).send('Error saving the book');
     }
@@ -47,10 +47,18 @@ export const saveBook = async (req, res) => {
 // 책 상세 페이지
 export const getBookDetails = async (req, res) => {
     try {
-        const book = await Book.findById(req.params.id).populate({
-            path: 'reviews',
-            populate: {path:'author'}
-        });
+        const book = await Book.findById(req.params.id)
+            .populate({
+                path: 'reviews',
+                populate: { path: 'author' }
+            })
+            .populate({
+                path: 'reviews',
+                populate: {
+                    path: 'comments',
+                    populate: { path: 'author' } // 댓글 작성자(author)까지 조회
+                }
+            });
         // console.log(book)
         res.render('search/bookdetails', { book }); // EJS 템플릿 렌더링
     } catch (error) {
