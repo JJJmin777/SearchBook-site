@@ -60,9 +60,12 @@ export const getBookDetails = async (req, res) => {
                 }
             });
         // console.log(book)
-        res.render('search/bookdetails', { book }); // EJS 템플릿 렌더링
+        res.render('search/bookdetails', { 
+            book,
+            currentUser: req.user || null, // 현재 사용자 정보 전달 
+        }); // EJS 템플릿 렌더링
     } catch (error) {
-        console.error(error);
-        res.status(404).send('Book not found');
+        req.flash('error', 'Book not found');
+        res.redirect('/')
     }
 };

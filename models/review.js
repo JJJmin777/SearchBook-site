@@ -14,10 +14,12 @@ export const reviewSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    likes: {
-        type: Number,
-        default: 0 // 초기값 0
-    },
+    likes: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User' // 좋아요를 누른 사용자 ID
+        }
+    ],
     comments: [
         {
             type: Schema.Types.ObjectId,
