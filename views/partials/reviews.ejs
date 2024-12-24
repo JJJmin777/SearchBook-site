@@ -1,0 +1,8 @@
+<% reviews.forEach(review => { %>
+    <div class="review">
+        <h5><%= review.author.username %></h5>
+        <p><%= review.body %></p>
+        <p>Likes: <%= review.likes.length %></p>
+        <p>Created At: <%= review.createdAt.toLocaleDateString() %></p>
+    </div>
+<% }) %>

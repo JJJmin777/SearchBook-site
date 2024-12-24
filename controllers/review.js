@@ -2,6 +2,7 @@ import Book from '../models/search.js'
 import Review from "../models/review.js";
 import User from '../models/user.js';
 import Comment from '../models/comment.js';
+import ejs from 'ejs'; //getsortreviews 함수필
 
 // 리뷰 만들기
 export const createReview = async (req, res) => {
@@ -132,6 +133,7 @@ export const getSortedReviews = async (req, res) => {
     try {
         const { bookId } = req.params; // 책 ID
         const { sort } = req.query; // 정렬 기준
+
         const reviews = await Review.find({ book: bookId })
             .populate('author')
             .populate({
@@ -142,11 +144,13 @@ export const getSortedReviews = async (req, res) => {
         if (sort === 'likes') {
             reviews.sort((a, b) => b.likes - a.likes); // 좋아요 순
         } else if (sort === 'newest') {
-            reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // 최신순
+            reviews.sort((a, b) => b.createdAt - a.createdAt); // 최신순
         }
 
-        res.json({ success: true, reviews });
+        const html = await ejs.renderFile('partials/reviews.ejs', { reviews });
+        res.json({ success: true, html });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Failed to load reviews' });
     }
 };
