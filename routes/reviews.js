@@ -5,7 +5,7 @@ import catchAsync from '../utils/catchAsync.js';
 
 const router = express.Router({mergeParams: true});
 
-//리뷰 만들기기
+//리뷰 정렬과 만들기
 router.route('/')
     .get(getSortedReviews)
     .post(isLoggedIn, catchAsync(createReview));

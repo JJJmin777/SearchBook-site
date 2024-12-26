@@ -47,7 +47,10 @@ export const saveBook = async (req, res) => {
 // 책 상세 페이지
 export const getBookDetails = async (req, res) => {
     try {
-        const book = await Book.findById(req.params.id)
+        const bookId  = req.params.id
+
+        // 책 데이터와 기본 정렬된 리뷰를 가져옵니다 .
+        const book = await Book.findById(bookId)
             .populate({
                 path: 'reviews',
                 populate: { path: 'author' }
@@ -59,9 +62,13 @@ export const getBookDetails = async (req, res) => {
                     populate: { path: 'author' } // 댓글 작성자(author)까지 조회
                 }
             });
-        // console.log(book)
+
+        // 리뷰를 하트순으로 정렬
+        let sortedReviews = book.reviews.sort((a, b) => b.likes.length - a.likes.length);
+
         res.render('search/bookdetails', { 
             book,
+            sortedReviews, //기본 정렬된 리뷰 전달
             currentUser: req.user || null, // 현재 사용자 정보 전달 
         }); // EJS 템플릿 렌더링
     } catch (error) {

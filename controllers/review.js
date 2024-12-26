@@ -134,20 +134,34 @@ export const getSortedReviews = async (req, res) => {
         const { bookId } = req.params; // 책 ID
         const { sort } = req.query; // 정렬 기준
 
-        const reviews = await Review.find({ book: bookId })
-            .populate('author')
+        const book = await Book.findById(bookId)
             .populate({
-                path: 'comments',
-                populate: { path: 'author' } // 댓글 작성자까지 조회
+                path: 'reviews',
+                populate: { path: 'author' }
+            })
+            .populate({
+                path: 'reviews',
+                populate: {
+                    path: 'comments',
+                    populate: { path: 'author' } // 댓글 작성자(author)까지 조회
+                }
             });
 
+        let sortedReviews; // 블록 외부에서 변수 선언
+
+        // console.log(book.reviews)
         if (sort === 'likes') {
-            reviews.sort((a, b) => b.likes - a.likes); // 좋아요 순
+            sortedReviews = book.reviews.sort((a, b) => b.likes.length - a.likes.length); // 좋아요 순
         } else if (sort === 'newest') {
-            reviews.sort((a, b) => b.createdAt - a.createdAt); // 최신순
+            sortedReviews = book.reviews.sort((a, b) => b.createdAt - a.createdAt); // 최신순
         }
 
-        const html = await ejs.renderFile('partials/reviews.ejs', { reviews });
+        const html = await ejs.renderFile('./views/partials/reviews.ejs', {
+            book,
+            sortedReviews,
+            currentUser: req.user || null,
+        });
+
         res.json({ success: true, html });
     } catch (err) {
         console.error(err);

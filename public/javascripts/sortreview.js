@@ -1,9 +1,8 @@
-import ejs from 'ejs';
 
 function sortReviews(event, sortBy) {
     const button = event.target; // 클릭된 버튼 참조
     const bookId = button.dataset.bookId;
-
+    
     if (!bookId) {
         console.error('Book ID is missing from the button dataset.');
         alert('Failed to sort reviews: Book ID not found.');

@@ -9,7 +9,10 @@ export const reviewSchema = new Schema({
         ref: 'Book'
     },
     body: String,
-    rating: Number, // 별점 (1~5)
+    rating: {
+        type: Number, // 별점 (1~5)
+        // default: 0.5
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'

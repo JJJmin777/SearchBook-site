@@ -1,7 +1,20 @@
+// 댓글 처리용 상위 컨테이너 선택
+const reviewSection = document.getElementById('review-section');
+
+// 댓글 토글 함수
+function toggleComments(reviewId) {
+    const commentsDiv = document.getElementById(`comments-${reviewId}`);
+    if (commentsDiv) {
+        commentsDiv.classList.toggle('d-none'); // 댓글 영역 보이기/숨기기
+    }
+}
+
 // 좋아요 버튼 클릭 처리
-document.querySelectorAll('.like-button').forEach(button => {
-    button.addEventListener('click', async () => {
-        
+reviewSection.addEventListener('click', async (event) => {
+
+    // 클릭된 요소가 좋아요 버튼인지 확인
+    if (event.target.closest('.like-button')) {
+        const button = event.target.closest('.like-button');
         const bookId = button.dataset.bookId; 
         const reviewId = button.dataset.reviewId;
         const liked = button.dataset.liked === 'true'; // 현재 좋아요 상태
@@ -28,23 +41,15 @@ document.querySelectorAll('.like-button').forEach(button => {
             console.error(err);
             alert('Failed to toggle like');
         }
-    });
+    };
 });
 
-
-// 댓글 토글 함수
-function toggleComments(reviewId) {
-    const commentsDiv = document.getElementById(`comments-${reviewId}`);
-    if (commentsDiv) {
-        commentsDiv.classList.toggle('d-none'); // 댓글 영역 보이기/숨기기
-    }
-}
-
 // 댓글 추가 처리
-document.querySelectorAll('.comment-form').forEach(form => {
-    form.addEventListener('submit', async (event) => {
+reviewSection.addEventListener('submit', async (event) => { // 댓글 관련 이벤트 위임
+    if (event.target.classList.contains('comment-form')) {
         event.preventDefault(); // 폼 기본 동작 방지
 
+        const form = event.target;
         const bookId = form.dataset.bookId; // 북 ID
         const reviewId = form.dataset.reviewId; // 리뷰 ID
         const input = form.querySelector('.comment-input'); // 입력 필드
@@ -74,14 +79,15 @@ document.querySelectorAll('.comment-form').forEach(form => {
             console.error(err);
             alert('Failed to add comment');
         }
-    });
+    };
 });
 
 // 코멘트(댓글) 삭제
-document.querySelectorAll('.delete-comment-btn').forEach(button => {
-    button.addEventListener('click', async (e) => {
-        e.preventDefault();
+reviewSection.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete-comment-btn')) {
+        event.preventDefault();
 
+        const button = event.target;
         const bookId = button.dataset.bookId; // 북 ID
         const commentId = button.dataset.commentId; // 코멘트 ID
         const reviewId = button.dataset.reviewId; // 리뷰 ID
@@ -102,5 +108,5 @@ document.querySelectorAll('.delete-comment-btn').forEach(button => {
             console.error(err);
             alert('Failed to delete comment');
         }
-    });
+    };
 });
