@@ -3,6 +3,12 @@
 <!-- Header -->
 <header class="mybook-header">My Book Reviews</header>
 
+<!-- Search Form -->
+<form class="search-form" method="GET" action="/mybooks">
+    <input type="text" name="query" placeholder="Search by book title or author" class="search-input">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 <!-- Content Container -->
 <div class="review-container">
     <% if (reviews.length > 0) { %>

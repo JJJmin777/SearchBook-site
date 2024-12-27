@@ -6,24 +6,54 @@ import ejs from 'ejs'; //getsortreviews 함수필
 
 // 리뷰 만들기
 export const createReview = async (req, res) => {
-    const book = await Book.findById(req.params.bookId); // 주소에 있는 책의 - :bookId
-    const review = new Review(req.body.review); // 값을 입력하면 post로 전달받는 req.body - (두 개)
+    try {
+        const { body, rating } = req.body.review;
 
-    review.author = req.user._id; // 현재 user의 _id
-    review.book = req.params.bookId; // review에 책 위치 설정
-    book.reviews.push(review);
+    // 유효성 검사: 리뷰 본문과 별점이 있는지 확인
+    if (!body || body.trim() === '') {
+        req.flash('error', 'Review text is required.');
+        return res.redirect(`/books/${req.params.bookId}`);
+    }
+    
+    // 별점이 없으면 기본값 0.5점
+    const validatedRating = rating || 0.5; 
 
-    await review.save(); // 이 작업이 없으면 book.reviews가 참조하는 ObjectId에 대한 실제 데이터가 존재하지 않음
-    await book.save(); // book 데이터를 업데이트하여 reviews 배열에 새로운 리뷰의 ObjectId를 포함
+    // 주소에 있는 책의 bookId로 책 데이터 가져오기
+    const book = await Book.findById(req.params.bookId); 
+    if (!book) {
+        req.flash('error', 'Book not found.');
+        return res.redirect('/books');
+    } 
 
-    // user에 자기가 쓴 review 저장
+    // 새로운 리뷰 생성
+    const review = new Review({
+        body,
+        rating: validatedRating,
+        author: req.user._id, // 현재 user의 _id
+        book: req.params.bookId, // review에 책 위치 설정
+    }); 
+
+    // 리뷰를 책과 사용자에 연결
+    book.reviews.push(review._id);
     const user = await User.findById(req.user._id);
-    user.reviews.push(review);
-    await user.save();
+    if (user) {
+        user.reviews.push(review._id);
+    }
+
+    // 저장 작업 병렬 처리 
+    // 이 작업이 없으면 book.reviews가 참조하는 ObjectId에 대한 실제 데이터가 존재하지 않음
+    // user에 자기가 쓴 review 저장
+    // book 데이터를 업데이트하여 reviews 배열에 새로운 리뷰의 ObjectId를 포함
+    await Promise.all([review.save(), book.save(), user.save()]);
 
     req.flash('success', 'Created new review');
     res.redirect(`/books/${book._id}`);
-}
+    } catch (error) {
+        console.err('Error creating review:', err)
+        req.flash('error', 'Failed to create review.');
+        res.redirect(`/books/${req.params.bookId}`);
+    }  
+};
 
 // 리뷰 지우기
 export const deleteReview = async (req, res) => {

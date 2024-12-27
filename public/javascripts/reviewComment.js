@@ -15,7 +15,7 @@ reviewSection.addEventListener('click', async (event) => {
     // 클릭된 요소가 좋아요 버튼인지 확인
     if (event.target.closest('.like-button')) {
         const button = event.target.closest('.like-button');
-        const bookId = button.dataset.bookId; 
+        const bookId = button.dataset.bookId;
         const reviewId = button.dataset.reviewId;
         const liked = button.dataset.liked === 'true'; // 현재 좋아요 상태
         const likeIcon = button.querySelector('.like-icon'); // 하트 아이콘
@@ -24,8 +24,16 @@ reviewSection.addEventListener('click', async (event) => {
         try {
             const response = await fetch(`/books/${bookId}/reviews/${reviewId}/like`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: {
+                    'Content-Type': 'application/json',
+                }
             });
+
+            if (response.status === 401) {
+                // 로그인 필요 경고
+                alert('You must be logged in to like this review.');
+                return;
+            }
 
             if (!response.ok) {
                 throw new Error('Failed to toggle like');
@@ -39,7 +47,7 @@ reviewSection.addEventListener('click', async (event) => {
             likeCount.textContent = data.likesCount; // 좋아요 수 업데이트
         } catch (err) {
             console.error(err);
-            alert('Failed to toggle like');
+            alert('Failed to toggle like~~');
         }
     };
 });

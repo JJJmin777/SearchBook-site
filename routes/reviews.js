@@ -15,10 +15,10 @@ router.route('/:reviewId')
     .delete(isLoggedIn, isReviewAuthor, deleteReview);
 
 // 리뷰의 좋아요
-router.post('/:reviewId/like', isLoggedIn, toggleLike); 
+router.post('/:reviewId/like', toggleLike);
 
 // 리뷰에 코멘트 추가
-router.post('/:reviewId/comments', isLoggedIn, addComment);
+router.post('/:reviewId/comments', addComment);
 
 // 코멘트 삭제
 router.delete('/:reviewId/comments/:commentId', isLoggedIn, deleteComment);

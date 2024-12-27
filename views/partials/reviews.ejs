@@ -19,7 +19,9 @@
                 <button class="btn btn-sm btn-outline-primary like-button"
                     data-book-id="<%= book._id %>" 
                     data-review-id="<%= review._id %>"
-                    data-liked="<%= currentUser ? (review.likes || []).includes(currentUser._id) : false %>">
+                    data-liked="<%= currentUser ? (review.likes || []).includes(currentUser._id) : false %>"
+                    <%= currentUser ? '' : 'disabled' %>
+                >
                     <span class="like-icon">
                         <%= currentUser && review.likes.includes(currentUser._id) ? '❤️' : '🤍' %>
                     </span>
@@ -62,6 +64,7 @@
                                 <% } %>
                     </div>
                     <% } %>
+                    <% if (currentUser) { %>
                         <form class="comment-form" data-book-id="<%= book._id %>"
                             data-review-id="<%= review._id %>">
                             <div class="input-group">
@@ -70,6 +73,9 @@
                                 <button class="btn btn-primary" type="submit">Submit</button>
                             </div>
                         </form>
+                    <% } else { %>
+                        <div class="alert alert-warning">You must be logged in to add a comment.</div>
+                    <% } %>
             </div>
 
 
