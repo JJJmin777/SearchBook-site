@@ -1,25 +1,7 @@
 import User from "../models/user.js";
-import Book from "../models/search.js";
+import Review from "../models/review.js";
 import sendEmail from "../utils/sendEmail.js";  // 이메일 전송 유틸리티
 import crypto from 'crypto';
-
-
-
-// 사용자가 쓴 책 리뷰 불러오기
-export const showMyBooks = async (req, res) => {
-    try {
-        const userId = req.user._id //로그인 된 사용자 
-        const user = await User.findById(userId).populate({
-            path: 'reviews',
-            populate: { path: 'book', select: 'title image' } // 리뷰에 연결된 책 제목 불러오기
-        });
-        res.render('bookreviews/mybooks', { reviews: user.reviews });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Failed to load reviews');
-    }
-
-}
 
 // 등록 페이지
 export const renderRegister = (req, res) => {
@@ -153,3 +135,51 @@ export const logout = (req, res, next) => {
         res.redirect('/')
     });
 }
+
+// 사용자가 쓴 책 리뷰 불러오기
+export const showMyBooks = async (req, res) => {
+    try {
+        const userId = req.user._id //로그인 된 사용자 
+
+        const user = await User.findById(userId).populate({
+            path: 'reviews',
+            populate: { path: 'book', select: 'title image' } // 리뷰에 연결된 책 제목 불러오기
+        });
+        res.render('bookreviews/mybooks', { reviews: user.reviews });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Failed to load reviews');
+    }
+}
+
+// 사용자가 쓴 책 리뷰 검색
+export const searchMyBooks = async (req, res) => {
+    try {
+        const userId = req.user._id; // 로그인 된 사용자
+        const query = req.query.query; // 검색 쿼리
+
+        // 검색 조건
+        const searchCriteria = { 
+            author: userId, 
+            $or: [
+                { 'book.title': { $regex: query, $options: 'i' } },
+                { 'book.author': { $regex: query, $options: 'i' } }
+            ]
+        };
+
+        console.log(searchCriteria)
+        
+        const reviews = await Review.find(searchCriteria)
+            .populate({
+                path: 'book',
+                select: 'title image'
+            });
+
+        console.log(reviews)
+
+        res.render('bookreviews/mybooks', { reviews });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Failed to load reviews');
+    }
+};
