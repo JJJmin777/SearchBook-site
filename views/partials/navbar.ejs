@@ -1,3 +1,5 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #40b2f0;">
     <div class="container">
         <!-- Brand -->
@@ -21,12 +23,24 @@
 
             <!-- Right Links -->
             <div class="navbar-nav ms-auto">
+                <!-- Search Form -->
+                <form action="/books/results" method="POST" class="d-flex me-3">
+                    <div class="input-group">
+                        <!-- Search Input -->
+                        <input type="text" placeholder="Search book" id="searchQuery" name="bookTitle" class="form-control">
+                        <!-- Search Icon as Button -->
+                        <button type="submit" class="btn btn-outline-secondary">
+                            <i class="fas fa-search"></i> <!-- Font Awesome Search Icon -->
+                        </button>
+                    </div>
+                </form>
+
                 <% if (!currentUser) { %>
                     <a class="nav-link" href="/login">Login</a>
                     <a class="nav-link" href="/register">Register</a>
-                <% } else { %>
-                    <a class="nav-link" href="/logout">Logout</a>
-                <% } %>
+                    <% } else { %>
+                        <a class="nav-link" href="/logout">Logout</a>
+                        <% } %>
             </div>
         </div>
     </div>

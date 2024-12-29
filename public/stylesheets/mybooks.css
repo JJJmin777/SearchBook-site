@@ -1,6 +1,5 @@
 /* 전역 스타일 */
 html, body {
-    font-family: 'Roboto', sans-serif;
     height: 100%; /* 페이지 전체 높이 설정 */
     margin: 0;
     display: flex;

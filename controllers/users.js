@@ -1,5 +1,6 @@
 import User from "../models/user.js";
 import Review from "../models/review.js";
+import Book from "../models/search.js"
 import sendEmail from "../utils/sendEmail.js";  // 이메일 전송 유틸리티
 import crypto from 'crypto';
 
@@ -158,24 +159,20 @@ export const searchMyBooks = async (req, res) => {
         const userId = req.user._id; // 로그인 된 사용자
         const query = req.query.query; // 검색 쿼리
 
-        // 검색 조건
-        const searchCriteria = { 
-            author: userId, 
-            $or: [
-                { 'book.title': { $regex: query, $options: 'i' } },
-                { 'book.author': { $regex: query, $options: 'i' } }
-            ]
-        };
-
-        console.log(searchCriteria)
-        
-        const reviews = await Review.find(searchCriteria)
+        // 리뷰 검색 및 책 데이터 포함
+        let reviews = await Review.find({ author: userId })
             .populate({
                 path: 'book',
-                select: 'title image'
+                select: 'title image author' // 필요한 책 데이터
             });
 
-        console.log(reviews)
+        // 검색어가 있는 경우 자바스크립트에서 필터링
+        if (query) {
+            const regex = new RegExp(query, 'i'); // 대소문자 구분 없는 정규식
+            reviews = reviews.filter(review =>
+                regex.test(review.book.title) || regex.test(review.book.author)
+            );
+        }
 
         res.render('bookreviews/mybooks', { reviews });
     } catch (error) {

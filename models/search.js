@@ -39,5 +39,8 @@ const bookSchema = new Schema({
     ] // 리뷰 배열
 });
 
+// bookSchema.index({ title: "text", author: "text" }); // text 인덱스 설정(리뷰 검색을 위한)
+
 const Book = mongoose.model('Book', bookSchema);
+
 export default Book;
