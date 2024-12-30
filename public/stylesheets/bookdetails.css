@@ -1,0 +1,93 @@
+/* 기본 레이아웃 */
+.row {
+    margin-top: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* 이미지 크기 */
+.img-thumbnail {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* 리뷰 섹션 */
+.review-section {
+    margin-top: 20px;
+}
+
+/* 좋아요/정렬 버튼 */
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+/* 삭제 버튼 (빨간색) */
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.btn-danger:active {
+    background-color: #bd2130;
+}
+
+/* 접기/펼치기 스타일 */
+.review-body {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: 4.5rem; /* 기본 최대 높이 */
+}
+
+.review-body.expanded {
+    max-height: none; /* 확장 상태 */
+}
+
+.toggle-button {
+    font-size: 0.9rem;
+    color: #4CAF50;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 5px;
+    text-decoration: none;
+}
+
+.toggle-button:hover {
+    text-decoration: underline;
+}

@@ -144,7 +144,7 @@ export const showMyBooks = async (req, res) => {
 
         const user = await User.findById(userId).populate({
             path: 'reviews',
-            populate: { path: 'book', select: 'title image' } // 리뷰에 연결된 책 제목 불러오기
+            populate: { path: 'book', select: 'title image author' } // 리뷰에 연결된 책 제목 불러오기
         });
         res.render('bookreviews/mybooks', { reviews: user.reviews });
     } catch (error) {
@@ -173,7 +173,7 @@ export const searchMyBooks = async (req, res) => {
                 regex.test(review.book.title) || regex.test(review.book.author)
             );
         }
-
+        console.log(reviews)
         res.render('bookreviews/mybooks', { reviews });
     } catch (error) {
         console.error(error);

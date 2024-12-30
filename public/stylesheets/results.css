@@ -1,70 +1,187 @@
-/* 전체 페이지 스타일 */
-html, body {
-    height: 100%; /* 페이지 전체 높이 설정 */
+/* Body 스타일 */
+body {
+    background-color: #f8f9fa; /* 밝고 차분한 배경 */
+    font-family: 'Roboto', sans-serif;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #f8f9fa;
+    padding: 0;
+    color: #333;
 }
 
-/* 검색어 제목 */
-h3 {
-    font-size: 1.8rem;
+/* 검색 결과 컨테이너 */
+.result-container {
+    max-width: 1200px;
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+}
+
+/* "Results for" 텍스트 */
+.result-form h3 {
+    font-size: 1.5rem;
     font-weight: bold;
-    color: #343a40; /* 진한 회색 */
+    color: #28a745; /* 녹색 텍스트 */
+    margin-bottom: 1.5rem; /* 검색창과 간격 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem; /* 텍스트와 검색창 간격 */
+}
+
+/* 검색 입력폼 */
+.search-input {
+    width: 70%;
+    max-width: 500px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px; /* 왼쪽 둥근 모서리 */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.3); /* 녹색 포커스 효과 */
+    outline: none;
+}
+
+/* 검색 버튼 */
+.search-button {
+    background-color: #28a745;
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0 4px 4px 0; /* 오른쪽 둥근 모서리 */
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-button:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3); /* 버튼 호버 효과 */
 }
 
 /* 카드 스타일 */
 .card {
     border: none;
     border-radius: 12px;
-    transition: box-shadow 0.3s ease-in-out;
     overflow: hidden;
     background-color: #ffffff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px); /* 마우스 호버 시 카드 살짝 올라감 */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
 }
 
-/* 이미지 스타일 */
+/* 카드 이미지 */
 .card-img-top {
+    height: 250px;
+    object-fit: cover;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
 }
 
-/* 제목 스타일 */
+/* 카드 본문 */
+.card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .card-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    color: #007bff;
-}
-
-/* 가격 텍스트 스타일 */
-.card-text.text-success {
+    font-size: 1.25rem;
     font-weight: bold;
-    color: #28a745 !important;
+    color: #28a745; /* 녹색 제목 */
+    margin-bottom: 0.5rem;
 }
 
-/* 버튼 스타일 */
+.card-text {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.card-text strong {
+    font-weight: bold;
+}
+
+/* 가격 텍스트 */
+.card-text.text-success {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #28a745; /* 녹색 강조 */
+}
+
+/* 버튼 */
+.btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: bold;
+}
+
 .btn-success {
     background-color: #28a745;
-    border-color: #28a745;
-    transition: background-color 0.3s;
+    color: white;
+    border: none;
 }
 
 .btn-success:hover {
     background-color: #218838;
-    border-color: #1e7e34;
+    transform: translateY(-2px); /* 살짝 떠오르는 효과 */
 }
 
 .btn-outline-primary {
-    color: #007bff;
-    border-color: #007bff;
+    color: #28a745;
+    border: 1px solid #28a745;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btn-outline-primary:hover {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #28a745;
+    color: white;
+}
+
+/* "결과 없음" 텍스트 */
+.text-muted {
+    font-size: 1.2rem;
+    margin-top: 2rem;
+    color: #888;
+    font-style: italic;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .result-form h3 {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .search-input {
+        width: 100%; /* 검색창 전체 너비 */
+        margin-bottom: 0.5rem;
+    }
+
+    .search-button {
+        width: 100%; /* 버튼도 전체 너비 */
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .col-md-6 {
+        width: 100%;
+    }
 }

@@ -1,79 +1,65 @@
 <link rel="stylesheet" href="/stylesheets/stars.css">
+<link rel="stylesheet" href="/stylesheets/bookdetails.css">
 
 <div class="row">
+    <!-- 왼쪽: 책 이미지 -->
     <div class="col-md-4">
-        <div class="book-datails sticky-top">
+        <div class="sticky-top mb-3">
             <img src="<%= book.image %>" class="img-thumbnail" alt="<%= book.title %>">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <%= book.title%>
-                    </h5>
-                    <p class="card-text">
-                        <%= book.author%>
-                    </p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-muted">
-                        <%= book.publisher%>
-                    </li>
-                    <li class="list-group-item"><a href="<%= book.link %>" target="_blank"
-                            class="btn btn-primary mt-3">Buy
-                            this book</a>
-                    </li>
-                    <li class="list-group-item">₩<%= book.price%>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
+
+    <!-- 오른쪽: 책 상세 정보 및 리뷰 섹션 -->
     <div class="col-md-8">
-        <% if (currentUser) { %>
+        <!-- 책 상세 정보 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title"><%= book.title %></h5>
+                <p class="card-text"><strong>Author:</strong> <%= book.author %></p>
+                <p class="card-text"><strong>Publisher:</strong> <%= book.publisher %></p>
+                <p class="card-text"><strong>Price:</strong> ₩<%= book.price %></p>
+                <a href="<%= book.link %>" target="_blank" class="btn btn-primary">Buy this book</a>
+            </div>
+        </div>
+
+        <!-- 리뷰 작성 섹션 -->
+        <div class="review-section mb-4">
             <!-- 로그인 상태: 리뷰 작성 창 활성화 -->
-            <h2>Leave Your Review</h2>
-            <form action="/books/<%=book._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
-                <fieldset class="rating">
-                    <div class="rate">
-                        <input id="rate2-star5" type="radio" name="review[rating]" value="5" />
-                        <label for="rate2-star5" title="Awesome">5</label>
-
-                        <input id="rate2-star5-half" type="radio" name="review[rating]" value="4.5" />
-                        <label class="star-half" for="rate2-star5-half" title="Excellent">4.5</label>
-
-                        <input id="rate2-star4" type="radio" name="review[rating]" value="4" />
-                        <label for="rate2-star4" title="Very good">4</label>
-
-                        <input id="rate2-star3-half" type="radio" name="review[rating]" value="3.5" />
-                        <label class="star-half" for="rate2-star3-half" title="Good">3.5</label>
-
-                        <input id="rate2-star3" type="radio" name="review[rating]" value="3" />
-                        <label for="rate2-star3" title="Satisfactory">3</label>
-
-                        <input id="rate2-star2-half" type="radio" name="review[rating]" value="2.5" />
-                        <label class="star-half" for="rate2-star2-half" title="Unsatisfactory">2.5</label>
-
-                        <input id="rate2-star2" type="radio" name="review[rating]" value="2" />
-                        <label for="rate2-star2" title="Bad">2</label>
-
-                        <input id="rate2-star1-half" type="radio" name="review[rating]" value="1.5" />
-                        <label class="star-half" for="rate2-star1-half" title="Very bad">1.5</label>
-
-                        <input id="rate2-star1" type="radio" name="review[rating]" value="1" />
-                        <label for="rate2-star1" title="Awful">1</label>
-
-                        <input id="rate2-star0-half" type="radio" name="review[rating]" value="0.5" />
-                        <label class="star-half" for="rate2-star0-half" title="Horrific">0.5</label>
+            <% if (currentUser) { %>
+                <h2>Leave Your Review</h2>
+                <form action="/books/<%= book._id %>/reviews" method="POST" class="validated-form mb-4" novalidate>
+                    <fieldset class="rating">
+                        <div class="rate">
+                            <input id="rate2-star5" type="radio" name="review[rating]" value="5" />
+                            <label for="rate2-star5" title="Awesome">5</label>
+                            <input id="rate2-star5-half" type="radio" name="review[rating]" value="4.5" />
+                            <label class="star-half" for="rate2-star5-half" title="Excellent">4.5</label>
+                            <input id="rate2-star4" type="radio" name="review[rating]" value="4" />
+                            <label for="rate2-star4" title="Very good">4</label>
+                            <input id="rate2-star3-half" type="radio" name="review[rating]" value="3.5" />
+                            <label class="star-half" for="rate2-star3-half" title="Good">3.5</label>
+                            <input id="rate2-star3" type="radio" name="review[rating]" value="3" />
+                            <label for="rate2-star3" title="Satisfactory">3</label>
+                            <input id="rate2-star2-half" type="radio" name="review[rating]" value="2.5" />
+                            <label class="star-half" for="rate2-star2-half" title="Unsatisfactory">2.5</label>
+                            <input id="rate2-star2" type="radio" name="review[rating]" value="2" />
+                            <label for="rate2-star2" title="Bad">2</label>
+                            <input id="rate2-star1-half" type="radio" name="review[rating]" value="1.5" />
+                            <label class="star-half" for="rate2-star1-half" title="Very bad">1.5</label>
+                            <input id="rate2-star1" type="radio" name="review[rating]" value="1" />
+                            <label for="rate2-star1" title="Awful">1</label>
+                            <input id="rate2-star0-half" type="radio" name="review[rating]" value="0.5" />
+                            <label class="star-half" for="rate2-star0-half" title="Horrific">0.5</label>
+                        </div>
+                    </fieldset>
+                    <div class="mb-3">
+                        <label for="body" class="form-label">Review Text</label>
+                        <textarea name="review[body]" id="body" class="form-control" rows="3" required></textarea>
                     </div>
-                </fieldset>
-                <div class="mb-3">
-                    <label class="form-label" for="body">Review Text</label>
-                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
-                </div>
-                <button class="btn btn-success">Submit</button>
-            </form>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            <!-- 로그아웃 상태: 리뷰 작성 창 비활성화 -->
             <% } else { %>
-                <!-- 로그아웃 상태: 리뷰 작성 창 비활성화 -->
-                <h2 class="text-muted">Log in to leave a review</h2>
                 <div class="d-flex justify-content-start mb-3">
                     <a href="/login" class="btn btn-primary me-2">Login</a>
                     <a href="/register" class="btn btn-secondary">Register</a>
@@ -88,23 +74,22 @@
                         <button class="btn btn-success mb-3" disabled>Submit</button>
                     </form>
                 </fieldset>
-                <% } %>
+            <% } %>
+        </div>
 
-                    <div class="mb-3">
-                        <button class="btn btn-outline-secondary" data-book-id="<%= book._id %>" 
-                            onclick="sortReviews(event, 'likes')">Most Liked</button>
-                        <button class="btn btn-outline-secondary" data-book-id="<%= book._id %>" 
-                            onclick="sortReviews(event, 'newest')">Newest First</button>
-                    </div>
+        <!-- 리뷰 정렬 버튼 -->
+        <div class="d-flex mb-3">
+            <button class="btn btn-outline-secondary me-2" data-book-id="<%= book._id %>" onclick="sortReviews(event, 'likes')">Most Liked</button>
+            <button class="btn btn-outline-secondary" data-book-id="<%= book._id %>" onclick="sortReviews(event, 'newest')">Newest First</button>
+        </div>
 
-                    <div id="review-section">
-                        <%- include('../partials/reviews', { sortedReviews, book, currentUser }) %>
-                    </div>
-                    
+        <!-- 리뷰 목록 -->
+        <div id="review-section">
+            <%- include('../partials/reviews', { sortedReviews, book, currentUser }) %>
+        </div>
     </div>
-
 </div>
-
 
 <script src="/javascripts/reviewComment.js"></script>
 <script src="/javascripts/sortreview.js"></script>
+<script src="/javascripts/reviewtoggle.js"></script>

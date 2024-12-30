@@ -4,15 +4,20 @@ import mongoose from "mongoose";
 
 // 검색 결과
 export const handleSearchResults = async (req, res) => {
-    // console.log(req.body)
-    const query = req.body["bookTitle"]; // 폼에서 검색어 가져오기
-    if (!query) {
-        return res.render('home', { error: '검색어를 입력해주세요.' });
+    try {
+        const query = req.body["bookTitle"]; // 폼에서 검색어 가져오기
+
+        if (!query) {
+            return res.redirect('/')
+        }
+
+        const books = await searchBook(query); // API 호출
+
+        res.render('search/results', { books, query }); // 결과 페이지 렌더링
+    } catch (error) {
+        console.log(error)
     }
 
-    const books = await searchBook(query); // API 호출
-
-    res.render('search/results', { books, query }); // 결과 페이지 렌더링
 };
 
 // 책 저장
@@ -47,7 +52,7 @@ export const saveBook = async (req, res) => {
 // 책 상세 페이지
 export const getBookDetails = async (req, res) => {
     try {
-        const bookId  = req.params.id
+        const bookId = req.params.id
 
         // 책 데이터와 기본 정렬된 리뷰를 가져옵니다 .
         const book = await Book.findById(bookId)
@@ -66,7 +71,7 @@ export const getBookDetails = async (req, res) => {
         // 리뷰를 하트순으로 정렬
         let sortedReviews = book.reviews.sort((a, b) => b.likes.length - a.likes.length);
 
-        res.render('search/bookdetails', { 
+        res.render('search/bookdetails', {
             book,
             sortedReviews, //기본 정렬된 리뷰 전달
             currentUser: req.user || null, // 현재 사용자 정보 전달 

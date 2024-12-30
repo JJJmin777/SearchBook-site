@@ -1,34 +1,43 @@
 <link rel="stylesheet" href="/stylesheets/results.css">
 
-<div class="container my-5">
+<div class="result-container my-5">
     <!-- 검색어 표시 -->
-    <h3 class="mb-4">Results for "<%= query %>"</h3>
-    
-    <% if (books.length > 0) { %>
+    <div class="result-form mb-3">
+        <form action="/books/results" method="POST">
+            <!-- <label for="searchQuery">Search Book</label> -->
+            <h3 class="mb-4">Results for  <input type="text" placeholder="Enter book title..." id="searchQuery"
+                    name="bookTitle" class="search-input" value="<%= query %>">
+                <button class="btn btn-success search-button">
+                    Search
+                </button>
+            </h3>
+        </form>
+    </div>
+
+
+    <% if (books.length> 0) { %>
         <div class="row">
-            <% books.forEach(book => { %>
+            <% books.forEach(book=> { %>
                 <!-- 개별 책 항목 -->
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         <!-- 책 이미지 -->
-                        <img
-                            src="<%= book.image %>"
-                            class="card-img-top"
-                            alt="<%= book.title %>"
-                            style="height: 250px; object-fit: cover"
-                        />
+                        <img src="<%= book.image %>" class="card-img-top" alt="<%= book.title %>"
+                            style="height: 250px; object-fit: cover" />
                         <div class="card-body d-flex flex-column">
                             <!-- 책 제목 -->
-                            <h5 class="card-title font-weight-bold text-primary">
+                            <h5 class="card-title mb-1">
                                 <%= book.title %>
                             </h5>
                             <!-- 책 저자 -->
                             <p class="card-text mb-1">
-                                <strong>Author:</strong> <%= book.author %>
+                                <strong>Author:</strong>
+                                <%= book.author %>
                             </p>
                             <!-- 출판사 -->
                             <p class="card-text mb-1">
-                                <strong>Publisher:</strong> <%= book.publisher %>
+                                <strong>Publisher:</strong>
+                                <%= book.publisher %>
                             </p>
                             <!-- 가격 -->
                             <p class="card-text text-success mb-3">
@@ -50,13 +59,13 @@
                         </div>
                     </div>
                 </div>
-            <% }) %>
+                <% }) %>
         </div>
-    <% } else { %>
-        <!-- 검색 결과 없을 때 -->
-        <p class="text-center text-muted">No results found.</p>
-        <div class="text-center">
-            <a href="/" class="btn btn-outline-primary mt-3">Search Again</a>
-        </div>
-    <% } %>
+        <% } else { %>
+            <!-- 검색 결과 없을 때 -->
+            <p class="text-center text-muted">No results found.</p>
+            <div class="text-center">
+                <a href="/" class="btn btn-outline-primary mt-3">Search Again</a>
+            </div>
+            <% } %>
 </div>

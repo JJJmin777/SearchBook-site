@@ -10,7 +10,7 @@
 </form>
 
 <!-- Content Container -->
-<div class="review-container">
+<div class="review-container mb-3">
     <% if (reviews.length > 0) { %>
         <% reviews.forEach(review => { %>
             <div class="review-card">
@@ -20,8 +20,12 @@
                 <!-- Review Content -->
                 <div class="review-content">
                     <h3><%= review.book.title %></h3>
+                    <p><%= review.book.author %></p>
                     <p><strong>Rating:</strong> <%= review.rating %>/5 ⭐</p>
-                    <p><strong>Review:</strong> <%= review.body %></p>
+                    <div class="review-body">
+                        <%= review.body.replace(/\n/g, '<br>') %> <!-- 영어일 때 줄바꿈 -->
+                    </div>
+                    
                     <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
                     <!-- Button to Book Details -->
                     <a href="/books/<%= review.book._id %>" class="btn">View Book Details</a>
@@ -33,3 +37,4 @@
     <% } %>
 </div>
 
+<script src="/javascripts/reviewtoggle.js"></script>

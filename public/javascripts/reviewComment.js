@@ -1,6 +1,3 @@
-// 댓글 처리용 상위 컨테이너 선택
-const reviewSection = document.getElementById('review-section');
-
 // 댓글 토글 함수
 function toggleComments(reviewId) {
     const commentsDiv = document.getElementById(`comments-${reviewId}`);
@@ -8,6 +5,9 @@ function toggleComments(reviewId) {
         commentsDiv.classList.toggle('d-none'); // 댓글 영역 보이기/숨기기
     }
 }
+
+// 댓글 처리용 상위 컨테이너 선택
+const reviewSection = document.getElementById('review-section');
 
 // 좋아요 버튼 클릭 처리
 reviewSection.addEventListener('click', async (event) => {
@@ -118,3 +118,5 @@ reviewSection.addEventListener('click', async (event) => {
         }
     };
 });
+
+

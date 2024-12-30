@@ -8,20 +8,21 @@
             <p class="card-text">
                 Rated: <%= review.rating %>/5 ⭐
             </p>
-            <p class="card-text">
+            <!-- 리뷰 본문 -->
+            <div class="review-body">
                 <%= review.body %>
-            </p>
-            <h6 class="card-subtitle mb-2 text-muted">Reviewed on: <%=
-                    review.createdAt.toLocaleDateString() %>
-            </h6>
-            <!-- 좋아요 버튼 -->
+            </div>
+            <button class="toggle-button">Read More</button>
+
+            <h6 class="card-subtitle mb-2 text-muted">Reviewed on: <%= review.createdAt.toLocaleDateString() %></h6>
+
+            <!-- 좋아요 및 댓글 버튼 -->
             <div class="d-flex align-items-center">
                 <button class="btn btn-sm btn-outline-primary like-button"
-                    data-book-id="<%= book._id %>" 
+                    data-book-id="<%= book._id %>"
                     data-review-id="<%= review._id %>"
                     data-liked="<%= currentUser ? (review.likes || []).includes(currentUser._id) : false %>"
-                    <%= currentUser ? '' : 'disabled' %>
-                >
+                    <%= currentUser ? '' : 'disabled' %>>
                     <span class="like-icon">
                         <%= currentUser && review.likes.includes(currentUser._id) ? '❤️' : '🤍' %>
                     </span>
@@ -37,7 +38,6 @@
                 </button>
             </div>
 
-
             <!-- 댓글 영역 -->
             <div id="comments-<%= review._id %>" class="mt-3 d-none">
                 <% for (let comment of review.comments) { %>
@@ -48,6 +48,7 @@
                         <%= comment.body %>
                         <h6 class="card-subtitle mb-2 text-muted fs-6">Reviewed on: <%=
                             review.createdAt.toLocaleDateString() %>
+                            
                     </h6>
                             <% if (currentUser &&
                                 comment.author._id.toString()===currentUser._id.toString()) { %>
