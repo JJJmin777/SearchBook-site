@@ -1,0 +1,131 @@
+/* 배경색 설정 */
+body {
+    background-color: #f8f9fa;
+}
+
+/* 카드 스타일 */
+.card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* 버튼 스타일 */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+/* 책 정보 카드 */
+.book-info-card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    max-width: 300px;
+    text-align: center; /* 카드 내 텍스트 가운데 정렬 */
+    margin-left: auto; /* 카드 중앙 배치 */
+    margin-right: auto; /* 카드 중앙 배치 */
+}
+
+.book-info-card img {
+    border-radius: 6px;
+    width: 100%; /* 이미지 너비를 카드 너비에 맞춤 */
+    height: auto; /* 이미지 비율 유지 */
+    object-fit: contain; /* 이미지가 잘리지 않도록 */
+    margin-bottom: 1rem;
+}
+
+.book-info-card .card-title {
+    font-size: 1.25rem;
+    color: #4CAF50;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.book-info-card .card-text {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+.book-info-card .btn-primary {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    display: inline-block;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.book-info-card .btn-primary:hover {
+    background-color: #45a049;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .card {
+        padding: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+    }
+
+    .rating .rate {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .book-info-card {
+        max-width: 90%; /* 모바일 화면에서 카드 너비를 화면에 맞춤 */
+        padding: 0.75rem;
+    }
+
+    .book-info-card img {
+        width: 100%; /* 이미지를 카드 너비에 맞춤 */
+        height: auto; /* 이미지 비율 유지 */
+    }
+
+    .book-info-card .card-title {
+        font-size: 1.1rem;
+    }
+
+    .book-info-card .card-text {
+        font-size: 0.85rem;
+    }
+
+    .book-info-card .btn-primary {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.6rem;
+    }
+}

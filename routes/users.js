@@ -2,7 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import { showMyBooks, renderRegister, register, renderLogin, login, logout, verifyEmail, searchMyBooks } from '../controllers/users.js'
 import catchAsync from '../utils/catchAsync.js';
-// import { storeReturnTo } from '../middleware.js';
+import { storeReturnTo } from '../middleware.js';
 import { isLoggedIn, recaptchaMiddleware } from '../middleware.js';
 
 const router = express.Router();

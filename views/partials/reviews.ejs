@@ -46,11 +46,10 @@
                             <%= comment.author.username %>:
                         </strong>
                         <%= comment.body %>
-                        <h6 class="card-subtitle mb-2 text-muted fs-6">Reviewed on: <%=
-                            review.createdAt.toLocaleDateString() %>
-                            
-                    </h6>
-                            <% if (currentUser &&
+                        <h6 class="card-subtitle mb-2 text-muted fs-6">Comment on: <%=
+                            comment.createdAt.toLocaleDateString() %>
+                        </h6>
+                        <% if (currentUser &&
                                 comment.author._id.toString()===currentUser._id.toString()) { %>
                                 <form
                                     action="/books/<%= book._id %>/reviews/<%= review._id %>/comments/<%= comment._id %>?_method=DELETE"

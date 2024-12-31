@@ -22,13 +22,26 @@
                     <h3><%= review.book.title %></h3>
                     <p><%= review.book.author %></p>
                     <p><strong>Rating:</strong> <%= review.rating %>/5 ⭐</p>
-                    <div class="review-body">
-                        <%= review.body.replace(/\n/g, '<br>') %> <!-- 영어일 때 줄바꿈 -->
-                    </div>
-                    
+                    <p class="review-body"><strong>Review:</strong> <%= review.body.replace(/\n/g, '<br>') %></p>
+                    <button class="toggle-button">Read More</button>
                     <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
-                    <!-- Button to Book Details -->
-                    <a href="/books/<%= review.book._id %>" class="btn">View Book Details</a>
+
+                    <!-- 수정 및 삭제 버튼 -->
+                    <% if (currentUser && review.author.equals(currentUser._id)) { %>
+                        <div class="mt-3">
+                            <!-- 왼쪽: 수정 및 삭제 버튼 -->
+                            <div class="action-buttons">
+                                <!-- 수정 버튼 -->
+                                <a href="/books/<%= review.book._id%>/reviews/<%= review._id %>/edit" class="btn btn-sm btn-outline-warning me-2">Edit</a>
+                                <!-- 삭제 버튼 -->
+                                <form action="/books/<%= review.book._id%>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                                <!-- 오른쪽: 책 보기 버튼 -->
+                            <a href="/books/<%= review.book._id %>" class="btn btn-sm btn-primary">View Book Details</a>
+                            </div> 
+                        </div>
+                    <% } %>
                 </div>
             </div>
         <% }); %>

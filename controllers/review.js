@@ -55,6 +55,51 @@ export const createReview = async (req, res) => {
     }  
 };
 
+// 리뷰 수정 페이지 렌더링
+export const renderEditReviewPage = async (req, res) => {
+    try {
+        const { reviewId } = req.params;
+        const review = await Review.findById(reviewId).populate('book');
+
+        if (!review) {
+            req.flash('error', 'Review not found!');
+            return res.redirect('/mybooks');
+        }
+
+        res.render('bookreviews/edit', { review });
+    } catch (err) {
+        console.error(err);
+        req.flash('error', 'Failed to load edit page.');
+        res.redirect('/mybooks');
+    }
+};
+
+//리뷰 수정(update reivew)
+export const updateReview = async (req, res) => {
+    try {
+        const { reviewId } = req.params;
+        const { rating, body } = req.body.review;
+
+        const review = await Review.findByIdAndUpdate(
+            reviewId,
+            { rating, body },
+            { new: true, runValidators: true }
+        );
+
+        if (!review) {
+            req.flash('error', 'Review not found!');
+            return res.redirect('/mybooks');
+        }
+
+        req.flash('success', 'Review updated successfully!');
+        res.redirect('/mybooks');
+    } catch (err) {
+        console.error(err);
+        req.flash('error', 'Failed to update review.');
+        res.redirect('/mybooks');
+    }
+}
+
 // 리뷰 지우기
 export const deleteReview = async (req, res) => {
     const { bookId, reviewId } = req.params;
@@ -69,7 +114,10 @@ export const deleteReview = async (req, res) => {
     await Review.findByIdAndDelete(reviewId);  // 리뷰 자체도 삭제
 
     req.flash('success', 'Successfully deleted review');
-    res.redirect(`/books/${bookId}`);
+
+    // 요청의 출처 또는 쿼리 문자열에 따라 리다이렉트 경로 설정
+    const redirectUrl = req.get('Referer') || `/books/${bookId}`;
+    res.redirect(redirectUrl);
 }
 
 // 리뷰의 좋아요 기능 

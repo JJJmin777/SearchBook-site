@@ -110,12 +110,14 @@ export const login = async (req, res) => {
         // 이메일로 사용자 찾기
         const user = await User.findOne({ username });
 
-        // isVerified 확인
+        // 이메일 isVerified 확인
         if (!user.isVerified) {
             req.flash('error', '이메일 인증이 필요합니다.');
             return res.redirect('/login');
         }
+
         req.flash('success', 'Welcome Back');
+
         const redirectUrl = req.session.returnTo || '/'; // 저장된 경로 가져오기
         delete req.session.returnTo; // 세션에서 경로 제거
         res.redirect(redirectUrl); //저장된 경로로
