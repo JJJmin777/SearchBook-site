@@ -50,10 +50,10 @@ app.set('views', path.join(__dirname, 'views')); // 템플릿 경로 설정
 app.use(express.static(path.join(__dirname, 'public'))); // 정적 파일 경로
 app.use(bodyParser.urlencoded({ extended: true })); // 폼 데이터 처리 (POST 요청 데이터를 처리하기 위해 필요)
 
-app.use((req, res, next) => {
-    res.locals.currentUrl = req.originalUrl; // 현재 URL을 템플릿 변수에 저장
-    next();
-});
+// app.use((req, res, next) => {
+//     res.locals.currentUrl = req.originalUrl; // 현재 URL을 템플릿 변수에 저장
+//     next();
+// });
 
 // express-ejs-layouts 사용
 app.use(expressLayouts);
@@ -67,17 +67,17 @@ app.use(session({
     secret: 'yourSecretKey', // 세션 암호화를 위한 키
     resave: false,          // 매 요청마다 세션 저장 방지
     saveUninitialized: false, // 초기화되지 않은 세션 저장 방지
-    // cookie: {
-    //     httpOnly: true,
-    //     // secure: true,
-    //     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    //     maxAge: 1000 * 60 * 60 * 24 * 7
-    // }
+    cookie: {
+        secure: false // HTTPS 환경에서는 true로 설정
+    }
 }));
 
 // Passport 초기화
 app.use(passport.initialize());
 app.use(passport.session()); //이 세션에서 데이터를 읽고 호출, 복원
+
+// 전역적으로 미들웨어 적용
+// app.use(saveReturnTo);
 
 // Flash 메시지 미들웨어 설정
 app.use(flash())

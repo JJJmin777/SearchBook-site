@@ -19,7 +19,7 @@
             <div class="card p-4 shadow-sm">
                 <h2 class="card-title text-center mb-4">Edit Your Review</h2>
 
-                <form action="/books/<%= review.book._id %>/reviews/<%= review._id %>?_method=PUT" method="POST">
+                <form action="/books/<%= review.book._id %>/reviews/<%= review._id %>?_method=PUT&redirect=<%= redirect %>" method="POST">
                     <!-- 별점 선택 -->
                     <fieldset class="rating mb-3">
                         <div class="rate">
@@ -55,7 +55,7 @@
                     <!-- 버튼 -->
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-success">Update</button>
-                        <a href="/mybooks" class="btn btn-secondary">Cancel</a>
+                        <a href="<%= redirect %>" class="btn btn-secondary">Cancel</a>
                     </div>
                 </form>
             </div>

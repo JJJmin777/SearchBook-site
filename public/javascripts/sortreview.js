@@ -9,7 +9,7 @@ function sortReviews(event, sortBy) {
         return;
     }
 
-    fetch(`/reviews?sort=${sortBy}`)
+    fetch(`/books/${bookId}/reviews?sort=${sortBy}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch sorted reviews');

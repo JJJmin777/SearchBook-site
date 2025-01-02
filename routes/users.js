@@ -2,18 +2,9 @@ import express from 'express';
 import passport from 'passport';
 import { showMyBooks, renderRegister, register, renderLogin, login, logout, verifyEmail, searchMyBooks } from '../controllers/users.js'
 import catchAsync from '../utils/catchAsync.js';
-import { storeReturnTo } from '../middleware.js';
-import { isLoggedIn, recaptchaMiddleware } from '../middleware.js';
+import { isLoggedIn, recaptchaMiddleware  } from '../middleware.js';
 
 const router = express.Router();
-
-// 내가 쓴 책 리뷰들
-router.route('/mybooks')
-    .get(isLoggedIn, showMyBooks)
-
-// 내가 쓴 책 리뷰 검색
-router.route('/mybooks/search')
-    .get(searchMyBooks)
     
 // Resiter 
 router.route('/register')
@@ -33,12 +24,20 @@ router.route('/login')
     .get(renderLogin)
     .post(
         recaptchaMiddleware('/login'),
-        passport.authenticate('local', {failureFlash: 'Invalid username or password.', failureRedirect: '/login'}), 
+        passport.authenticate('local', { failureFlash: 'Invalid username or password.', failureRedirect: '/login' }), 
         login
     );
-
+    
 // Logout
 router.get('/logout', logout)
+
+// 내가 쓴 책 리뷰들
+router.route('/mybooks')
+    .get(isLoggedIn, showMyBooks)
+
+// 내가 쓴 책 리뷰 검색
+router.route('/mybooks/search')
+    .get(isLoggedIn, searchMyBooks)
 
 
 export default router

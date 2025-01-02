@@ -3,16 +3,20 @@ import Review from './models/review.js'
 import verifyRecaptcha from "./utils/verifyRecaptcha.js"; // recaptcha 유틸리티
 
 // 사용자가 요청했던 경로 저장
-export const storeReturnTo = (req, res, next) => {
-    if (!req.session) {
-        throw new Error('Session middleware is required!');
-    }
-    req.session.returnTo = req.originalUrl; // 현재 URL을 저장
-    console.log(`${req.session.returnTo}midlle`);
-    next();
-}
+// export const saveReturnTo = (req, res, next) => {
+//     if (
+//         req.method === 'GET' && // GET 요청일 때만 저장
+//         !req.isAuthenticated() && // 로그인이 안 되어 있을 때만
+//         !req.path.startsWith('/login') && // 로그인 페이지는 제외
+//         !req.path.startsWith('/register') // 회원가입 페이지도 제외
+//     ) {
+//         req.session.returnTo = req.originalUrl;
+//         console.log(`Saved returnTo: ${req.originalUrl}`);
+//     }
+//     next();
+// };
 
-// 로그인 확인인
+// 로그인 확인
 export const isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();

@@ -66,7 +66,10 @@ export const renderEditReviewPage = async (req, res) => {
             return res.redirect('/mybooks');
         }
 
-        res.render('bookreviews/edit', { review });
+        res.render('bookreviews/edit', { 
+            review,
+            redirect: req.query.redirect || `books/${review.book._id}` // 쿼리에서 redirect 경로 전달
+        });
     } catch (err) {
         console.error(err);
         req.flash('error', 'Failed to load edit page.');
@@ -76,10 +79,11 @@ export const renderEditReviewPage = async (req, res) => {
 
 //리뷰 수정(update reivew)
 export const updateReview = async (req, res) => {
-    try {
-        const { reviewId } = req.params;
-        const { rating, body } = req.body.review;
 
+    try {
+        const { reviewId, bookId } = req.params;
+        const { rating, body } = req.body.review;
+        
         const review = await Review.findByIdAndUpdate(
             reviewId,
             { rating, body },
@@ -88,15 +92,18 @@ export const updateReview = async (req, res) => {
 
         if (!review) {
             req.flash('error', 'Review not found!');
-            return res.redirect('/mybooks');
+            return res.redirect(redirectUrl);
         }
 
         req.flash('success', 'Review updated successfully!');
-        res.redirect('/mybooks');
+        // 쿼리 문자열에서 리다이렉트 경로 가져오기
+        const redirectUrl = req.query.redirect || `/books/${bookId}`;
+        res.redirect(redirectUrl);
+
     } catch (err) {
         console.error(err);
         req.flash('error', 'Failed to update review.');
-        res.redirect('/mybooks');
+        res.redirect('/');
     }
 }
 
