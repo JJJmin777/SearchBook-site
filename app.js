@@ -50,10 +50,10 @@ app.set('views', path.join(__dirname, 'views')); // 템플릿 경로 설정
 app.use(express.static(path.join(__dirname, 'public'))); // 정적 파일 경로
 app.use(bodyParser.urlencoded({ extended: true })); // 폼 데이터 처리 (POST 요청 데이터를 처리하기 위해 필요)
 
-// app.use((req, res, next) => {
-//     res.locals.currentUrl = req.originalUrl; // 현재 URL을 템플릿 변수에 저장
-//     next();
-// });
+app.use((req, res, next) => {
+    res.locals.currentUrl = req.originalUrl || '/'; // 현재 URL을 템플릿 변수에 저장
+    next();
+});
 
 // express-ejs-layouts 사용
 app.use(expressLayouts);

@@ -61,7 +61,7 @@
             <!-- 로그아웃 상태: 리뷰 작성 창 비활성화 -->
             <% } else { %>
                 <div class="d-flex justify-content-start mb-3">
-                    <a href="/login?redirect=/books/<%= book._id %>" class="btn btn-primary me-2">Login</a>
+                    <a href="/login?returnurl=/books/<%= book._id %>" class="btn btn-primary me-2">Login</a>
                     <a href="/register" class="btn btn-secondary">Register</a>
                 </div>
                 <fieldset disabled>

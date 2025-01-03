@@ -4,14 +4,8 @@ import verifyRecaptcha from "./utils/verifyRecaptcha.js"; // recaptcha 유틸리
 
 // 사용자가 요청했던 경로 저장
 // export const saveReturnTo = (req, res, next) => {
-//     if (
-//         req.method === 'GET' && // GET 요청일 때만 저장
-//         !req.isAuthenticated() && // 로그인이 안 되어 있을 때만
-//         !req.path.startsWith('/login') && // 로그인 페이지는 제외
-//         !req.path.startsWith('/register') // 회원가입 페이지도 제외
-//     ) {
-//         req.session.returnTo = req.originalUrl;
-//         console.log(`Saved returnTo: ${req.originalUrl}`);
+//     if (req.method === 'GET') {
+//         req.locals.currentUrl = req.originalUrl; // 현재 URL 저장
 //     }
 //     next();
 // };

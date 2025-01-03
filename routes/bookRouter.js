@@ -9,7 +9,7 @@ const upload = multer({ storage });
 const router = express.Router();
 
 // 검색 결과 처리
-router.post('/results', handleSearchResults)
+router.get('/results', handleSearchResults)
 
 // 책 상세 페이지 책 정보 저장 및 조회
 router.post('/save', saveBook)

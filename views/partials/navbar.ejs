@@ -24,7 +24,7 @@
             <!-- Right Links -->
             <div class="navbar-nav ms-auto">
                 <!-- Search Form -->
-                <form action="/books/results" method="POST" class="d-flex me-3">
+                <form action="/books/results" method="GET" class="d-flex me-3">
                     <div class="input-group">
                         <!-- Search Input -->
                         <input type="text" placeholder="Search book" id="searchQuery" name="bookTitle" class="form-control">
@@ -36,7 +36,7 @@
                 </form>
 
                 <% if (!currentUser) { %>
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/login?returnurl=<%= currentUrl %>">Login</a>
                     <a class="nav-link" href="/register">Register</a>
                     <% } else { %>
                         <a class="nav-link" href="/logout">Logout</a>

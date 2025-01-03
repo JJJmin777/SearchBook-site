@@ -68,7 +68,7 @@ export const renderEditReviewPage = async (req, res) => {
 
         res.render('bookreviews/edit', { 
             review,
-            redirect: req.query.redirect || `books/${review.book._id}` // 쿼리에서 redirect 경로 전달
+            currentUrl: req.query.returnurl || `books/${review.book._id}` // 쿼리에서 currentUrl 경로 전달
         });
     } catch (err) {
         console.error(err);
@@ -83,6 +83,8 @@ export const updateReview = async (req, res) => {
     try {
         const { reviewId, bookId } = req.params;
         const { rating, body } = req.body.review;
+        // 쿼리 문자열에서 리다이렉트 경로 가져오기
+        const redirectUrl = req.query.returnurl || `/books/${bookId}`;
         
         const review = await Review.findByIdAndUpdate(
             reviewId,
@@ -96,8 +98,7 @@ export const updateReview = async (req, res) => {
         }
 
         req.flash('success', 'Review updated successfully!');
-        // 쿼리 문자열에서 리다이렉트 경로 가져오기
-        const redirectUrl = req.query.redirect || `/books/${bookId}`;
+        
         res.redirect(redirectUrl);
 
     } catch (err) {

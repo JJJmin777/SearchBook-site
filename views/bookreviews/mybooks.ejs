@@ -11,20 +11,29 @@
 
 <!-- Content Container -->
 <div class="review-container mb-3">
-    <% if (reviews.length > 0) { %>
-        <% reviews.forEach(review => { %>
+    <% if (reviews.length> 0) { %>
+        <% reviews.forEach(review=> { %>
             <div class="review-card">
                 <!-- Book Image -->
                 <img src="<%= review.book.image %>" alt="Book Image" class="book-image">
 
                 <!-- Review Content -->
                 <div class="review-content">
-                    <h3><%= review.book.title %></h3>
-                    <p><%= review.book.author %></p>
-                    <p><strong>Rating:</strong> <%= review.rating %>/5 ⭐</p>
-                    <p class="review-body"><strong>Review:</strong> <%= review.body.replace(/\n/g, '<br>') %></p>
+                    <h3>
+                        <%= review.book.title %>
+                    </h3>
+                    <p>
+                        <%= review.book.author %>
+                    </p>
+                    <p><strong>Rating:</strong>
+                        <%= review.rating %>/5 ⭐
+                    </p>
+                    <p class="review-body"><strong>Review:</strong>
+                        <%= review.body.replace(/\n/g, '<br>' ) %>
+                    </p>
                     <button class="toggle-button">Read More</button>
-                    <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
+                    <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %>
+                    </p>
 
                     <!-- 수정 및 삭제 버튼 -->
                     <% if (currentUser && review.author.equals(currentUser._id)) { %>
@@ -32,22 +41,28 @@
                             <!-- 왼쪽: 수정 및 삭제 버튼 -->
                             <div class="action-buttons">
                                 <!-- 수정 버튼 -->
-                                <a href="/books/<%= review.book._id%>/reviews/<%= review._id %>/edit?redirect=/mybooks" class="btn btn-sm btn-outline-warning me-2">Edit</a>
+                                <a href="/books/<%= review.book._id%>/reviews/<%= review._id %>/edit?returnurl=<%= currentUrl %>"
+                                    class="btn btn-sm btn-outline-warning me-2">Edit</a>
                                 <!-- 삭제 버튼 -->
-                                <form action="/books/<%= review.book._id%>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="d-inline">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </form>
-                                <!-- 오른쪽: 책 보기 버튼 -->
-                            <a href="/books/<%= review.book._id %>" class="btn btn-sm btn-primary">View Book Details</a>
-                            </div> 
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal-<%= review._id %>">
+                                    Delete
+                                </button>
+
+                                <%- include('../partials/confirmDeleteModal', { itemId: review._id, itemName: 'review' ,
+                                    deleteUrl: `/books/${review.book._id}/reviews/${review._id}?_method=DELETE` }) %>
+                                    <!-- 오른쪽: 책 보기 버튼 -->
+                                    <a href="/books/<%= review.book._id %>" class="btn btn-sm btn-primary">View Book
+                                        Details</a>
+                            </div>
                         </div>
-                    <% } %>
+                        <% } %>
                 </div>
             </div>
-        <% }); %>
-    <% } else { %>
-        <div class="empty">You haven't written any reviews yet. Start reviewing books now! 📚</div>
-    <% } %>
+            <% }); %>
+                <% } else { %>
+                    <div class="empty">You haven't written any reviews yet. Start reviewing books now! 📚</div>
+                    <% } %>
 </div>
 
 <script src="/javascripts/reviewtoggle.js"></script>

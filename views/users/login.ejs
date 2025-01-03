@@ -3,7 +3,7 @@
 
 <div class="form-container">
     <h2 class="form-title ">로그인</h2>
-    <form action="/login" method="POST">
+    <form action="/login?returnurl=<%= currentUrl %>" method="POST">
         <!-- Email -->
         <div class="mb-3">
             <label for="username" class="form-label">아이디</label>

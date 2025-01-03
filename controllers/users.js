@@ -98,6 +98,7 @@ export const verifyEmail = async (req, res) => {
 export const renderLogin = async (req, res) => {
     res.render('users/login', {
         siteKey: process.env.SITE_KEY, // .env 파일의 SITE_KEY
+        currentUrl: req.query.returnurl || '/' // 쿼리에서 currentUrl 경로 전달
     });
 }
 
@@ -118,8 +119,9 @@ export const login = async (req, res) => {
 
         req.flash('success', 'Welcome Back!');
 
-        const redirectUrl = req.session.returnTo || '/'; // 저장된 경로 가져오기
-        res.redirect(redirectUrl); //저장된 경로로 리다이렉트
+        // 쿼리 문자열에서 리다이렉트 경로 가져오기
+        const redirectUrl = req.query.returnurl || '/';
+        res.redirect(redirectUrl); // 저장된 경로 또는 기본 경로로 이동
 
     } catch (error) {
         req.flash('error', 'Error verifying email. Please try again.!!!!!');
