@@ -36,7 +36,16 @@ const bookSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Review'
         }
-    ] // 리뷰 배열
+    ], // 리뷰 배열
+    // 평균 점수 및 리뷰 개수를 추가
+    averageRating: {
+        type: Number,
+        default: 0,
+    },
+    reviewCount: {
+        type: Number,
+        default: 0,
+    },
 });
 
 // bookSchema.index({ title: "text", author: "text" }); // text 인덱스 설정(리뷰 검색을 위한)

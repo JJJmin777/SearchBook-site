@@ -3,6 +3,7 @@ import Review from "../models/review.js";
 import User from '../models/user.js';
 import Comment from '../models/comment.js';
 import ejs from 'ejs'; //getsortreviews 함수필
+import getBookAverageRating from '../utils/getBookAverageRating.js';
 
 // 리뷰 만들기
 export const createReview = async (req, res) => {
@@ -46,10 +47,13 @@ export const createReview = async (req, res) => {
     // book 데이터를 업데이트하여 reviews 배열에 새로운 리뷰의 ObjectId를 포함
     await Promise.all([review.save(), book.save(), user.save()]);
 
+    // 평균 별점과 리뷰 개수 재계산 후 Book 캐시 업데이트
+    await getBookAverageRating(book._id, true);
+
     req.flash('success', 'Created new review');
     res.redirect(`/books/${book._id}`);
     } catch (error) {
-        console.err('Error creating review:', err)
+        // console.err('Error creating review:', err)
         req.flash('error', 'Failed to create review.');
         res.redirect(`/books/${req.params.bookId}`);
     }  

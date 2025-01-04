@@ -1,4 +1,3 @@
-
 function sortReviews(event, sortBy) {
     const button = event.target; // 클릭된 버튼 참조
     const bookId = button.dataset.bookId;
@@ -19,6 +18,9 @@ function sortReviews(event, sortBy) {
         .then(data => {
             const reviewSection = document.getElementById('review-section');
             reviewSection.innerHTML = data.html; // 서버에서 반환한 HTML로 교체
+
+            // 새 HTML에 대해 toggle 초기화
+            initializeReviewToggle();
         })
         .catch(err => {
             console.error(err);

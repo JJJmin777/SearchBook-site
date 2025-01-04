@@ -12,13 +12,34 @@
     <!-- 오른쪽: 책 상세 정보 및 리뷰 섹션 -->
     <div class="col-md-8">
         <!-- 책 상세 정보 -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title"><%= book.title %></h5>
-                <p class="card-text"><strong>Author:</strong> <%= book.author %></p>
-                <p class="card-text"><strong>Publisher:</strong> <%= book.publisher %></p>
-                <p class="card-text"><strong>Price:</strong> ₩<%= book.price %></p>
-                <a href="<%= book.link %>" target="_blank" class="btn btn-primary">Buy this book</a>
+        <div class="book-container">
+            <!-- 왼쪽: 책 정보 -->
+            <div class="book-info">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= book.title %></h5>
+                        <p class="card-text"><strong><i class="fas fa-pen"></i> Author:</strong> <%= book.author %></p>
+                        <p class="card-text"><strong>Publisher:</strong> <%= book.publisher %></p>
+                        <p class="card-text"><strong>Price:</strong> ₩<%= book.price %></p>
+                        <a href="<%= book.link %>" target="_blank" class="btn btn-primary">Buy this book</a>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- 오른쪽: 리뷰 별점 -->
+            <div class="book-rating">
+                <div class="rating-box">
+                    <% if (book.reviewCount > 0) { %>
+                        <div class="rating-number">
+                            <%= book.averageRating %> / 5 ⭐
+                        </div>
+                        <div class="rating-count">
+                            (<%= book.reviewCount %> reviews)
+                        </div>
+                    <% } else { %>
+                        <p>No reviews yet</p>
+                    <% } %>
+                </div>
             </div>
         </div>
 
@@ -91,5 +112,5 @@
 </div>
 
 <script src="/javascripts/reviewComment.js"></script>
-<script src="/javascripts/sortreview.js"></script>
 <script src="/javascripts/reviewtoggle.js"></script>
+<script src="/javascripts/sortreview.js"></script>

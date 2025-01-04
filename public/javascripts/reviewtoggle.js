@@ -1,5 +1,5 @@
 // 리뷰 길이가 길때 접었다가 폈다 
-document.addEventListener('DOMContentLoaded', () => {
+function initializeReviewToggle() {
     const toggleButtons = document.querySelectorAll('.toggle-button');
 
     toggleButtons.forEach(button => {
@@ -25,4 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-});
+};
+
+// 페이지 처음 로드 시 초기화
+document.addEventListener('DOMContentLoaded', initializeReviewToggle)
