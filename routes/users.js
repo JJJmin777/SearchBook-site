@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { showMyBooks, renderRegister, register, renderLogin, login, logout, verifyEmail, searchMyBooks } from '../controllers/users.js'
+import { showMyBooks, renderRegister, register, renderLogin, login, logout, verifyEmail, searchMyBooks, forgotPassword, resetPassword, renderForgotPassword } from '../controllers/users.js'
 import catchAsync from '../utils/catchAsync.js';
 import { isLoggedIn, recaptchaMiddleware  } from '../middleware.js';
 
@@ -27,7 +27,20 @@ router.route('/login')
         passport.authenticate('local', { failureFlash: 'Invalid username or password.', failureRedirect: '/login' }), 
         login
     );
+
+// 비밀번호 재설정 요청 처리
+router.route('/forgot-password')
+    .get(renderForgotPassword)
+    .post(
+        recaptchaMiddleware('/forgot-password'),
+        forgotPassword
+    );
     
+
+// 비밀번호 재설정
+router.route('/reset-password')
+    .post(resetPassword);
+
 // Logout
 router.get('/logout', logout)
 

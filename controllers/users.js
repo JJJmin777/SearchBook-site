@@ -108,7 +108,7 @@ export const login = async (req, res) => {
     try {
         const { username } = req.body;
 
-        // 이메일로 사용자 찾기
+        // 아이디로 사용자 찾기
         const user = await User.findOne({ username });
 
         // 이메일 isVerified 확인
@@ -139,6 +139,99 @@ export const logout = (req, res, next) => {
         res.redirect('/')
     });
 }
+
+//  비밀번호 재설정 요청 처리 page렌더링
+export const renderForgotPassword = (req, res) => {
+    res.render('users/forgot-password', {
+        siteKey: process.env.SITE_KEY // .env 파일의 SITE_KEY
+    });
+}
+
+// 비밀번호 재설정 요청 처리
+export const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            res.flash('eorr', '등록된 이메일이 없습니다.');
+            return res.redirect('/forgot-password');
+        }
+        
+        // 비밀번호 재설정 토큰 생성
+        const token = crypto.randomBytes(32).toString('hex');
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 3600000; // 1시간 후 만료
+        await user.save();
+
+        // 비밀번호 재설정 이메일 전송
+        const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+        const subject = 'Password Reset Reques';
+
+        // HTML 이메일 본문 생성
+        const html = `
+            <p>Hello</p>
+            <p>You can reset your password by clicking the link below:</p>
+            <a href="${resetLink}" 
+                style="
+                    display: inline-block;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    color: #ffffff;
+                    background-color: #007bff;
+                    text-decoration: none;
+                    border-radius: 5px;
+                ">
+                Reset Password
+            </a>
+            <p>If you did not request this, please ignore this email.</p>
+        `;
+
+        // 이메일 전송
+        await sendEmail(email, subject, html);
+
+        req.flash('success', 'Password reset email has been sent.');
+        res.redirect('/login');
+    } catch(error) {
+        req.flash('error', error.message);
+        res.redirect('/forgot-password')
+    }
+}
+
+// 비밀번호 재설정
+export const resetPassword = async (req, res) => {
+    const { token } = req.query;
+    const { password, confirmPassword } = req.body;
+
+    if (password !== confirmPassword) {
+        req.flash('error', 'Passwords do not match.');
+        return res.redirect(`/reset-password?token=${token}`);
+    }
+
+    try {
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            req.flash('error', 'Invalid or expired reset token.');
+            return res.redirect('/forgot-password');
+        }
+
+        // 비밀번호 저장 및 토큰 제거
+        user.setPassword(password);
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save();
+
+        req.flash('success', 'Your password has been reset successfully.');
+        res.redirect('/login');
+    } catch (error) {
+        req.flash('error', error.message);
+        res.redirect('/forgot-password');
+    }
+};
 
 // 사용자가 쓴 책 리뷰 불러오기
 export const showMyBooks = async (req, res) => {

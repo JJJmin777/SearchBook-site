@@ -10,7 +10,7 @@
 </form>
 
 <!-- Content Container -->
-<div class="review-container mb-3">
+<div id="review-section" class="review-container mb-3">
     <% if (reviews.length> 0) { %>
         <% reviews.forEach(review=> { %>
             <div class="review-card">
@@ -29,7 +29,7 @@
                         <%= review.rating %>/5 ⭐
                     </p>
                     <p class="review-body"><strong>Review:</strong>
-                        <%= review.body.replace(/\n/g, '<br>' ) %>
+                        <%= review.body %>
                     </p>
                     <button class="toggle-button">Read More</button>
                     <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %>
@@ -37,9 +37,8 @@
 
                     <!-- 수정 및 삭제 버튼 -->
                     <% if (currentUser && review.author.equals(currentUser._id)) { %>
-                        <div class="mt-3">
+                        <div class="action-buttons mt-3">
                             <!-- 왼쪽: 수정 및 삭제 버튼 -->
-                            <div class="action-buttons">
                                 <!-- 수정 버튼 -->
                                 <a href="/books/<%= review.book._id%>/reviews/<%= review._id %>/edit?returnurl=<%= currentUrl %>"
                                     class="btn btn-sm btn-outline-warning me-2">Edit</a>
@@ -54,7 +53,6 @@
                                     <!-- 오른쪽: 책 보기 버튼 -->
                                     <a href="/books/<%= review.book._id %>" class="btn btn-sm btn-primary">View Book
                                         Details</a>
-                            </div>
                         </div>
                         <% } %>
                 </div>
@@ -65,4 +63,4 @@
                     <% } %>
 </div>
 
-<script src="/javascripts/reviewtoggle.js"></script>
+<script src="/javascripts/reviewtoggle.js" defer></script>
