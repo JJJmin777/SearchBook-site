@@ -1,0 +1,20 @@
+<h1>Edit Your Profile</h1>
+<form action="/profile/edit" method="POST" enctype="multipart/form-data">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" value="<%= user.username %>">
+    <br>
+
+    <label for="bio">Bio:</label>
+    <textarea name="bio" id="bio"><%= user.bio %></textarea>
+    <br>
+
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" name="phoneNumber" id="phoneNumber" value="<%= user.phoneNumber %>">
+    <br>
+
+    <label for="profilePicture">Profile Picture:</label>
+    <input type="file" name="profilePicture" id="profilePicture">
+    <br>
+
+    <button type="submit">Save Changes</button>
+</form>

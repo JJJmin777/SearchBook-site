@@ -17,6 +17,8 @@ const userSchema = new Schema({
     isVerified: { type: Boolean, default: false }, // 이메일 인증 여부
     emailToken: String, // 이메일 인증 토큰
     emailTokenExpire: Date, // 토큰 만료 시간
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
     reviews: [
         {
         type: Schema.Types.ObjectId,
@@ -24,8 +26,13 @@ const userSchema = new Schema({
     }],
 });
 
+// TTL Index 설정 (이메일 토큰 만료시 삭제)
+userSchema.index({ emailTokenExpire: 1 }, { expireAfterSeconds: 0 });
+
 // 플러그인 추가
-userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(passportLocalMongoose, {
+    usernameField: 'email', // 이메일을 username 필드로 사용
+});
 
 // 모델 생성
 const User = mongoose.model('User', userSchema)

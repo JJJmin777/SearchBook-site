@@ -1,6 +1,5 @@
 import { searchBook } from "../utils/naverApi.js";
 import Book from '../models/search.js'
-import getBookAverageRating from '../utils/getBookAverageRating.js'
 
 // 검색 결과
 export const handleSearchResults = async (req, res) => {

@@ -51,12 +51,11 @@ export const register = async (req, res, next) => {
             <p>If you did not sign up, please ignore this email.</p>
         `;
 
-        // 이메일 전송
-        await sendEmail(email, subject, html);
-
-
         req.flash('success', 'A verification email has been sent to your inbox.');
         res.redirect('/');
+
+        // 이메일 전송
+        await sendEmail(email, subject, html);
 
     } catch (error) {
         req.flash('error', error.message);
@@ -106,10 +105,10 @@ export const renderLogin = async (req, res) => {
 export const login = async (req, res) => {
     
     try {
-        const { username } = req.body;
+        const { email } = req.body;
 
         // 아이디로 사용자 찾기
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
 
         // 이메일 isVerified 확인
         if (!user.isVerified) {
@@ -170,7 +169,7 @@ export const forgotPassword = async (req, res) => {
 
         // HTML 이메일 본문 생성
         const html = `
-            <p>Hello</p>
+            <p>Hello,</p>
             <p>You can reset your password by clicking the link below:</p>
             <a href="${resetLink}" 
                 style="
@@ -187,15 +186,28 @@ export const forgotPassword = async (req, res) => {
             <p>If you did not request this, please ignore this email.</p>
         `;
 
-        // 이메일 전송
-        await sendEmail(email, subject, html);
-
         req.flash('success', 'Password reset email has been sent.');
         res.redirect('/login');
+
+        // 이메일 전송
+        await sendEmail(email, subject, html);
     } catch(error) {
         req.flash('error', error.message);
         res.redirect('/forgot-password')
     }
+}
+
+// 비밀번호 재설정페이지 렌딩
+export const renderResetPassword = async (req, res) => {
+    const { token } = req.query; // URL에서 토큰 가져오기
+    if (!token) {
+        req.flash('error', 'Invalid or missing token.');
+        return res.redirect('/forgot-password'); // 유효하지 않은 경우 리다이렉트
+    }
+
+    res.render('users/reset-password', {
+        token
+    });
 }
 
 // 비밀번호 재설정
@@ -220,7 +232,7 @@ export const resetPassword = async (req, res) => {
         }
 
         // 비밀번호 저장 및 토큰 제거
-        user.setPassword(password);
+        await user.setPassword(password);
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
         await user.save();

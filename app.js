@@ -25,8 +25,9 @@ import methodOverride from 'method-override'
 
 // 라우터 가져오기
 import bookRouters from './routes/bookRouter.js';
-import userRouters from './routes/users.js'
-import reviewRouters from './routes/reviews.js'
+import userRouters from './routes/usersRouter.js';
+import reviewRouters from './routes/reviewsRouter.js';
+import profileRouters from './routes/profileRouter.js';
 
 const dbUrl ='mongodb://127.0.0.1:27017/search-book'; // process.env.DB_URL || 나중에 사용하기
 
@@ -58,7 +59,12 @@ app.use((req, res, next) => {
 // express-ejs-layouts 사용
 app.use(expressLayouts);
 
-passport.use(new LocalStrategy(User.authenticate())); // 인증 전략 사용
+passport.use(
+    new LocalStrategy(
+        { usernameField: 'email' }, // 'email'을 usernameField로 설정
+        User.authenticate()
+    )
+); // 인증 전략 사용
 passport.serializeUser(User.serializeUser()); // 세션에 사용자 정보 저장
 passport.deserializeUser(User.deserializeUser()); // 세션에서 사용자 정보 복원
 
@@ -100,7 +106,9 @@ app.use(express.urlencoded({ extended: true })); // 폼 데이터 파싱
 // 라우터 등록
 app.use('/', userRouters);
 app.use('/books', bookRouters); // 만약 movie나 drama등이 리뷰로 추가 될 수 있어서 books로 묶음
-app.use('/books/:bookId/reviews', reviewRouters)
+app.use('/books/:bookId/reviews', reviewRouters);
+app.use('/profile', profileRouters);
+
 
 // 홈 페이지
 app.get('/', (req, res) => {

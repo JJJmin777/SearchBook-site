@@ -1,5 +1,5 @@
 import express from 'express';
-import { createReview, deleteReview, toggleLike, addComment, getSortedReviews, deleteComment, renderEditReviewPage, updateReview } from '../controllers/review.js';
+import { createReview, deleteReview, toggleLike, addComment, getSortedReviews, deleteComment, renderEditReviewPage, updateReview } from '../controllers/reviewController.js';
 import { isLoggedIn, isReviewAuthor } from '../middleware.js';
 import catchAsync from '../utils/catchAsync.js';
 

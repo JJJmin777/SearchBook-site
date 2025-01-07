@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { showMyBooks, renderRegister, register, renderLogin, login, logout, verifyEmail, searchMyBooks, forgotPassword, resetPassword, renderForgotPassword } from '../controllers/users.js'
+import { showMyBooks, renderRegister, register, renderLogin, login, logout, verifyEmail, searchMyBooks, forgotPassword, resetPassword, renderForgotPassword, renderResetPassword } from '../controllers/usersController.js'
 import catchAsync from '../utils/catchAsync.js';
 import { isLoggedIn, recaptchaMiddleware  } from '../middleware.js';
 
@@ -39,6 +39,7 @@ router.route('/forgot-password')
 
 // 비밀번호 재설정
 router.route('/reset-password')
+    .get(renderResetPassword)
     .post(resetPassword);
 
 // Logout
@@ -51,6 +52,5 @@ router.route('/mybooks')
 // 내가 쓴 책 리뷰 검색
 router.route('/mybooks/search')
     .get(isLoggedIn, searchMyBooks)
-
 
 export default router
