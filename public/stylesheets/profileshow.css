@@ -1,0 +1,203 @@
+/* Main Container */
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 90%;
+    margin: 20px auto;
+}
+
+/* Profile Section */
+.profile-container {
+    flex: 1;
+    max-width: 300px; /* 프로필 섹션의 최대 너비 */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 400px; /* 고정 높이 설정 */
+    overflow: auto; /* 내용이 넘치면 스크롤 추가 */
+}
+
+.profile-header img.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #4CAF50;
+    margin-bottom: 15px;
+}
+
+.profile-info h2 {
+    font-size: 1.5rem;
+    color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.btn-primary {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+/* Review Section */
+.review-container {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.review-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.book-image {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.review-content h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #4CAF50;
+}
+
+.review-content .author {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.review-content p {
+    margin: 5px 0;
+}
+
+.review-date {
+    font-size: 0.85rem;
+    color: #aaa;
+    font-style: italic;
+}
+
+/* Review Body */
+.review-body {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    max-height: 4.5rem;
+    line-height: 1.6;
+    transition: max-height 0.3s ease;
+}
+
+.review-body.expanded {
+    max-height: none;
+}
+
+/* Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-outline-warning {
+    color: #FFC107;
+    border: 1px solid #FFC107;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-warning:hover {
+    background-color: #FFC107;
+    color: #fff;
+}
+
+.btn-outline-danger {
+    color: #F44336;
+    border: 1px solid #F44336;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background-color: #F44336;
+    color: #fff;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    font-size: 1rem;
+    color: #888;
+    padding: 20px;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-container {
+        max-width: 100%;
+    }
+
+    .review-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .book-image {
+        width: 80px;
+        height: 120px;
+    }
+}
+
+/* 토글 버튼 스타일 */
+.toggle-button {
+    background: none;
+    border: none;
+    color: #4CAF50;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.toggle-button:hover {
+    text-decoration: underline;
+}

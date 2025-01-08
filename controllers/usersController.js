@@ -281,8 +281,8 @@ export const searchMyBooks = async (req, res) => {
                 regex.test(review.book.title) || regex.test(review.book.author)
             );
         }
-        console.log(reviews)
-        res.render('bookreviews/mybooks', { reviews });
+ 
+        res.render('bookreviews/mybooks', { reviews, });
     } catch (error) {
         console.error(error);
         res.status(500).send('Failed to load reviews');

@@ -1,10 +1,5 @@
 import express from 'express';
-import multer from 'multer';
-import { cloudinary, storage } from '../cloudinary/index.js';
 import { handleSearchResults, saveBook, getBookDetails } from '../controllers/bookController.js'
-
-// 업로드된 파일을 서버 디스크에 저장
-const upload = multer({ storage });
 
 const router = express.Router();
 

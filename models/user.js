@@ -14,6 +14,11 @@ const userSchema = new Schema({
         require: true,
         unique: true
     },
+    bio:{
+        type: String,
+        default: ''
+    },
+    profilePicture: { type: String, default: '/images/default-profile.png' }, // 기본 프로필 사진 경로
     isVerified: { type: Boolean, default: false }, // 이메일 인증 여부
     emailToken: String, // 이메일 인증 토큰
     emailTokenExpire: Date, // 토큰 만료 시간

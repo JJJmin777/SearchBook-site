@@ -20,8 +20,8 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import User from './models/user.js'
 // import MongoStore = from 'connect-mongo'
 import session from 'express-session';
-import flash from 'connect-flash'
-import methodOverride from 'method-override'
+import flash from 'connect-flash';
+import methodOverride from 'method-override';
 
 // 라우터 가져오기
 import bookRouters from './routes/bookRouter.js';
@@ -82,9 +82,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); //이 세션에서 데이터를 읽고 호출, 복원
 
-// 전역적으로 미들웨어 적용
-// app.use(saveReturnTo);
-
 // Flash 메시지 미들웨어 설정
 app.use(flash())
 app.use((req, res, next) => {
@@ -102,6 +99,9 @@ app.use(methodOverride('_method'));
 
 app.use(express.json()); // JSON 요청 본문 처리
 app.use(express.urlencoded({ extended: true })); // 폼 데이터 파싱
+
+// 정적 파일 경로 설정 (업로드된 이미지 제공)
+app.use('/uploads', express.static('uploads'));
 
 // 라우터 등록
 app.use('/', userRouters);
