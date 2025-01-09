@@ -4,12 +4,14 @@
     <!-- Left: Profile Section -->
     <div class="profile-container">
         <div class="profile-header">
-            <img src="<%= user.profilePicture %>" alt="Profile Picture" class="profile-picture">
+            <img src="<%= user.profilePicture || '/images/default-profile.png' %>" alt="Profile Picture" class="profile-picture">
             <div class="profile-info">
                 <h2><%= user.username %>'s Profile</h2>
                 <p><strong>Email:</strong> <%= user.email %></p>
                 <p><strong>Bio:</strong> <%= user.bio || 'No bio yet.' %></p>
-                <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+                <% if (currentUser && currentUser._id.toString() === user._id.toString()) { %>
+                    <a href="/profile/<%= user._id %>/edit" class="btn btn-primary">Edit Profile</a>
+                <% } %>
             </div>
         </div>
     </div>

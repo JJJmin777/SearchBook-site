@@ -1,8 +1,9 @@
 /* Main Container */
 .main-container {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 300px auto; /* 프로필은 고정 너비, 리뷰는 유연 */
     gap: 20px;
+    align-items: start; /* 프로필과 리뷰가 서로 독립적으로 정렬 */
     width: 90%;
     margin: 20px auto;
 }
@@ -19,8 +20,6 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    height: 400px; /* 고정 높이 설정 */
-    overflow: auto; /* 내용이 넘치면 스크롤 추가 */
 }
 
 .profile-header img.profile-picture {

@@ -3,7 +3,7 @@
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">
-                <%= review.author.username %>
+                <a href="/profile/<%= review.author._id %>"><%= review.author.username %></a>
             </h5>
             <p class="card-text">
                 Rated: <%= review.rating %>/5 ⭐

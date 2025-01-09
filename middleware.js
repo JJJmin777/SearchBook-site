@@ -19,7 +19,7 @@ export const isLoggedIn = (req, res, next) => {
     res.redirect('/login');
 }
 
-// 자기가 쓴 리뷰인지 확인인
+// 자기가 쓴 리뷰인지 확인
 export const isReviewAuthor = async (req, res, next) => {
     const { id, reviewId } = req.params;
     const review = await Review.findById(reviewId);
@@ -28,6 +28,19 @@ export const isReviewAuthor = async (req, res, next) => {
     }
     next();
 }
+
+// 유저 확인
+export const isUserAuthorized = async (req, res , next) => {
+    const { userId } = req.params;
+
+    // 현재 로그인한 사용자의 ID와 요청된 userId가 같은지 확인
+    if (req.user._id.toString() !== userId) {
+        req.flash('error', 'You do not have permission to do that!');
+        return res.redirect(`/profile/${userId}`)
+    }
+
+    next();
+};
 
 // reCAPTCHA 검증
 export const recaptchaMiddleware = (redirectRoute) => {
