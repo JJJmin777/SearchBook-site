@@ -58,14 +58,9 @@ export const postEditProfile = async (req, res) => {
                 await cloudinary.uploader.destroy(user.profilePictureId);
             }
 
-            // Cloudinary에 새 파일 업로드
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                folder: 'search-book-user-profiles',
-            });
-
             // 새로운 파일 정보 저장
-            user.profilePicture = result.secure_url // Cloudinary에서 반환된 URL
-            user.profilePictureId = result.public_id // // Cloudinary에서 반환된 public_id
+            user.profilePicture = req.file.path; // Cloudinary에서 반환된 URL
+            user.profilePictureId = req.file.filename; // // Cloudinary에서 반환된 public_id
         }
 
         // 사용자 정보 업데이트

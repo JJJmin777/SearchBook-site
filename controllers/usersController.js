@@ -1,6 +1,6 @@
 import User from "../models/user.js";
 import Review from "../models/review.js";
-import Book from "../models/search.js"
+import Book from "../models/book.js"
 import sendEmail from "../utils/sendEmail.js";  // 이메일 전송 유틸리티
 import crypto from 'crypto';
 

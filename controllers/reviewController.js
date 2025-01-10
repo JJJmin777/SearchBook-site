@@ -1,4 +1,4 @@
-import Book from '../models/search.js'
+import Book from '../models/book.js'
 import Review from "../models/review.js";
 import User from '../models/user.js';
 import Comment from '../models/comment.js';
@@ -101,8 +101,10 @@ export const updateReview = async (req, res) => {
             return res.redirect(redirectUrl);
         }
 
+        // 평균 별점과 리뷰 개수 재계산 후 Book 캐시 업데이트
+        await getBookAverageRating(bookId, true);
+
         req.flash('success', 'Review updated successfully!');
-        
         res.redirect(redirectUrl);
 
     } catch (err) {
@@ -124,6 +126,9 @@ export const deleteReview = async (req, res) => {
     await User.findByIdAndUpdate(userId, { $pull: { reviews: reviewId } }); // user에서 reviews 배열에서 reviewId 제거
 
     await Review.findByIdAndDelete(reviewId);  // 리뷰 자체도 삭제
+
+    // 평균 별점과 리뷰 개수 재계산 후 Book 캐시 업데이트
+    await getBookAverageRating(bookId, true);
 
     req.flash('success', 'Successfully deleted review');
 

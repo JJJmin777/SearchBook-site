@@ -3,6 +3,7 @@
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">
+                <img src="<%= review.author.profilePicture || '/images/default-profile.png' %>" alt="Profile Picture" class="profile-picture">
                 <a href="/profile/<%= review.author._id %>"><%= review.author.username %></a>
             </h5>
             <p class="card-text">

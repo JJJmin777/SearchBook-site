@@ -13,7 +13,6 @@
 
 .navbar-nav .nav-link {
     color: #ffffff; /* 링크 색상 */
-    margin-left: 1rem;
     transition: color 0.3s ease; /* 호버 효과 */
 }
 
@@ -39,24 +38,41 @@
     background-color: #0056b3; /* 버튼 호버 색상 */
 }
 
-/* 반응형 스타일 */
+/* 기본 auth-links 스타일 */
+.auth-links {
+    list-style: none; /* ul의 머릿말 동그라미 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
+    display: flex; /* Flexbox 사용 */
+    justify-content: space-between; /* 항목 간 간격 균등 분배 */
+    gap: 10px; /* 항목 간 간격 */
+}
+
+/* 각 항목 스타일 */
+.auth-links .nav-item {
+    flex: 1; /* 각 항목이 동일한 너비 차지 */
+}
+
+.auth-links .nav-link {
+    display: block; /* 링크를 블록 요소로 변경 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+    padding: 10px 0; /* 상하 패딩 추가 */
+    background-color: #40b2f0; /* 배경색 */
+    color: #ffffff; /* 텍스트 색상 */
+    border-radius: 5px; /* 둥근 모서리 */
+    text-decoration: none; /* 링크 밑줄 제거 */
+    transition: background-color 0.3s ease;
+}
+
+/* 모바일 화면에서 스타일 */
 @media (max-width: 768px) {
-    .navbar-nav {
-        text-align: center;
-        margin-top: 1rem;
+    .auth-links {
+        flex-direction: row; /* 가로 배치 유지 */
+        align-items: center; /* 세로 중앙 정렬 */
     }
 
-    .navbar-nav .nav-link {
-        margin: 0.5rem 0;
-    }
-
-    .navbar .input-group {
-        flex-direction: column;
-    }
-
-    .navbar .input-group .form-control,
-    .navbar .input-group .btn {
-        width: 100%;
-        margin-bottom: 0.5rem;
+    .auth-links .nav-link {
+        width: 100%; /* 각 항목이 동일한 너비 차지 */
+        text-align: center; /* 텍스트 중앙 정렬 */
     }
 }

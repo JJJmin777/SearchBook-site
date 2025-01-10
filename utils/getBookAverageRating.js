@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Review from '../models/review.js';
-import Book from '../models/search.js';
+import Book from '../models/book.js';
 
 /**
  * 책의 평균 별점과 리뷰 개수를 다시 계산하고, 필요하면 캐시를 업데이트합니다.

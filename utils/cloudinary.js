@@ -16,7 +16,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
     cloudinary,
     params: {
-        folder: 'SearchBook', // 저장될 폴더 이름
+        folder: 'SearchBook-User-Profile', // 저장될 폴더 이름
         allowedFormats: ['jpeg', 'png', 'jpg'] // 허용되는 파일 형식
     }
 });

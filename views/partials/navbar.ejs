@@ -13,35 +13,41 @@
 
         <!-- Collapsible Navbar -->
         <div class="collapse navbar-collapse" id="navbarNav">
-            <!-- Left Links -->
-            <div class="navbar-nav">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/mybooks">My Books</a>
-                <!-- Uncomment if needed -->
-                <!-- <a class="nav-link" href="/about">About</a> -->
-            </div>
+            <!-- 왼쪽 메뉴 -->
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/mybooks">My Books</a></li>
+            </ul>
 
             <!-- Right Links -->
             <div class="navbar-nav ms-auto">
-                <!-- Search Form -->
-                <form action="/books/results" method="GET" class="d-flex me-3">
-                    <div class="input-group">
-                        <!-- Search Input -->
-                        <input type="text" placeholder="Search book" id="searchQuery" name="bookTitle" class="form-control">
-                        <!-- Search Icon as Button -->
-                        <button type="submit" class="btn btn-outline-secondary">
-                            <i class="fas fa-search"></i> <!-- Font Awesome Search Icon -->
-                        </button>
-                    </div>
-                </form>
+                <!-- 오른쪽 메뉴 -->
+                <ul class="navbar-nav">
+                    <!-- Search Form -->
+                    <li class="nav-item">
+                        <form action="/books/results" method="GET" class="d-flex me-3">
+                            <div class="input-group">
+                                <!-- Search Input -->
+                                <input type="text" placeholder="Search book" id="searchQuery" name="bookTitle"
+                                    class="form-control">
+                                <!-- Search Icon as Button -->
+                                <button type="submit" class="btn btn-outline-secondary">
+                                    <i class="fas fa-search"></i> <!-- Font Awesome Search Icon -->
+                                </button>
+                            </div>
+                        </form>
+                    </li>
 
-                <% if (!currentUser) { %>
-                    <a class="nav-link" href="/login?returnurl=<%= currentUrl %>">Login</a>
-                    <a class="nav-link" href="/register">Register</a>
-                    <% } else { %>
-                        <a class="nav-link" href="/profile/<%= currentUser._id %>">My Profile</a>
-                        <a class="nav-link" href="/logout">Logout</a>
-                        <% } %>
+                    <% if (!currentUser) { %>
+                        <ul class="auth-links">
+                            <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                        </ul>
+                        <% } else { %>
+                            <li class="nav-item"><a class="nav-link" href="/profile/<%= currentUser._id %>">My
+                                    Profile</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                            <% } %>
             </div>
         </div>
     </div>
