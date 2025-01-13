@@ -18,7 +18,7 @@ export const getUserProfile = async(req, res) => {
             return res.redirect('/');
         }
 
-        res.render('profile/show', { user, reviews: user.reviews, currentUser: req.user });
+        res.render('profile/show', { user, reviews: user.reviews, currentUser: req.user, userId});
     } catch(error) {
         console.error('Error fetching profile:', error);
         req.flash('error', 'Could not load profile. Please try again.');
