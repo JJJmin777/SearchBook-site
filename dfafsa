@@ -1,0 +1,30 @@
+* [33m056f0ad[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m cloudinary에 파일 두개 생겨서 저장되는거 수정(완) 책 페이지의 리뷰에서 유저의 사진 나오게 수정(완) 화면 크기 줄였을떄 navbar toggle수정(완) 리뷰 지우고 수정했을떄 책 별점도 즉시 수정되게 수정(완)
+* [33m004df6a[m 유저 설명 페이지 누구나 들어올수 있고 리뷰 목록에서 링크타고 들어올수 있게 수정(완) 유저 사진 업로드 기능(완) 유저 페이지에서 edit 버튼 자기 계정으로 로그인시 뜨게 수정(완) 유저 edit페이지 들어가는거 isUserAuthorized 미들웨어로 처리(완)
+* [33mc1a12b0[m 유저 정보 페이지(Profile) 구현 및 기능(완) profile페이지에 책 리뷰 추가(완) 페이지 이미지 어떻게 구성할지 고민,,,
+* [33m9051c12[m 로그인시 아이디로 하던거 이메일로 하기로 수정(완) reset-password페이지 오류로 수정(완)(비밀번호 재설정 구현 완) 유저 정보 페이지 수정중
+* [33m7ec246f[m 리뷰 정렬시 Read more오류 수정중(완) 사용자 비밀번호 찾기 시스템 구현(완) reset-password페이지 오류로 수정중,,,
+* [33mabdf0f4[m 리뷰 별점 평균util기능,bookdetails페이지에 render(완) 리뷰 정렬시 Read more오류 수정중,,,
+* [33mc4bdfc2[m mybooks페이지에서 deletemodal이용(완) edit 수정후 원래 페이지 돌아가기 수정(완) 로그인 시 원래의 페이지로 돌아가기 수정(완)
+* [33m797d856[m bookdetails page에서 edit 버튼 생성 및 수정후 원래의 페이지로 돌아가기(완) delete버튼 누를떄 deletemodal이용해서 삭제(완)
+* [33m909722f[m 리뷰 많을때 리뷰 펄쳤다가 접었다가 할 수 있는 기능(mybooks에서)(완) mybooks페이지에서 책카드에 edit, delete버튼 생성, edit페이지 생성, delete했을 경우 bookdetails로 넘어가는 현상 수정(완) review edit page 수정(완) comment 날짜 오류 수정(완)
+* [33mbb2ba33[m mybooks.css파일 수정(완) result.css파일 수정(완) bookdetail.css파일 수정(완) 리뷰 많을때 리뷰 펄쳤다가 접었다가 할 수 있는 기능(bookdetail에서)(완)
+* [33md0b72cc[m 내 책 리뷰를 볼떄 검색도 가능하게 하기(완) navbar에 책 검색 필드 넣기(완) 기본 css분리(navbar, footer, home, app)
+* [33m30648bc[m 내 책 리뷰 sarch/show controller 분리
+* [33mc89198f[m 리뷰 별점 기본값0.5로 수정(완), 리뷰 텍스트 유효성 검사 및 createReview 코드 수정(완) 리뷰칸에 리뷰가 없어도 게시 불가능하게 하기 수정(완) 로그인 안했을때 하트 누를수 없게 수정 및 코멘트 다는 곳에도 로그인해야 올리 수 있게 수정(완)
+* [33m0c019ee[m Day18 리뷰 정렬 기능 수정(완) (하트순, 최신순) review(Dom)를 뛰울때 쓰는 변수 sortedReviews로 변경 정렬했을때 하트가 안눌리는 현상 수정(완), 정렬했을때 코멘트가 안달아지는 현상및 삭제가 안되는 현상 수정(완)
+* [33m72e4b96[m Day17 리뷰 sort 수정
+* [33m603ac29[m 리뷰 지울때 comments도 같이 삭제하기 수정, 하트 유저 하나만 달 수 있게 수정, 코멘트 날짜 나오게 수정
+* [33m05b2a92[m Day 15 bookDetail의 화면 정렬, 리뷰의 하트,  코멘트 추가
+* [33me03f007[m Day14 recaptcha 구현, footer추가, 각종 css조정
+* [33m9a6ddd8[m Remove node_modules
+* [33m6652ba0[m Remove .env file
+* [33mcc6e16b[m Day13 로그인시 이메일 인증구현완료 , recaptcha 인증 구현 진행
+* [33m5fb7d89[m Day12
+* [33mff2fc33[m Day11
+* [33ma9f54e8[m Day10
+* [33mf8dd212[m Day9
+* [33mba6e873[m Day-8
+* [33m6042162[m Day 6
+* [33m8255912[m Day3
+* [33mc4c1e58[m Day2
+* [33m5efbbc9[m Day1

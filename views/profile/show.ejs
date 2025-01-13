@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="/stylesheets/profileshow.css">
 
 <div class="main-container">
-    <!-- Left: Profile Section -->
+    <!-- Profile Section -->
     <div class="profile-container">
         <div class="profile-header">
             <img src="<%= user.profilePicture || '/images/default-profile.png' %>" alt="Profile Picture" class="profile-picture">
@@ -16,43 +16,41 @@
         </div>
     </div>
 
-    <!-- Right: Review Section -->
+    <!-- Review Section -->
     <div id="review-section" class="review-container">
         <% if (reviews.length > 0) { %>
-            <% reviews.forEach(review => { %>
-                <div class="review-card">
-                    <img src="<%= review.book.image %>" alt="Book Image" class="book-image">
-                    <div class="review-content">
-                        <h3><%= review.book.title %></h3>
-                        <p class="author"><%= review.book.author %></p>
-                        <p><strong>Rating:</strong> <%= review.rating %>/5 ⭐</p>
-                        <p class="review-body"><strong>Review:</strong> <%= review.body %></p>
-                        <button class="toggle-button">Read More</button>
-                        <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
-                        <% if (currentUser && review.author.equals(currentUser._id)) { %>
-                            <div class="action-buttons">
-                                <a href="/books/<%= review.book._id %>/reviews/<%= review._id %>/edit?returnurl=<%= currentUrl %>" 
-                                   class="btn btn-outline-warning">Edit</a>
-                                <button type="button" class="btn btn-outline-danger" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#deleteModal-<%= review._id %>">Delete</button>
-                                <%- include('../partials/confirmDeleteModal', { 
-                                    itemId: review._id, 
-                                    itemName: 'review', 
-                                    deleteUrl: `/books/${review.book._id}/reviews/${review._id}?_method=DELETE` 
-                                }) %>
-                                <a href="/books/<%= review.book._id %>" class="btn btn-primary">View Book Details</a>
-                            </div>
-                        <% } %>
+            <div class="review-grid">
+                <% reviews.forEach(review => { %>
+                    <div class="review-card">
+                        <img src="<%= review.book.image %>" alt="Book Image" class="book-image">
+                        <div class="review-content">
+                            <a href="/books/<%= review.book._id %>"><h3><%= review.book.title %></h3></a>
+                            <p class="author"><%= review.book.author %></p>
+                            <p><strong>Rating:</strong> <%= review.rating %>/5 ⭐</p>
+                            <p class="review-body"><strong>Review:</strong> <%= review.body %></p>
+                            <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
+                            <% if (currentUser && review.author.equals(currentUser._id)) { %>
+                                <div class="action-buttons">
+                                    <a href="/books/<%= review.book._id %>/reviews/<%= review._id %>/edit?returnurl=<%= currentUrl %>" 
+                                       class="btn btn-outline-warning">Edit</a>
+                                    <button type="button" class="btn btn-outline-danger" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#deleteModal-<%= review._id %>">Delete</button>
+                                    <a href="/books/<%= review.book._id %>" class="btn btn-primary">View Book Details</a>
+                                </div>
+                            <% } %>
+                        </div>
                     </div>
-                </div>
-            <% }); %>
+                <% }); %>
+            </div>
         <% } else { %>
             <div class="empty-state">
-                <p>You haven't written any reviews yet. Start reviewing books now! 📚</p>
+                <p>Any reviews yet. 📚</p>
             </div>
         <% } %>
     </div>
+    <button id="load-more" class="btn btn-primary" data-page="1">Load More Reviews</button>
 </div>
 
 <script src="/javascripts/reviewtoggle.js" defer></script>
+<script src="/javascripts/infiniteScroll.js" defer></script>

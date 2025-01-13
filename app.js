@@ -28,6 +28,7 @@ import bookRouters from './routes/bookRouter.js';
 import userRouters from './routes/usersRouter.js';
 import reviewRouters from './routes/reviewsRouter.js';
 import profileRouters from './routes/profileRouter.js';
+import apiReviewRouter from './routes/apiReviewRouter.js'
 
 const dbUrl ='mongodb://127.0.0.1:27017/search-book'; // process.env.DB_URL || 나중에 사용하기
 
@@ -108,6 +109,7 @@ app.use('/', userRouters);
 app.use('/books', bookRouters); // 만약 movie나 drama등이 리뷰로 추가 될 수 있어서 books로 묶음
 app.use('/books/:bookId/reviews', reviewRouters);
 app.use('/profile', profileRouters);
+app.use('/', apiReviewRouter);
 
 
 // 홈 페이지
