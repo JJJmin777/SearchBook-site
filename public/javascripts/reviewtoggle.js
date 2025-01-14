@@ -1,4 +1,6 @@
-function initializeReviewStates() {
+export function initializeReviewStates() {
+    console.log("Initializing review states");
+
     const reviewSection = document.getElementById('review-section');
 
     reviewSection.querySelectorAll('.review-body').forEach((reviewBody) => {
@@ -17,7 +19,7 @@ function initializeReviewStates() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+export function setupReviewToggle() {
     const reviewSection = document.getElementById('review-section');
 
     // 초기 리뷰 상태 설정
@@ -40,4 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
             button.textContent = 'Read Less';
         }
     });
-});
+};
+
+document.addEventListener('DOMContentLoaded', setupReviewToggle);

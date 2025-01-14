@@ -228,7 +228,7 @@ export const getSortedReviews = async (req, res) => {
     try {
         const { bookId } = req.params; // 책 ID
         const { sort } = req.query; // 정렬 기준
-
+        
         const book = await Book.findById(bookId)
             .populate({
                 path: 'reviews',
@@ -250,7 +250,7 @@ export const getSortedReviews = async (req, res) => {
         } else if (sort === 'newest') {
             sortedReviews = book.reviews.sort((a, b) => b.createdAt - a.createdAt); // 최신순
         }
-
+        
         const html = await ejs.renderFile('./views/partials/reviews.ejs', {
             book,
             sortedReviews,

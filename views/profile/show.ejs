@@ -21,13 +21,14 @@
         <% if (reviews.length > 0) { %>
             <div class="review-grid">
                 <% reviews.forEach(review => { %>
-                    <div class="review-card">
+                    <div class="review-card" data-id="<%= review._id%>">
                         <img src="<%= review.book.image %>" alt="Book Image" class="book-image">
                         <div class="review-content">
                             <a href="/books/<%= review.book._id %>"><h3><%= review.book.title %></h3></a>
                             <p class="author"><%= review.book.author %></p>
                             <p><strong>Rating:</strong> <%= review.rating %>/5 ⭐</p>
                             <p class="review-body"><strong>Review:</strong> <%= review.body %></p>
+                            <button class="toggle-button">Read More</button>
                             <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
                             <% if (currentUser && review.author.equals(currentUser._id)) { %>
                                 <div class="action-buttons">
@@ -49,8 +50,8 @@
             </div>
         <% } %>
     </div>
-    <button id="load-more" class="btn btn-primary" data-page="1">Load More Reviews</button>
+    <button id="load-more-btn" class="btn btn-primary" data-user-id="<%= userId %>">Load More Reviews</button>
 </div>
 
-<script src="/javascripts/reviewtoggle.js" defer></script>
-<script src="/javascripts/infiniteScroll.js" defer></script>
+<script type="module" src="/javascripts/reviewtoggle.js"></script>
+<script type="module" src="/javascripts/infiniteScroll.js"></script>

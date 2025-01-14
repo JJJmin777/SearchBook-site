@@ -1,31 +1,47 @@
+import { initializeReviewStates } from "./reviewtoggle.js";
 
+async function sortReviews(event, sortBy, bookId) {
+    try {
+        const response = await fetch(`/books/${bookId}/reviews?sort=${sortBy}`);
 
-function sortReviews(event, sortBy) {
-    const button = event.target; // 클릭된 버튼 참조
-    const bookId = button.dataset.bookId;
-    
-    if (!bookId) {
-        console.error('Book ID is missing from the button dataset.');
-        alert('Failed to sort reviews: Book ID not found.');
-        return;
+        if (!response.ok) {
+            throw new Error(`Failed to fetch sorted reviews: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        const reviewSection = document.getElementById('review-section');
+        if (!reviewSection) {
+            throw new Error("Review section element not found.");
+        }
+
+        // 서버에서 반환된 HTML로 교체
+        reviewSection.innerHTML = data.html;
+
+        // 새 HTML에 대해 toggle 초기화
+        initializeReviewStates();
+
+        console.log('Reviews sorted successfully');
+    } catch (err) {
+        console.error('Error in sortReviews:', err);
+        req.flash('error', 'Failed to sort reviews. Please try again later.');
     }
-
-    fetch(`/books/${bookId}/reviews?sort=${sortBy}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch sorted reviews');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const reviewSection = document.getElementById('review-section');
-            reviewSection.innerHTML = data.html; // 서버에서 반환한 HTML로 교체
-
-            // 새 HTML에 대해 toggle 초기화
-            initializeReviewStates();
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Failed to sort reviews');
-        });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll("[data-sort]");
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const sortBy = button.dataset.sort;
+            const bookId = button.dataset.bookId;
+
+            if (!bookId) {
+                console.error("Book ID is missing");
+                return;
+            }
+
+            sortReviews(event, sortBy, bookId);
+        });
+    });
+});

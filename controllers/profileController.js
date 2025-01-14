@@ -1,4 +1,5 @@
 import User from '../models/user.js';
+import Review from '../models/review.js';
 import { cloudinary } from '../utils/cloudinary.js';
 
 // 프로필 보기 
@@ -6,19 +7,23 @@ export const getUserProfile = async(req, res) => {
     try{
         const { userId } = req.params;
 
-        const user = await User.findById(userId).populate({
-            path: 'reviews',
-            populate: [
-                { path: 'book', select: 'title image author' }, // 리뷰에 연결된 책 제목 불러오기
-            ],
-        });
+        // 초기 리뷰 15개만 로드 
+
+        const user = await User.findById(userId);
 
         if (!user) {
             req.flash('error', 'User not found.');
             return res.redirect('/');
         }
 
-        res.render('profile/show', { user, reviews: user.reviews, currentUser: req.user, userId});
+        // 최신순으로 15개 리뷰 로드 
+        const reviews = await Review.find({ author: userId })
+            .populate({ path: 'book', select: 'title image author' }) // 리뷰에 연결된 책 제목이랑~ 불러오기
+            .sort({ createdAt: -1 }) // 최신순
+            .limit(3);
+        
+
+        res.render('profile/show', { user, reviews, currentUser: req.user, userId});
     } catch(error) {
         console.error('Error fetching profile:', error);
         req.flash('error', 'Could not load profile. Please try again.');
