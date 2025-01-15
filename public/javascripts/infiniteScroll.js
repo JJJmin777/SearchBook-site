@@ -12,9 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const lastReview = reviewSection.querySelector('.review-card:last-child'); // 마지막 리뷰 카드
             const lastReviewId = lastReview ? lastReview.dataset.id : null; // 마지막 리뷰의 IDv
 
-            // lastReviewId 디버깅용 출력
-            console.log('Current lastReviewId:', lastReviewId);
-
             const response = await fetch(`/api/reviews?lastReviewId=${lastReviewId}&userId=${userId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch reviews.');
@@ -34,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="author">${review.book.author}</p>
                         <p><strong>Rating:</strong> ${review.rating}/5 ⭐</p>
                         <p class="review-body">${review.body}</p>
+                        <button class="toggle-button">Read More</button>
                         <p class="review-date">Reviewed on: ${new Date(review.createdAt).toLocaleDateString()}</p>
                     </div>
                 `;
@@ -41,12 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // **여기서 새로 로드된 리뷰에 대해 초기화**
-            // initializeReviewStates();
-
-            // 새로 추가된 DOM에서 다시 마지막 리뷰 가져오기
-            const updatedLastReview = reviewSection.querySelector('.review-card:last-child');
-            const updatedLastReviewId = updatedLastReview ? updatedLastReview.dataset.id : null;
-            console.log('Updated lastReviewId:', updatedLastReviewId);
+            initializeReviewStates();
 
             // 마지막으로 로드된 리뷰 상태를 다시 갱신
             if (data.reviews.length === 0 || data.reviews.length < 5) {

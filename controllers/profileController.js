@@ -20,7 +20,7 @@ export const getUserProfile = async(req, res) => {
         const reviews = await Review.find({ author: userId })
             .populate({ path: 'book', select: 'title image author' }) // 리뷰에 연결된 책 제목이랑~ 불러오기
             .sort({ createdAt: -1 }) // 최신순
-            .limit(3);
+            .limit(15);
         
 
         res.render('profile/show', { user, reviews, currentUser: req.user, userId});

@@ -19,7 +19,6 @@
     <!-- Review Section -->
     <div id="review-section" class="review-container">
         <% if (reviews.length > 0) { %>
-            <div class="review-grid">
                 <% reviews.forEach(review => { %>
                     <div class="review-card" data-id="<%= review._id%>">
                         <img src="<%= review.book.image %>" alt="Book Image" class="book-image">
@@ -30,20 +29,9 @@
                             <p class="review-body"><strong>Review:</strong> <%= review.body %></p>
                             <button class="toggle-button">Read More</button>
                             <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
-                            <% if (currentUser && review.author.equals(currentUser._id)) { %>
-                                <div class="action-buttons">
-                                    <a href="/books/<%= review.book._id %>/reviews/<%= review._id %>/edit?returnurl=<%= currentUrl %>" 
-                                       class="btn btn-outline-warning">Edit</a>
-                                    <button type="button" class="btn btn-outline-danger" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#deleteModal-<%= review._id %>">Delete</button>
-                                    <a href="/books/<%= review.book._id %>" class="btn btn-primary">View Book Details</a>
-                                </div>
-                            <% } %>
                         </div>
                     </div>
                 <% }); %>
-            </div>
         <% } else { %>
             <div class="empty-state">
                 <p>Any reviews yet. 📚</p>
