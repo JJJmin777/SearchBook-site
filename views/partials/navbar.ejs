@@ -16,7 +16,11 @@
             <!-- 왼쪽 메뉴 -->
             <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/mybooks">My Books</a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="/mybooks">My Books</a></li> -->
+                <% if (currentUser) { %>
+                    <li class="nav-item"><a class="nav-link" href="/profile/<%= currentUser._id %>">My
+                        Profile</a></li>
+                    <% } %>
             </ul>
 
             <!-- Right Links -->
@@ -44,8 +48,6 @@
                             <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
                         </ul>
                         <% } else { %>
-                            <li class="nav-item"><a class="nav-link" href="/profile/<%= currentUser._id %>">My
-                                    Profile</a></li>
                             <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
                             <% } %>
             </div>

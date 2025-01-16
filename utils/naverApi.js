@@ -1,9 +1,10 @@
 import fetch from 'node-fetch'; // API 호출용
+import dotenv from 'dotenv';
+dotenv.config();
 
 // 네이버 API 설정
-const clientId = 'r82p_IhMGiHs3wOV4HAs';
-const clientSecret = 'n6zGByrEtf';
-
+const clientId = process.env.CLIENTID;
+const clientSecret = process.env.CLIENTSECRET;
 
 // 책 검색 API 호출 함수
 export async function searchBook(query) {

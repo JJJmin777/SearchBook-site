@@ -1,45 +1,80 @@
 <link rel="stylesheet" href="/stylesheets/profileshow.css">
 
-<div class="main-container">
-    <!-- Profile Section -->
-    <div class="profile-container">
-        <div class="profile-header">
-            <img src="<%= user.profilePicture || '/images/default-profile.png' %>" alt="Profile Picture" class="profile-picture">
-            <div class="profile-info">
-                <h2><%= user.username %>'s Profile</h2>
-                <p><strong>Email:</strong> <%= user.email %></p>
-                <p><strong>Bio:</strong> <%= user.bio || 'No bio yet.' %></p>
-                <% if (currentUser && currentUser._id.toString() === user._id.toString()) { %>
-                    <a href="/profile/<%= user._id %>/edit" class="btn btn-primary">Edit Profile</a>
+<!-- Profile Section -->
+<div class="profile-container mb-3">
+        <img src="<%= user.profilePicture || '/images/default-profile.png' %>" alt="Profile Picture"
+            class="profile-picture">
+        <div class="profile-info">
+            <h2>
+                <a href="/profile/<%= user._id %>"><%= user.username %>'s Profile</a>
+            </h2>
+            <p><strong>Email:</strong>
+                <%= user.email %>
+            </p>
+            <p><strong>Bio:</strong>
+                <%= user.bio || 'No bio yet.' %>
+            </p>
+            <% if (currentUser && currentUser._id.toString()===user._id.toString()) { %>
+                <a href="/profile/<%= user._id %>/edit" class="btn btn-primary">Edit Profile</a>
                 <% } %>
-            </div>
         </div>
-    </div>
-
-    <!-- Review Section -->
-    <div id="review-section" class="review-container">
-        <% if (reviews.length > 0) { %>
-                <% reviews.forEach(review => { %>
-                    <div class="review-card" data-id="<%= review._id%>">
-                        <img src="<%= review.book.image %>" alt="Book Image" class="book-image">
-                        <div class="review-content">
-                            <a href="/books/<%= review.book._id %>"><h3><%= review.book.title %></h3></a>
-                            <p class="author"><%= review.book.author %></p>
-                            <p><strong>Rating:</strong> <%= review.rating %>/5 ⭐</p>
-                            <p class="review-body"><strong>Review:</strong> <%= review.body %></p>
-                            <button class="toggle-button">Read More</button>
-                            <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %></p>
-                        </div>
-                    </div>
-                <% }); %>
-        <% } else { %>
-            <div class="empty-state">
-                <p>Any reviews yet. 📚</p>
-            </div>
-        <% } %>
-    </div>
-    <button id="load-more-btn" class="btn btn-primary" data-user-id="<%= userId %>">Load More Reviews</button>
 </div>
+
+<!-- Search Form -->
+<div class="search-from">
+    <form class="search-form" method="GET" action="/profile/<%= user._id %>/search">
+        <input type="text" name="query" placeholder="Search by book title or author" class="search-input">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<!-- 리뷰 갯수 정보 -->
+<div id="review-summary" class="review-summary">
+    <p>Total Reviews: <strong><%= totalReviews %></strong></p>
+    <% if (query) { %>
+        <p>Search Results: <strong><%= totalReviews %></strong> for "<%= query %>"</p>
+    <% } else { %>
+        <p>Displaying the most recent reviews.</p>
+    <% } %>
+</div>
+
+<!-- Review Section -->
+<div id="review-section">
+    <% if (reviews.length> 0) { %>
+        <% reviews.forEach(review=> { %>
+            <div class="review-card" data-id="<%= review._id%>">
+                <img src="<%= review.book.image %>" alt="Book Image" class="book-image">
+                <div class="review-content">
+                    <a href="/books/<%= review.book._id %>">
+                        <h3>
+                            <%= review.book.title %>
+                        </h3>
+                    </a>
+                    <p class="author">
+                        <%= review.book.author %>
+                    </p>
+                    <p><strong>Rating:</strong>
+                        <%= review.rating %>/5 ⭐
+                    </p>
+                    <p class="review-body"><strong>Review:</strong>
+                        <%= review.body %>
+                    </p>
+                    <button class="toggle-button">Read More</button>
+                    <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %>
+                    </p>
+                </div>
+            </div>
+            <% }); %>
+                <% } else { %>
+                    <div class="empty-state">
+                        <p>Any reviews yet. 📚</p>
+                    </div>
+                    <% } %>
+</div>
+<!-- Load More Reviews Button: 검색 중이 아닐 때만 표시 -->
+<% if (!query) { %>
+    <button id="load-more-btn" class="btn btn-primary" data-user-id="<%= userId %>">Load More Reviews</button>
+<% } %>
 
 <script type="module" src="/javascripts/reviewtoggle.js"></script>
 <script type="module" src="/javascripts/infiniteScroll.js"></script>
