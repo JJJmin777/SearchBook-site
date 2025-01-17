@@ -1,6 +1,6 @@
 <!-- 기존 리뷰 목록 -->
 <% for (let review of sortedReviews) { %>
-    <div class="card mb-3">
+    <div class="card mb-3 review-card" data-id="<%= review._id%>" >
         <div class="card-body">
             <h5 class="card-title">
                 <img src="<%= review.author.profilePicture || '/images/default-profile.png' %>" alt="Profile Picture" class="profile-picture">

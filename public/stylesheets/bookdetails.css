@@ -193,3 +193,20 @@ img.profile-picture {
 .toggle-button:hover {
     text-decoration: underline;
 }
+
+#load-more-btn {
+    margin: 20px auto;
+    display: block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#load-more-btn:hover {
+    background-color: #388E3C;
+}

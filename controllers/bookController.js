@@ -1,5 +1,6 @@
 import { searchBook } from "../utils/naverApi.js";
 import Book from '../models/book.js'
+import Review from "../models/review.js";
 
 // 검색 결과
 export const handleSearchResults = async (req, res) => {
@@ -55,21 +56,20 @@ export const getBookDetails = async (req, res) => {
         const bookId = req.params.id
 
         // 책 데이터와 기본 정렬된 리뷰를 가져옵니다 .
-        const book = await Book.findById(bookId)
+        const book = await Book.findById(bookId); // 책 정보만 가져오기
+
+        // 좋아요 순으로 정렬된 리뷰에서 10개만 가져오기
+        const reviews = await Review.find({ book: bookId })
+            .populate('author', 'username profilePicture') // 작성자 정보 포함
             .populate({
-                path: 'reviews',
-                populate: { path: 'author' }
+                path: 'comments',
+                populate: { path: 'author', select: 'username profilePicture' } // 댓글 작성자 정보 포함
             })
-            .populate({
-                path: 'reviews',
-                populate: {
-                    path: 'comments',
-                    populate: { path: 'author' } // 댓글 작성자(author)까지 조회
-                }
-            });
+            .sort({ likes: -1 }) // 좋아요 순 정렬
+            .limit(2); // 최대 10개 가져오기
 
         // 리뷰를 하트순으로 정렬
-        let sortedReviews = book.reviews.sort((a, b) => b.likes.length - a.likes.length);
+        let sortedReviews = reviews
 
         res.render('search/bookdetails', {
             book,

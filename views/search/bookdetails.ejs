@@ -108,9 +108,11 @@
         <div id="review-section">
             <%- include('../partials/reviews', { sortedReviews, book, currentUser }) %>
         </div>
+        <button id="load-more-btn" class="btn btn-primary" data-book-id="<%= book._id %>">Load More Reviews</button>
     </div>
 </div>
 
 <script src="/javascripts/reviewComment.js"></script>
 <script type="module" src="/javascripts/reviewtoggle.js"></script>
 <script type="module" src="/javascripts/sortreview.js"></script>
+<script type="module" src="/javascripts/bookInfiniteScroll.js"></script>
