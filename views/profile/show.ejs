@@ -73,7 +73,7 @@
 </div>
 <!-- Load More Reviews Button: 검색 중이 아닐 때만 표시 -->
 <% if (!query) { %>
-    <button id="load-more-btn" class="btn btn-primary" data-user-id="<%= userId %>">Load More Reviews</button>
+    <button id="load-more-btn" class="btn btn-primary" data-user-id="<%= userId %>" data-sort="newest">Load More Reviews</button>
 <% } %>
 
 <script type="module" src="/javascripts/reviewtoggle.js"></script>

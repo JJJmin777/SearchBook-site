@@ -21,7 +21,7 @@ async function sortReviews(event, sortBy, bookId) {
         // 새 HTML에 대해 toggle 초기화
         initializeReviewStates();
 
-        console.log('Reviews sorted successfully');
+        // console.log('Reviews sorted successfully');
     } catch (err) {
         console.error('Error in sortReviews:', err);
         req.flash('error', 'Failed to sort reviews. Please try again later.');

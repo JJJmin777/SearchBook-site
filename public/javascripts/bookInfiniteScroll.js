@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            console.log(data)
+            // console.log(data)
 
             // 새 리뷰 추가
             data.reviews.forEach((review) => {
@@ -42,6 +42,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             <h6 class="card-subtitle mb-2 text-muted">Reviewed on: ${new Date(review.createdAt).toLocaleDateString()}
                             </h6>
+
+                            <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-outline-primary like-button" data-book-id="${ bookId }"
+                    data-review-id="${ review._id }"
+                    data-liked="${ currentUser ? (review.likes || []).includes(currentUser._id) : false }"
+                    ${currentUser ? '' : 'disabled' }>
+                    <span class="like-icon">
+                        <%= currentUser && review.likes.includes(currentUser._id) ? '❤️' : '🤍' %>
+                    </span>
+                    <span class="like-count">
+                        <%= review.likes.length %>
+                    </span>
+                </button>
+                <button class="btn btn-sm btn-outline-secondary ms-2" onclick="toggleComments('<%= review._id %>')">
+                    💬 Comments (<span id="comment-count-<%= review._id %>">
+                        <%= review.comments.length %>
+                    </span>)
+                </button>
+            </div>
+                        </div>
                     </div>
                 `;
                 reviewSection.appendChild(reviewCard);

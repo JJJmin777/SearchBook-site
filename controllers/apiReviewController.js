@@ -72,7 +72,7 @@ export const fetchReviews = async (req, res) => {
         //     review.modalHTML = modalHTML
         // }
         
-        res.status(200).json({ reviews });
+        res.status(200).json({ reviews, currentUser: req.user || null, }); // 현재 사용자 정보 전달
     } catch (error) {
         console.error('Error fetching reviews:', error);
         req.flash('error', '리뷰를 가져오는 데 실패했습니다.');
