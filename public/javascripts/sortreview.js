@@ -1,6 +1,6 @@
 import { initializeReviewStates } from "./reviewtoggle.js";
 
-async function sortReviews(event, sortBy, bookId) {
+export async function sortReviews(event, sortBy, bookId) {
     try {
         const response = await fetch(`/books/${bookId}/reviews?sort=${sortBy}`);
 
@@ -30,7 +30,6 @@ async function sortReviews(event, sortBy, bookId) {
 
 document.addEventListener("DOMContentLoaded", () => {
     const buttons = document.querySelectorAll("[data-sort]");
-
     buttons.forEach((button) => {
         button.addEventListener("click", (event) => {
             const sortBy = button.dataset.sort;

@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const userId = loadMoreButton.dataset.userId || ''; // 프로필의 userId
     const bookId = loadMoreButton.dataset.bookId || ''; // 프로필의 bookId
     const sortBy = loadMoreButton.dataset.sort;
-    console.log(bookId)
     loadMoreButton.addEventListener('click', async () => {
         // 버튼 클릭 시 DOM에서 마지막 리뷰를 가져오기
         try {

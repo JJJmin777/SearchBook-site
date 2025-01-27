@@ -1,9 +1,10 @@
 import Review from '../models/review.js';
+import { generateBookDetailsReviewHTML, generateProfileReviewHTML } from '../utils/reviewHTMLGenerator.js';
 
 
 export const fetchReviews = async (req, res) => {
     try {
-        const { limit = 5, bookId, userId, lastReviewId, sortBy = 'likes' } = req.query;
+        const { limit = 5, bookId, userId, lastReviewId, sortBy, pageType } = req.query;
 
         // 필터 조건 설정
         const query = {};
@@ -23,10 +24,10 @@ export const fetchReviews = async (req, res) => {
             }
         }
 
-        // 정렬 기준
+        // 정렬 기준 설정
         const sortCondition = sortBy === 'likes' ? { likesCount: -1 } : { createdAt: -1 };
 
-        // 리뷰 데이터 쿼리
+        // 리뷰 데이터 쿼리기준 조회
         const reviews = await Review.find(query)
             .populate('book', 'title image author')
             .populate('author', 'username profilePicture') // 작성자 정보 가져오기
@@ -42,6 +43,14 @@ export const fetchReviews = async (req, res) => {
             .limit(parseInt(limit));
             // .lean();  데이터를 단순 객체 형태로 변환
 
+        // HTML 생성 (페이지 타입에 따라 함수 선택)
+        const reviewHTMLs = reviews.map((review) => 
+            pageType === "bookdetails"
+                ? generateBookDetailsReviewHTML(review) // bookdetails용 HTML 생성
+                : generateProfileReviewHTML(review) // profile용 HTML 생성
+        );
+        console.log(reviews)
+        
         // 각 리뷰에 대해 HTML 렌더링 (조건에 따라)
         // const currentUserId = req.user ? req.user._id.toString() : null;
 
@@ -72,7 +81,7 @@ export const fetchReviews = async (req, res) => {
         //     review.modalHTML = modalHTML
         // }
         
-        res.status(200).json({ reviews, currentUser: req.user || null, }); // 현재 사용자 정보 전달
+        res.status(200).json({ reviews: reviewHTMLs, currentUser: req.user || null, }); // 현재 사용자 정보 전달
     } catch (error) {
         console.error('Error fetching reviews:', error);
         req.flash('error', '리뷰를 가져오는 데 실패했습니다.');
