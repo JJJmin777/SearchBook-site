@@ -1,6 +1,17 @@
 import { loadMoreReviews } from "./loadMoreReviews.js";
 import { initializeReviewStates } from "./reviewtoggle.js";
 
+export function initializeLoadMoreButton(loadMoreButton, pageType) {
+    if (!loadMoreButton) {
+        console.error("Load More button not found!")
+        return;
+    }
+
+    loadMoreButton.style.display = 'block'; // 버튼을 다시 보이도록 설정
+    loadMoreButton.dataset.pageType = pageType; // 현재 페이지 타입(bookdetails/profile) 설정
+    loadMoreButton.dataset.page = 1; // 페이지 번호를 1로 초기화
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const reviewSection = document.getElementById('review-section');
     const loadMoreButton = document.getElementById('load-more-btn');
@@ -17,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const sortByElement = document.querySelector("[data-sort].active");
                 const sortBy = sortByElement ? sortByElement.dataset.sort : "newest";
                 const pageType = loadMoreButton.dataset.pageType; // 페이지 타입 (bookdetails/profile)
+                const reviewNextPage = parseInt(loadMoreButton.dataset.page);
 
                 if(!pageType) {
                     console.error("pageType is missing");
@@ -24,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 // 리뷰 추가 로드
-                const newReviewsLoaded = await loadMoreReviews(bookId, userId, lastReviewId, sortBy, pageType);
+                const newReviewsLoaded = await loadMoreReviews(bookId, userId, lastReviewId, sortBy, pageType, reviewNextPage);
 
                 // **여기서 새로 로드된 리뷰에 대해 초기화**
                 initializeReviewStates();

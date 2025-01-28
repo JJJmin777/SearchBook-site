@@ -156,9 +156,11 @@ export const toggleLike = async (req, res) => {
         if (alreadyLiked) {
             // 좋아요 취소
             review.likes.pull(userId); // 배열에서 사용자 ID 제거
+            review.likesCount = review.likes.length; // 좋아요 개수 업데이트
         } else {
             // 좋아요 추가
             review.likes.push(userId);
+            review.likesCount = review.likes.length; // 좋아요 개수 업데이트
         }
 
         await review.save();
@@ -228,32 +230,28 @@ export const getSortedReviews = async (req, res) => {
     try {
         const { bookId } = req.params; // 책 ID
         const { sort } = req.query; // 정렬 기준
-        
-        const book = await Book.findById(bookId)
-            .populate({
-                path: 'reviews',
-                populate: { path: 'author' }
-            })
-            .populate({
-                path: 'reviews',
-                populate: {
-                    path: 'comments',
-                    populate: { path: 'author' } // 댓글 작성자(author)까지 조회
-                }
-            });
 
-        let sortedReviews; // 블록 외부에서 변수 선언
-
-        // console.log(book.reviews)
-        if (sort === 'likes') {
-            sortedReviews = book.reviews.sort((a, b) => b.likes.length - a.likes.length); // 좋아요 순
-        } else if (sort === 'newest') {
-            sortedReviews = book.reviews.sort((a, b) => b.createdAt - a.createdAt); // 최신순
+        // 정렬 조건 설정
+        let sortCondition;
+        if ( sort == "likes"){
+            sortCondition = { likes: -1 }; //좋아요 순
+        } else if ( sort == "newst") {
+            sortCondition = { createdAt: -1 } // 최신순
+        } else { 
+            sortCondition = {}; // 기본 정렬
         }
-        
+
+        const reviews = await Review.find({ book: bookId }) // 해당 책의 리뷰만 가져옴
+            .populate('author') // 리뷰 작성자
+            .populate({
+                path: 'comments',
+                populate: { path: 'author' } // 댓글 작성자(author)까지 조회
+            })
+            .sort(sortCondition) // 정렬
+            .limit(10); 
+
         const html = await ejs.renderFile('./views/partials/reviews.ejs', {
-            book,
-            sortedReviews,
+            sortedReviews: reviews,
             currentUser: req.user || null,
         });
 

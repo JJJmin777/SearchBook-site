@@ -23,6 +23,10 @@ export const reviewSchema = new Schema({
             ref: 'User' // 좋아요를 누른 사용자 ID
         }
     ],
+    likesCount: {
+        type:Number,
+        default: 0
+    },
     comments: [
         {
             type: Schema.Types.ObjectId,

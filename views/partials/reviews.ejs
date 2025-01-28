@@ -20,7 +20,7 @@
 
             <!-- 좋아요 및 댓글 버튼 -->
             <div class="d-flex align-items-center">
-                <button class="btn btn-sm btn-outline-primary like-button" data-book-id="<%= book._id %>"
+                <button class="btn btn-sm btn-outline-primary like-button" data-book-id="<%= review.book._id %>"
                     data-review-id="<%= review._id %>"
                     data-liked="<%= currentUser ? (review.likes || []).includes(currentUser._id) : false %>"
                     <%=currentUser ? '' : 'disabled' %>>
@@ -51,10 +51,10 @@
                             </h6>
                             <% if (currentUser && comment.author._id.toString()===currentUser._id.toString()) { %>
                                 <form
-                                    action="/books/<%= book._id %>/reviews/<%= review._id %>/comments/<%= comment._id %>?_method=DELETE"
+                                    action="/books/<%= review.book._id %>/reviews/<%= review._id %>/comments/<%= comment._id %>?_method=DELETE"
                                     method="POST" class="d-inline">
                                     <button class="btn btn-sm btn-danger delete-comment-btn"
-                                        data-book-id="<%= book._id %>" data-comment-id="<%= comment._id %>"
+                                        data-book-id="<%= review.book._id %>" data-comment-id="<%= comment._id %>"
                                         data-review-id="<%= review._id %>">
                                         Delete
                                     </button>
@@ -63,7 +63,7 @@
                     </div>
                     <% } %>
                         <% if (currentUser) { %>
-                            <form class="comment-form" data-book-id="<%= book._id %>"
+                            <form class="comment-form" data-book-id="<%= review.book._id %>"
                                 data-review-id="<%= review._id %>">
                                 <div class="input-group">
                                     <input type="text" name="body" class="form-control comment-input"
@@ -80,7 +80,7 @@
             <% if (currentUser && review.author.equals(currentUser)) { %>
                 <div class="action-buttons mt-3">
 
-                    <a href="/books/<%= book._id %>/reviews/<%= review._id %>/edit?returnurl=/books/<%= book._id %>"
+                    <a href="/books/<%= review.book._id %>/reviews/<%= review._id %>/edit?returnurl=/books/<%= review.book._id %>"
                         class="btn btn-sm btn-outline-warning me-2">Edit</a>
 
 
@@ -92,7 +92,7 @@
                     <%- include('./confirmDeleteModal', {
                         itemId: review._id, 
                         itemName: 'review', 
-                        deleteUrl: `/books/${book._id}/reviews/${review._id}?_method=DELETE`
+                        deleteUrl: `/books/${review.book._id}/reviews/${review._id}?_method=DELETE`
                     }) %>
                 </div>
 

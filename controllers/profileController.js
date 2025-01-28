@@ -7,6 +7,7 @@ export const getUserProfile = async(req, res) => {
     try{
         const { userId } = req.params;
         const query = req.query.query || null; // 검색 쿼리
+        const page = parseInt(req.query.page || "1"); // 현재 리뷰 페이지
 
         // 초기 리뷰 15개만 로드 
 
@@ -23,9 +24,9 @@ export const getUserProfile = async(req, res) => {
             .sort({ createdAt: -1 }) // 최신순
             .limit(15);
         
-        const totalReviews = user.reviews.length; // 총 리뷰 갯수
+        const userTotalReviews = user.reviews.length; // 총 리뷰 갯수
 
-        res.render('profile/show', { user, reviews, currentUser: req.user, userId, totalReviews, query});
+        res.render('profile/show', { user, reviews, currentUser: req.user, userId, userTotalReviews, query, currentPage: page});
     } catch(error) {
         console.error('Error fetching profile:', error);
         req.flash('error', 'Could not load profile. Please try again.');
@@ -61,9 +62,9 @@ export const searchUserBooks = async (req, res) => {
             );
         }
 
-        const totalReviews = reviews.length; // 검색된 리뷰 갯수
+        const userTotalReviews = reviews.length; // 검색된 리뷰 갯수
  
-        res.render('profile/show', { user, reviews, currentUser: req.user, userId, query: req.query.query, totalReviews });
+        res.render('profile/show', { user, reviews, currentUser: req.user, userId, query: req.query.query, userTotalReviews });
     } catch (error) {
         console.error(error);
         req.flash('Failed to load reviews');

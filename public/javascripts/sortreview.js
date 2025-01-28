@@ -1,7 +1,12 @@
 import { initializeReviewStates } from "./reviewtoggle.js";
+import { initializeLoadMoreButton } from "./reviewInfiniteButton.js"
 
 export async function sortReviews(event, sortBy, bookId) {
+    const loadMoreButton = document.getElementById('load-more-btn');
+
     try {
+        const pageType = loadMoreButton.dataset.pageType;
+
         const response = await fetch(`/books/${bookId}/reviews?sort=${sortBy}`);
 
         if (!response.ok) {
@@ -20,6 +25,9 @@ export async function sortReviews(event, sortBy, bookId) {
 
         // 새 HTML에 대해 toggle 초기화
         initializeReviewStates();
+
+        // Load More 버튼 초기화
+        initializeLoadMoreButton(loadMoreButton, pageType);
 
         // console.log('Reviews sorted successfully');
     } catch (err) {

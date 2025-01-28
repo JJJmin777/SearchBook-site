@@ -16,45 +16,39 @@ export function generateProfileReviewHTML(review) {
     `;
 }
 
-export function generateBookDetailsReviewHTML(review) {
+export function generateBookDetailsReviewHTML(review, currentUser) {
    return `
-                    <div class="card mb-3 card-body">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <img src="${review.author.profilePicture || '/images/default-profile.png'}" alt="Profile Picture" class="profile-picture">
-                                <a href="/profile/${review.author._id}">${review.author.username}</a>
-                            </h5>
-                            <p class="card-text">
-                                Rated: ${review.rating}/5 ⭐
-                            </p>
-                            <div class="review-body">
-                                ${review.body}
-                            </div>
-                            <button class="toggle-button">Read More</button>
+        <div class="card mb-3 card-body">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <img src="${review.author.profilePicture || '/images/default-profile.png'}" alt="Profile Picture" class="profile-picture">
+                    <a href="/profile/${review.author._id}">${review.author.username}</a>
+                </h5>
+                <p class="card-text">
+                    Rated: ${review.rating}/5 ⭐
+                </p>
+                <div class="review-body">
+                    ${review.body}
+                </div>
+                <button class="toggle-button">Read More</button>
+                <h6 class="card-subtitle mb-2 text-muted">Reviewed on: ${new Date(review.createdAt).toLocaleDateString()}
+                </h6>
 
-                            <h6 class="card-subtitle mb-2 text-muted">Reviewed on: ${new Date(review.createdAt).toLocaleDateString()}
-                            </h6>
-
-                            <div class="d-flex align-items-center">
-                <button class="btn btn-sm btn-outline-primary like-button" data-book-id="${review.book._id}"
-                    data-review-id="${review._id}"
-                    data-liked="${currentUser ? (review.likes || []).includes(currentUser._id) : false}"
-                    ${currentUser ? '' : 'disabled'}>
-                    <span class="like-icon">
-                        ${currentUser && review.likes.includes(currentUser._id) ? '❤️' : '🤍'}
-                    </span>
-                    <span class="like-count">
-                        ${review.likes.length}
-                    </span>
-                </button>
-                <button class="btn btn-sm btn-outline-secondary ms-2" onclick="${toggleComments(review._id)}">
-                    💬 Comments (<span id="comment-count-${review._id}">
-                        ${review.comments.length}
-                    </span>)
-                </button>
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-primary like-button" data-book-id="${review.book._id}"
+                        data-review-id="${review._id}"
+                        data-liked="${currentUser ? (review.likes || []).includes(currentUser._id) : false}"
+                        ${currentUser ? '' : 'disabled'}>
+                        <span class="like-icon">
+                            ${currentUser && review.likes.includes(currentUser._id) ? '❤️' : '🤍'}
+                        </span>
+                        <span class="like-count">
+                            ${review.likes.length}
+                        </span>
+                    </button>
+                    
+                </div>
             </div>
-                        </div>
-                    </div>
-                
-                `;
+        </div>           
+    `;
 };

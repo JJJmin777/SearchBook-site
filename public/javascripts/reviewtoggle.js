@@ -1,5 +1,5 @@
 export function initializeReviewStates() {
-    console.log("Initializing review states");
+    // console.log("Initializing review states");
 
     const reviewSection = document.getElementById('review-section');
 

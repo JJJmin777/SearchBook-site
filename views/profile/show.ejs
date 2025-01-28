@@ -30,9 +30,9 @@
 
 <!-- 리뷰 갯수 정보 -->
 <div id="review-summary" class="review-summary">
-    <p>Total Reviews: <strong><%= totalReviews %></strong></p>
+    <p>Total Reviews: <strong><%= userTotalReviews %></strong></p>
     <% if (query) { %>
-        <p>Search Results: <strong><%= totalReviews %></strong> for "<%= query %>"</p>
+        <p>Search Results: <strong><%= userTotalReviews %></strong> for "<%= query %>"</p>
     <% } else { %>
         <p>Displaying the most recent reviews.</p>
     <% } %>
@@ -73,7 +73,9 @@
 </div>
 <!-- Load More Reviews Button: 검색 중이 아닐 때만 표시 -->
 <% if (!query) { %>
-    <button id="load-more-btn" class="btn btn-primary" data-user-id="<%= userId %>" data-page-type="profile">Load More Reviews</button>
+    <button id="load-more-btn" class="btn btn-primary" 
+    data-user-id="<%= userId %>" data-page-type="profile" data-page="<%= currentPage + 1 %>">
+    Load More Reviews</button>
 <% } %>
 
 <script type="module" src="/javascripts/reviewtoggle.js"></script>

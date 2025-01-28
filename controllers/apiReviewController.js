@@ -4,7 +4,9 @@ import { generateBookDetailsReviewHTML, generateProfileReviewHTML } from '../uti
 
 export const fetchReviews = async (req, res) => {
     try {
-        const { limit = 5, bookId, userId, lastReviewId, sortBy, pageType } = req.query;
+        const { limit = 1, bookId, userId, lastReviewId, sortBy, pageType } = req.query;
+        const currentUser = req.user || null;
+        const reviewPage = parseInt(req.query.reviewPage || "1", 10); // 현재 페이지
 
         // 필터 조건 설정
         const query = {};
@@ -16,7 +18,7 @@ export const fetchReviews = async (req, res) => {
             const lastReview = await Review.findById(lastReviewId);
             if (lastReview) {
                 // 좋아요순 또는 최신순에 따라 조건 변경
-                if (sortBy === 'likes') {
+                if (sortBy === 'likes') {z
                     query.likesCount = { $lt: lastReview.likes.length };
                 } else {
                     query.createdAt = { $lt: lastReview.createdAt }; // 마지막 리뷰의 생성 시간보다 이전 리뷰만 가져오기
@@ -26,6 +28,8 @@ export const fetchReviews = async (req, res) => {
 
         // 정렬 기준 설정
         const sortCondition = sortBy === 'likes' ? { likesCount: -1 } : { createdAt: -1 };
+
+        const totalReviews = await Review.countDocuments(query);
 
         // 리뷰 데이터 쿼리기준 조회
         const reviews = await Review.find(query)
@@ -40,17 +44,20 @@ export const fetchReviews = async (req, res) => {
                 select: 'body author createdAt', // 댓글의 본문 및 작성자, 작성 시간
                 })
             .sort(sortCondition) // 정렬 적용
-            .limit(parseInt(limit));
+            .skip((reviewPage - 1) * limit) // 페이지에 따른 스킵 적용
+            .limit(limit);
             // .lean();  데이터를 단순 객체 형태로 변환
 
         // HTML 생성 (페이지 타입에 따라 함수 선택)
         const reviewHTMLs = reviews.map((review) => 
             pageType === "bookdetails"
-                ? generateBookDetailsReviewHTML(review) // bookdetails용 HTML 생성
+                ? generateBookDetailsReviewHTML(review, currentUser) // bookdetails용 HTML 생성
                 : generateProfileReviewHTML(review) // profile용 HTML 생성
         );
-        console.log(reviews)
         
+        // 다음 페이지가 있는지 확인
+        const hasMore = reviewPage * limit < totalReviews;
+
         // 각 리뷰에 대해 HTML 렌더링 (조건에 따라)
         // const currentUserId = req.user ? req.user._id.toString() : null;
 
@@ -81,7 +88,7 @@ export const fetchReviews = async (req, res) => {
         //     review.modalHTML = modalHTML
         // }
         
-        res.status(200).json({ reviews: reviewHTMLs, currentUser: req.user || null, }); // 현재 사용자 정보 전달
+        res.status(200).json({ reviews: reviewHTMLs, currentUser, currentPage: reviewPage, hasMore }); // 현재 사용자 정보 전달
     } catch (error) {
         console.error('Error fetching reviews:', error);
         req.flash('error', '리뷰를 가져오는 데 실패했습니다.');
