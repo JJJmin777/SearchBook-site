@@ -100,7 +100,7 @@
 
         <!-- 리뷰 정렬 버튼 -->
         <div class="d-flex mb-3">
-            <button class="btn btn-outline-secondary me-2" data-sort="likes" data-book-id="<%= book._id %>">Most Liked</button>
+            <button class="btn btn-outline-secondary me-2 active" data-sort="likes" data-book-id="<%= book._id %>">Most Liked</button>
             <button class="btn btn-outline-secondary" data-sort="newest" data-book-id="<%= book._id %>">Newest First</button>
         </div>
 
@@ -112,7 +112,7 @@
     </div>
 </div>
 
-<script src="/javascripts/reviewComment.js"></script>
+<script type="module" src="/javascripts/reviewComment.js"></script>
 <script type="module" src="/javascripts/reviewtoggle.js"></script>
 <script type="module" src="/javascripts/sortreview.js"></script>
 <script type="module" src="/javascripts/reviewInfiniteButton.js"></script>

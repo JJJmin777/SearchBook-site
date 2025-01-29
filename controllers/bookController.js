@@ -65,7 +65,7 @@ export const getBookDetails = async (req, res) => {
                 path: 'comments',
                 populate: { path: 'author', select: 'username profilePicture' } // 댓글 작성자 정보 포함
             })
-            .sort({ likesCount: -1 }) // 좋아요 순 정렬
+            .sort({ likesCount: -1, createdAt: -1 }) // 좋아요 순 정렬
             .limit(2); // 최대 10개 가져오기
 
         // 리뷰를 하트순으로 정렬

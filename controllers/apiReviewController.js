@@ -18,8 +18,14 @@ export const fetchReviews = async (req, res) => {
             const lastReview = await Review.findById(lastReviewId);
             if (lastReview) {
                 // 좋아요순 또는 최신순에 따라 조건 변경
-                if (sortBy === 'likes') {z
-                    query.likesCount = { $lt: lastReview.likes.length };
+                if (sortBy === 'likes') {
+                    query.$or = [
+                        { likesCount: { $lt: lastReview.likes.length } }, // 더 적은 좋아요 개수의 리뷰
+                        {
+                            likesCount: lastReview.likes.length, // 같은 좋아요 개수이면서 
+                            createdAt: { $lt: lastReview.createdAt } // 마지막 리뷰보다 더 오래된 리뷰만 가져오기
+                        } 
+                    ];
                 } else {
                     query.createdAt = { $lt: lastReview.createdAt }; // 마지막 리뷰의 생성 시간보다 이전 리뷰만 가져오기
                 }
@@ -27,7 +33,7 @@ export const fetchReviews = async (req, res) => {
         }
 
         // 정렬 기준 설정
-        const sortCondition = sortBy === 'likes' ? { likesCount: -1 } : { createdAt: -1 };
+        const sortCondition = sortBy === 'likes' ? { likesCount: -1, createdAt: -1 } : { createdAt: -1 };
 
         const totalReviews = await Review.countDocuments(query);
 
@@ -47,7 +53,8 @@ export const fetchReviews = async (req, res) => {
             .skip((reviewPage - 1) * limit) // 페이지에 따른 스킵 적용
             .limit(limit);
             // .lean();  데이터를 단순 객체 형태로 변환
-
+        console.log(query)
+        console.log(reviews)
         // HTML 생성 (페이지 타입에 따라 함수 선택)
         const reviewHTMLs = reviews.map((review) => 
             pageType === "bookdetails"

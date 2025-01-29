@@ -31,7 +31,7 @@
                         <%= review.likes.length %>
                     </span>
                 </button>
-                <button class="btn btn-sm btn-outline-secondary ms-2" onclick="toggleComments('<%= review._id %>')">
+                <button class="btn btn-sm btn-outline-secondary ms-2 toggle-comments-btn" data-review-id="<%= review._id %>">
                     💬 Comments (<span id="comment-count-<%= review._id %>">
                         <%= review.comments.length %>
                     </span>)

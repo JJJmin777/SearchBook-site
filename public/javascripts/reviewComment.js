@@ -1,10 +1,16 @@
 // 댓글 토글 함수
-function toggleComments(reviewId) {
-    const commentsDiv = document.getElementById(`comments-${reviewId}`);
-    if (commentsDiv) {
-        commentsDiv.classList.toggle('d-none'); // 댓글 영역 보이기/숨기기
-    }
-}
+document.addEventListener("DOMContentLoaded", () => {
+    document.body.addEventListener("click", (event) => {
+        if (event.target.classList.contains("toggle-comments-btn")) {
+            const reviewId = event.target.dataset.reviewId;
+            const commentSection = document.getElementById(`comments-${reviewId}`);
+            if (commentSection) {
+                commentSection.classList.toggle('d-none');
+            }
+            console.log(commentSection.style.display)
+        };
+    });
+});
 
 // 댓글 처리용 상위 컨테이너 선택
 const reviewSection = document.getElementById('review-section');

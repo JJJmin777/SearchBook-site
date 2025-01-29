@@ -18,7 +18,7 @@ export function generateProfileReviewHTML(review) {
 
 export function generateBookDetailsReviewHTML(review, currentUser) {
    return `
-        <div class="card mb-3 card-body">
+        <div class="card mb-3 review-card" data-id=${review._id}>
             <div class="card-body">
                 <h5 class="card-title">
                     <img src="${review.author.profilePicture || '/images/default-profile.png'}" alt="Profile Picture" class="profile-picture">
@@ -46,8 +46,14 @@ export function generateBookDetailsReviewHTML(review, currentUser) {
                             ${review.likes.length}
                         </span>
                     </button>
-                    
+                    <button class="btn btn-sm btn-outline-secondary ms-2 toggle-comments-btn" data-review-id="${ review._id }">
+                    💬 Comments (<span id="comment-count-${ review._id }">
+                        ${ review.comments.length }
+                    </span>)
+                    </button>
                 </div>
+
+
             </div>
         </div>           
     `;

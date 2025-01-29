@@ -40,6 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttons = document.querySelectorAll("[data-sort]");
     buttons.forEach((button) => {
         button.addEventListener("click", (event) => {
+            // 기존 활성화된 버튼에서 .active 제거
+            document.querySelector("[data-sort].active")?.classList.remove("active");
+
+            button.classList.add("active");
+
             const sortBy = button.dataset.sort;
             const bookId = button.dataset.bookId;
 

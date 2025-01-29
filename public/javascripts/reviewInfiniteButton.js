@@ -41,8 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 // **여기서 새로 로드된 리뷰에 대해 초기화**
                 initializeReviewStates();
 
-                // 마지막으로 로드된 리뷰 상태를 다시 갱신
-                if (newReviewsLoaded.length === 0 || newReviewsLoaded.length < 5) {
+                // 마지막으로 로드된 리뷰 상태를 다시 갱신 || newReviewsLoaded.length < 5
+                if (newReviewsLoaded.length === 0 ) {
                     loadMoreButton.style.display = 'none'; // 더 이상 로드할 리뷰가 없으면 버튼 숨기기
                 }
             } catch(error) {

@@ -234,8 +234,8 @@ export const getSortedReviews = async (req, res) => {
         // 정렬 조건 설정
         let sortCondition;
         if ( sort == "likes"){
-            sortCondition = { likes: -1 }; //좋아요 순
-        } else if ( sort == "newst") {
+            sortCondition = { likesCount: -1, createdAt: -1 }; // 좋아요 많은순 + 최신순
+        } else if ( sort == "newest") {
             sortCondition = { createdAt: -1 } // 최신순
         } else { 
             sortCondition = {}; // 기본 정렬
@@ -248,7 +248,7 @@ export const getSortedReviews = async (req, res) => {
                 populate: { path: 'author' } // 댓글 작성자(author)까지 조회
             })
             .sort(sortCondition) // 정렬
-            .limit(10); 
+            .limit(2); 
 
         const html = await ejs.renderFile('./views/partials/reviews.ejs', {
             sortedReviews: reviews,
