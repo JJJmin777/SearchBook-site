@@ -139,6 +139,39 @@ export const logout = (req, res, next) => {
     });
 }
 
+// 비밀번호 변경 페이지 렌더링 (로그인한 사용자)
+export const renderChangePassword = (req, res) => {
+    res.render('users/change-password')
+}
+
+// 비밀번호 변경 (로그인한 사용자)
+export const changePassword = (req, res) => {
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    const user = req.user; // 로그인된 사용자
+
+    try {
+        // 현재 비밀번호 검증 
+        const isMatch = await user.authenticate(currentPassword);
+        if (!isMatch) {
+            req.flash("error", "Current password is incorrect.");
+            return res.redirect("/change-password");
+        }
+
+        // 새 비밀번호 확인 비밀번호 일치하는지 확인
+        if (newPassword !== confirmPassword) {
+            req.flash("error", "New passwords do not match.");
+            return res.redirect('/change-password');
+        }
+
+        // Passport-local-mongoose의 setPassword() 사용하여 새 비밀번호 저장
+        await user.setPassword(newPassword);
+        await user.save();
+
+        req.flash("success", "Password changed successfully.");
+        res.redirect("/profile");
+    }
+}
+
 //  비밀번호 재설정 요청 처리 page렌더링
 export const renderForgotPassword = (req, res) => {
     res.render('users/forgot-password', {

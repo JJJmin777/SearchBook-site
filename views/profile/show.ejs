@@ -15,7 +15,8 @@
                 <%= user.bio || 'No bio yet.' %>
             </p>
             <% if (currentUser && currentUser._id.toString()===user._id.toString()) { %>
-                <a href="/profile/<%= user._id %>/edit" class="btn btn-primary">Edit Profile</a>
+                <a href="/profile/<%= user._id %>/edit" class="btn btn-primary">정보 수정</a>
+                <a href="/change-password" class="btn btn-primary">비밀번호 변경</a>
                 <% } %>
         </div>
 </div>

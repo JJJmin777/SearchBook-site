@@ -53,8 +53,7 @@ export const fetchReviews = async (req, res) => {
             .skip((reviewPage - 1) * limit) // 페이지에 따른 스킵 적용
             .limit(limit);
             // .lean();  데이터를 단순 객체 형태로 변환
-        console.log(query)
-        console.log(reviews)
+        console.log(`~~${currentUser} api에서`)
         // HTML 생성 (페이지 타입에 따라 함수 선택)
         const reviewHTMLs = reviews.map((review) => 
             pageType === "bookdetails"

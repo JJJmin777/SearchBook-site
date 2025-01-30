@@ -76,6 +76,7 @@ export const getEditProfile = async (req, res) => {
     try{
         const user = await User.findById(req.user._id);
         res.render('profile/edit', { user });
+        sa
     } catch(error) {
         console.error('Error fetching profile for editing:', error);
         req.flash('error', 'Could not load edit form. Please try again.??');

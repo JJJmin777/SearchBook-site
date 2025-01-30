@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (commentSection) {
                 commentSection.classList.toggle('d-none');
             }
-            console.log(commentSection.style.display)
         };
     });
 });
