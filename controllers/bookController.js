@@ -1,5 +1,5 @@
 import { searchBook } from "../utils/naverApi.js";
-import Book from '../models/book.js'
+import Book from '../models/book.js';
 import Review from "../models/review.js";
 
 // 검색 결과
