@@ -145,14 +145,14 @@ export const renderChangePassword = (req, res) => {
 }
 
 // 비밀번호 변경 (로그인한 사용자)
-export const changePassword = (req, res) => {
+export const changePassword = async (req, res) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
     const user = req.user; // 로그인된 사용자
 
     try {
         // 현재 비밀번호 검증 
-        const isMatch = await user.authenticate(currentPassword);
-        if (!isMatch) {
+        const { user: authenticatedUser, error } = await user.authenticate(currentPassword);
+        if (!authenticatedUser) {
             req.flash("error", "Current password is incorrect.");
             return res.redirect("/change-password");
         }
@@ -168,9 +168,13 @@ export const changePassword = (req, res) => {
         await user.save();
 
         req.flash("success", "Password changed successfully.");
-        res.redirect("/profile");
+        res.redirect(`/profile/${user._id}`);
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Something went wrong.");
+        res.redirect("/change-password");
     }
-}
+};
 
 //  비밀번호 재설정 요청 처리 page렌더링
 export const renderForgotPassword = (req, res) => {

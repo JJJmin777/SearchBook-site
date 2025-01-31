@@ -1,8 +1,8 @@
 import express from 'express';
 import passport from 'passport';
-import { showMyBooks, renderRegister, register, renderLogin, login, logout, verifyEmail, searchMyBooks, forgotPassword, resetPassword, renderForgotPassword, renderResetPassword, renderChangePassword } from '../controllers/usersController.js'
+import { showMyBooks, renderRegister, register, renderLogin, login, logout, verifyEmail, searchMyBooks, forgotPassword, resetPassword, renderForgotPassword, renderResetPassword, renderChangePassword, changePassword } from '../controllers/usersController.js'
 import catchAsync from '../utils/catchAsync.js';
-import { isLoggedIn, recaptchaMiddleware  } from '../middleware.js';
+import { isLoggedIn, isUserAuthorized, recaptchaMiddleware  } from '../middleware.js';
 
 const router = express.Router();
     
@@ -30,8 +30,8 @@ router.route('/login')
 
 // 비밀번호 변경
 router.route('/change-password')
-    .get(renderChangePassword)
-    .post()
+    .get(isLoggedIn, renderChangePassword)
+    .post(changePassword)
 
 // 비밀번호 재설정 요청 처리
 router.route('/forgot-password')
