@@ -97,7 +97,9 @@ export function generateBookDetailsReviewHTML(review, currentUser) {
 };
 
 export function generateReviewActionsHTML(review, currentUser) {
-    if (currentUser || review.author._id == currentUser._id) {
+    if (!currentUser) return ''; // currentUser가 null이면 버튼을 렌더링하지 않음
+
+    if (review.author._id == currentUser._id) {
         return `<div class="action-buttons mt-3">
             <a href="/books/${review.book._id}/reviews/${review._id}/edit?returnurl=/books/${review.book._id}"
                 class="btn btn-sm btn-outline-warning me-2">Edit</a>
@@ -109,7 +111,9 @@ export function generateReviewActionsHTML(review, currentUser) {
 
             ${generateConfirmDeleteModal(review._id, 'review', `/books/${review.book._id}/reviews/${review._id}?_method=DELETE`)}
         </div>`; 
-    };
+    }
+
+    return ''; // currentUser가 있지만, 작성자가 아니면 아무것도 반환하지 않음
 };
 
 export function generateConfirmDeleteModal(itemId, itemName, deleteUrl) {
