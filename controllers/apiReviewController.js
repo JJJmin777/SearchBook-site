@@ -1,5 +1,5 @@
 import Review from '../models/review.js';
-import { generateBookDetailsReviewHTML, generateProfileReviewHTML } from '../utils/reviewHTMLGenerator.js';
+import { generateBookDetailsReviewHTML, generateProfileReviewHTML, generateReviewActionsHTML, generateConfirmDeleteModal } from '../utils/reviewHTMLGenerator.js';
 
 
 export const fetchReviews = async (req, res) => {

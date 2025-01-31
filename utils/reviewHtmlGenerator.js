@@ -96,7 +96,7 @@ export function generateBookDetailsReviewHTML(review, currentUser) {
     `;
 };
 
-function generateReviewActionsHTML(review, currentUser) {
+export function generateReviewActionsHTML(review, currentUser) {
     if (currentUser || review.author._id == currentUser._id) {
         return `<div class="action-buttons mt-3">
             <a href="/books/${review.book._id}/reviews/${review._id}/edit?returnurl=/books/${review.book._id}"
@@ -112,7 +112,7 @@ function generateReviewActionsHTML(review, currentUser) {
     };
 };
 
-function generateConfirmDeleteModal(itemId, itemName, deleteUrl) {
+export function generateConfirmDeleteModal(itemId, itemName, deleteUrl) {
     return`
         <div class="modal fade" id="deleteModal-${itemId}" tabindex="-1" aria-labelledby="deleteModalLabel-${itemId}" aria-hidden="true">
             <div class="modal-dialog">
