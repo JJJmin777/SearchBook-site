@@ -30,7 +30,7 @@ import reviewRouters from './routes/reviewsRouter.js';
 import profileRouters from './routes/profileRouter.js';
 import apiReviewRouter from './routes/apiReviewRouter.js'
 
-const dbUrl ='mongodb://127.0.0.1:27017/search-book'; // process.env.DB_URL || 나중에 사용하기
+const dbUrl ='mongodb://127.0.0.1:27017/search-book' || process.env.DB_URL; //   나중에 사용하기
 
 mongoose.set('strictQuery', true);
 mongoose.connect(dbUrl)
