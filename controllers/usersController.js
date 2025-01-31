@@ -29,7 +29,7 @@ export const register = async (req, res, next) => {
         const registerUser = await User.register(user, password);
 
         // 인증 이메일 링크 생성
-        const verificationLink = `http://localhost:3000/verify-email?token=${user.emailToken}`;
+        const verificationLink = `https://seachbook-site.onrender.com/verify-email?token=${user.emailToken}`; // http://localhost:3000/verify-email?token=${user.emailToken}
         const subject = 'Verify Your Email';
 
         // HTML 이메일 본문 생성
