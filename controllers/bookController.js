@@ -8,7 +8,6 @@ export const handleSearchResults = async (req, res) => {
         const query = req.query.bookTitle; // 폼에서 검색어 가져오기
 
         if (!query) {
-            console.log("안뜨")
             return res.redirect('/')
         }
 

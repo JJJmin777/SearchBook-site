@@ -43,6 +43,15 @@ export const isUserAuthorized = async (req, res , next) => {
     next();
 };
 
+// 관리자인지 확인
+export function isAdmin(req, res, next) {
+    if (!req.user || !req.user.isAdmin) {
+        req.flash("error", "Access denied. Admins only.");
+        return res.redirect("/");
+    }
+    next();
+}
+
 // reCAPTCHA 검증
 export const recaptchaMiddleware = (redirectRoute) => {
     return async (req, res, next) => {

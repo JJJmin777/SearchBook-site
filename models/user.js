@@ -18,9 +18,18 @@ const userSchema = new Schema({
         type: String,
         default: ''
     },
-    profilePicture: { type: String, default: '/images/default-profile.png' }, // 기본 프로필 사진 경로
-    profilePictureId: { type: String }, // Cloudinary public_id
-    isVerified: { type: Boolean, default: false }, // 이메일 인증 여부
+    profilePicture: { 
+        type: String, default: '/images/default-profile.png' 
+    }, // 기본 프로필 사진 경로
+    profilePictureId: { 
+        type: String 
+    }, // Cloudinary public_id
+    isAdmin: { 
+        type: Boolean, default: false 
+    }, // 관리자 여부 필드 추가
+    isVerified: { 
+        type: Boolean, default: false 
+    }, // 이메일 인증 여부
     emailToken: String, // 이메일 인증 토큰
     emailTokenExpire: Date, // 토큰 만료 시간
     resetPasswordToken: String,

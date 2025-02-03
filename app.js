@@ -13,11 +13,9 @@ import path from 'path';
 import expressLayouts from 'express-ejs-layouts';
 import bodyParser from 'body-parser';
 import { fileURLToPath } from 'url';
-import mongoose from 'mongoose';
 import passport from 'passport';
 // strategy - 인증 로직을 구현하기 위한 클래스이며, Passport.js가 다양한 인증 방식을 플러그인으로 확장 가능하게 하는
 import { Strategy as LocalStrategy } from 'passport-local';
-import User from './models/user.js'
 // import MongoStore = from 'connect-mongo'
 import session from 'express-session';
 import flash from 'connect-flash';
@@ -28,18 +26,10 @@ import bookRouters from './routes/bookRouter.js';
 import userRouters from './routes/usersRouter.js';
 import reviewRouters from './routes/reviewsRouter.js';
 import profileRouters from './routes/profileRouter.js';
-import apiReviewRouter from './routes/apiReviewRouter.js'
+import apiReviewRouter from './routes/apiReviewRouter.js';
+import adminRouter from './routes/adminRouter.js';
+import User from './models/user.js';
 
-const dbUrl = process.env.DB_URL; //'mongodb://127.0.0.1:27017/search-book'
-
-mongoose.set('strictQuery', true);
-mongoose.connect(dbUrl)
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-    console.log("Database connected");
-});
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -110,6 +100,7 @@ app.use('/books', bookRouters); // 만약 movie나 drama등이 리뷰로 추가 
 app.use('/books/:bookId/reviews', reviewRouters);
 app.use('/profile', profileRouters);
 app.use('/', apiReviewRouter);
+app.use('/admin', adminRouter);
 
 
 // 홈 페이지
@@ -117,7 +108,4 @@ app.get('/', (req, res) => {
     res.render('search/home'); // 검색 폼
 });
 
-const port = 3000;
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+export default app;

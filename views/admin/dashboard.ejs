@@ -1,0 +1,116 @@
+
+
+<style>
+    .admin-container {
+        display: flex;
+        gap: 20px;
+    }
+    .sidebar {
+        width: 200px;
+        border-right: 1px solid #ddd;
+        padding: 15px;
+    }
+    .content {
+        flex: 1;
+    }
+    .hidden {
+        display: none;
+    }
+    .break-word {
+        word-break: break-word;
+    }
+</style>
+
+<div class="container mt-4">
+    <h1 class="mb-4">Admin Dashboard</h1>
+
+    <% if (success) { %>
+        <div class="alert alert-success"><%= success %></div>
+    <% } %>
+    <% if (error) { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <div class="admin-container">
+        <!-- ✅ 사이드바 (리뷰 & 유저 전환) -->
+        <div class="sidebar">
+            <h4>관리 메뉴</h4>
+            <button class="btn btn-primary w-100 my-2" onclick="showSection('reviews')">리뷰 관리</button>
+            <button class="btn btn-secondary w-100 my-2" onclick="showSection('users')">유저 관리</button>
+        </div>
+
+        <div class="content">
+            <!-- ✅ 검색 기능 -->
+            <form method="GET" action="/admin/dashboard" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" value="<%= search || '' %>" placeholder="검색어 입력">
+                    <select name="type" class="form-select">
+                        <option value="">전체</option>
+                        <option value="reviews" <%= type === 'reviews' ? 'selected' : '' %>>리뷰</option>
+                        <option value="users" <%= type === 'users' ? 'selected' : '' %>>유저</option>
+                    </select>
+                    <button type="submit" class="btn btn-dark">검색</button>
+                </div>
+            </form>
+
+            <!-- ✅ 리뷰 목록 -->
+            <div id="reviews-section" class="<%= type === 'users' ? 'hidden' : '' %>">
+                <h2>All Reviews</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Author</th>
+                            <th>Content</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reviews.forEach(review => { %>
+                            <tr>
+                                <td><%= review.author.username %> (<%= review.author.email %>)</td>
+                                <td class="break-word"><%= review.content %></td>
+                                <td>
+                                    <form action="/admin/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ✅ 유저 목록 -->
+            <div id="users-section" class="<%= type === 'reviews' ? 'hidden' : '' %>">
+                <h2>All Users</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                            <tr>
+                                <td><%= user.username %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.isAdmin ? "Admin" : "User" %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showSection(section) {
+        document.getElementById('reviews-section').classList.toggle('hidden', section !== 'reviews');
+        document.getElementById('users-section').classList.toggle('hidden', section !== 'users');
+    }
+</script>
+
+
