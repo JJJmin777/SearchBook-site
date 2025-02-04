@@ -1,0 +1,7 @@
+.admin-container { display: flex; gap: 20px; }
+.sidebar { width: 200px; border-right: 1px solid #ddd; padding: 15px; }
+.content { flex: 1; }
+.hidden { display: none; }
+.break-word { word-break: break-word; }
+.pagination { display: flex; justify-content: center; list-style: none; padding: 0; }
+.pagination li { margin: 5px; }

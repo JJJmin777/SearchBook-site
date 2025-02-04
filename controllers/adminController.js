@@ -3,35 +3,66 @@ import User from "../models/user.js";
 
 // 관리자 대시보드 페이지 렌더링
 export const getAdminDashboard = async (req, res) => {
+
+    const PAGE_SIZE = 10; // 한 페이지에 표시할 데이터 개수
+
     try {
         if (!req.user || !req.user.isAdmin) {
             req.flash("error", "Access denied.");
             return res.redirect("/");
         }
 
-        let { search, type } = req.query; // 검색어 & 검색 타입
+        let { search, type, sort, page } = req.query; // 검색어 & 검색 타입
+        page = parseInt(page) || 1;
         let reviews = [];
         let users = [];
+        let totalreviews = 0;
+        let totalUsers = 0;
 
         if (type === "reviews" || !type) {
-            reviews = search
-                ? await Review.find({ body: { $regex: search, $options: "i" } }).populate("author", "username email")
-                : await Review.find().populate("author", "username email");
+            const reviewQuery = search
+                ? { body: { $regex: search, $options: "i" } }
+                : {};
+
+            totalreviews = await Review.countDocuments(reviewQuery);
+            reviews = await Review.find(reviewQuery)
+                .populate("author", "username email")
+                .populate("book", "title")
+                .sort(sort === "oldest" ? { createdAt: 1 } : { createdAt: -1 })
+                .skip((page - 1) * PAGE_SIZE)
+                .limit(PAGE_SIZE);
         }
 
         if (type === "users" || !type) {
-            users = search 
-                ? await User.find({
+            const userQuery = search
+                ? {
                     $or: [
                         { username: { $regex: search, $options: "i" } },
-                        { email: { $regex: search, $option: "i" } },
+                        { email: { $regex: search, $options: "i" } },
                     ],
-                })
-            : await User.find({}, "username email isAdmin");
+                }
+                : {};
+
+            totalUsers = await User.countDocuments(userQuery);
+            users = await User.find(userQuery, "username email isAdmin")
+                .sort(sort === "a-z" ? { username: 1 } : { username: -1 })
+                .skip((page - 1) * PAGE_SIZE)
+                .limit(PAGE_SIZE);
+            console.log(totalUsers)
         }
 
         // `search`와 `type` 변수를 EJS에 전달
-        res.render("admin/dashboard", { reviews, users, search, type });
+        res.render("admin/dashboard", { 
+            reviews, 
+            users, 
+            search, 
+            type,
+            sort,
+            page,
+            totalreviews,
+            totalUsers,
+            totalPages: type === "users" ? Math.ceil(totalUsers / PAGE_SIZE) : Math.ceil(totalreviews / PAGE_SIZE),
+        });
     } catch(error) {
         console.error("❌ Error fetching admin dashboard data:", error);
         res.status(500).send("Server Error");

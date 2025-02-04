@@ -1,53 +1,30 @@
 
-
-<style>
-    .admin-container {
-        display: flex;
-        gap: 20px;
-    }
-    .sidebar {
-        width: 200px;
-        border-right: 1px solid #ddd;
-        padding: 15px;
-    }
-    .content {
-        flex: 1;
-    }
-    .hidden {
-        display: none;
-    }
-    .break-word {
-        word-break: break-word;
-    }
-</style>
+<link rel="stylesheet" href="/stylesheets/dashboard.css">
 
 <div class="container mt-4">
     <h1 class="mb-4">Admin Dashboard</h1>
 
-    <% if (success) { %>
-        <div class="alert alert-success"><%= success %></div>
-    <% } %>
-    <% if (error) { %>
-        <div class="alert alert-danger"><%= error %></div>
-    <% } %>
-
     <div class="admin-container">
-        <!-- ✅ 사이드바 (리뷰 & 유저 전환) -->
+        <!-- ✅ 사이드바 -->
         <div class="sidebar">
             <h4>관리 메뉴</h4>
-            <button class="btn btn-primary w-100 my-2" onclick="showSection('reviews')">리뷰 관리</button>
-            <button class="btn btn-secondary w-100 my-2" onclick="showSection('users')">유저 관리</button>
+            <button id="review-btn" class="btn btn-primary w-100 my-2">리뷰 관리</button>
+            <button id="user-btn" class="btn btn-secondary w-100 my-2">유저 관리</button>
         </div>
 
         <div class="content">
-            <!-- ✅ 검색 기능 -->
+            <!-- ✅ 검색 & 정렬 -->
             <form method="GET" action="/admin/dashboard" class="mb-3">
                 <div class="input-group">
                     <input type="text" name="search" class="form-control" value="<%= search || '' %>" placeholder="검색어 입력">
                     <select name="type" class="form-select">
-                        <option value="">전체</option>
                         <option value="reviews" <%= type === 'reviews' ? 'selected' : '' %>>리뷰</option>
                         <option value="users" <%= type === 'users' ? 'selected' : '' %>>유저</option>
+                    </select>
+                    <select name="sort" class="form-select">
+                        <option value="newest">최신순</option>
+                        <option value="oldest" <%= sort === 'oldest' ? 'selected' : '' %>>오래된순</option>
+                        <option value="a-z" <%= sort === 'a-z' ? 'selected' : '' %>>이름순</option>
                     </select>
                     <button type="submit" class="btn btn-dark">검색</button>
                 </div>
@@ -59,6 +36,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th>Book Title</th>
                             <th>Author</th>
                             <th>Content</th>
                             <th>Actions</th>
@@ -67,8 +45,9 @@
                     <tbody>
                         <% reviews.forEach(review => { %>
                             <tr>
+                                <td><%= review.book ? review.book.title : "Unknown" %></td>
                                 <td><%= review.author.username %> (<%= review.author.email %>)</td>
-                                <td class="break-word"><%= review.content %></td>
+                                <td class="break-word"><%= review.body %></td>
                                 <td>
                                     <form action="/admin/reviews/<%= review._id %>?_method=DELETE" method="POST">
                                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -78,10 +57,18 @@
                         <% }) %>
                     </tbody>
                 </table>
-            </div>
 
+                <!-- ✅ 페이징 -->
+                <ul class="pagination">
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <li class="<%= page === i ? 'active' : '' %>">
+                            <a href="/admin/dashboard?type=reviews&page=<%= i %>&search=<%= search %>&sort=<%= sort %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
             <!-- ✅ 유저 목록 -->
-            <div id="users-section" class="<%= type === 'reviews' ? 'hidden' : '' %>">
+            <div id="users-section" class="<%= (!type || type === 'reviews') ? 'hidden' : '' %>">
                 <h2>All Users</h2>
                 <table class="table table-bordered">
                     <thead>
@@ -101,16 +88,21 @@
                         <% }) %>
                     </tbody>
                 </table>
+
+                <!-- ✅ 유저 목록 페이징 -->
+                <ul class="pagination">
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <li class="<%= page === i ? 'active' : '' %>">
+                            <a href="/admin/dashboard?type=users&page=<%= i %>&search=<%= search %>&sort=<%= sort %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                </ul>
             </div>
+
         </div>
     </div>
 </div>
 
-<script>
-    function showSection(section) {
-        document.getElementById('reviews-section').classList.toggle('hidden', section !== 'reviews');
-        document.getElementById('users-section').classList.toggle('hidden', section !== 'users');
-    }
-</script>
+<script src="/javascripts/adminDashboard.js"></script>
 
 

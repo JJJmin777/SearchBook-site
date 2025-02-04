@@ -4,7 +4,7 @@ import { generateBookDetailsReviewHTML, generateProfileReviewHTML, generateRevie
 
 export const fetchReviews = async (req, res) => {
     try {
-        const { limit = 1, bookId, userId, lastReviewId, sortBy, pageType } = req.query;
+        const { limit = 10, bookId, userId, lastReviewId, sortBy, pageType } = req.query;
         const currentUser = req.user || null;
         const reviewPage = parseInt(req.query.reviewPage || "1", 10); // 현재 페이지
 
