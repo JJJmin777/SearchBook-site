@@ -108,7 +108,9 @@
         <div id="review-section">
             <%- include('../partials/reviews', { sortedReviews, book, currentUser }) %>
         </div>
-        <button id="load-more-btn" class="btn btn-primary" data-book-id="<%= book._id %>" data-page-type="bookdetails">Load More Reviews</button>
+        <button id="load-more-btn" class="btn btn-primary" 
+        data-book-id="<%= book._id %>" data-page-type="bookdetails" data-page="1">
+            Load More Reviews</button>
     </div>
 </div>
 

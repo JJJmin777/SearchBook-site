@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const sortByElement = document.querySelector("[data-sort].active");
                 const sortBy = sortByElement ? sortByElement.dataset.sort : "newest";
                 const pageType = loadMoreButton.dataset.pageType; // 페이지 타입 (bookdetails/profile)
-                const reviewNextPage = parseInt(loadMoreButton.dataset.page);
+                const currentPage = parseInt(loadMoreButton.dataset.page);
 
                 if(!pageType) {
                     console.error("pageType is missing");
@@ -36,15 +36,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 // 리뷰 추가 로드
-                const newReviewsLoaded = await loadMoreReviews(bookId, userId, lastReviewId, sortBy, pageType, reviewNextPage);
+                const { reviews, hasMore } = await loadMoreReviews(bookId, userId, lastReviewId, sortBy, pageType, currentPage);
+                console.log(reviews, hasMore)
 
                 // **여기서 새로 로드된 리뷰에 대해 초기화**
                 initializeReviewStates();
 
-                // 마지막으로 로드된 리뷰 상태를 다시 갱신 
-                if (newReviewsLoaded.length < 10) {
-                    loadMoreButton.style.display = 'none'; // 더 이상 로드할 리뷰가 없으면 버튼 숨기기
+                // 버튼 업데이트
+                if (hasMore) {
+                    loadMoreButton.dataset.page = currentPage + 1;
+                } else {
+                    loadMoreButton.style.display = 'none'; // 더 이상 데이터가 없으면 숨김
                 }
+
             } catch(error) {
                 console.error('Error loading reviews:', error);
             }
