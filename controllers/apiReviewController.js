@@ -4,18 +4,19 @@ import { generateBookDetailsReviewHTML, generateProfileReviewHTML, generateRevie
 
 export const fetchReviews = async (req, res) => {
     try {
-        const { limit = 2, bookId, userId, lastReviewId, sortBy, pageType } = req.query;
+        const { limit = 3, bookId, userId, lastReviewId, sortBy, pageType } = req.query;
         const currentUser = req.user || null;
         const reviewPage = parseInt(req.query.currentPage || "1", 10); // 현재 페이지
 
         // 필터 조건 설정
-        const query = {};
+        let query = {};
         if (bookId) query.book = bookId;
         if (userId) query.author = userId;
 
         // 이미 로드된 리뷰 이후 데이터를 가져오기 위해 `lastReviewId`를 사용
         if (lastReviewId) {
             const lastReview = await Review.findById(lastReviewId);
+            console.log(lastReview.likesCount)
             if (lastReview) {
                 const lastLikesCount = lastReview.likesCount;
                 // 좋아요순 또는 최신순에 따라 조건 변경
@@ -51,20 +52,22 @@ export const fetchReviews = async (req, res) => {
                 select: 'body author createdAt', // 댓글의 본문 및 작성자, 작성 시간
                 })
             .sort(sortCondition) // 정렬 적용
-            // .skip((reviewPage) * limit) // 페이지에 따른 스킵 적용
-            .limit(parseInt(limit));
+            // .skip((reviewPage - 1 ) * limit) // 페이지에 따른 스킵 적용
+            .limit(parseInt(limit) + 1); // 다음 리뷰가 있는지 확인하기 위해 +1 개수만큼 가져옴
             // .lean();  데이터를 단순 객체 형태로 변환
+                      
+        // 다음 페이지 존재 여부 확인 (limit 개수보다 많으면 true)
+        const hasMore = reviews.length > limit;
+
+        // limit 개수까지만 응답에 포함 (초과분 제거)
+        const reviewsToSend = hasMore ? reviews.slice(0, limit) : reviews;
 
         // HTML 생성 (페이지 타입에 따라 함수 선택)
-        const reviewHTMLs = reviews.map((review) => 
+        const reviewHTMLs = reviewsToSend.map((review) => 
             pageType === "bookdetails"
                 ? generateBookDetailsReviewHTML(review, currentUser) // bookdetails용 HTML 생성
-                : generateProfileReviewHTML(review) // profile용 HTML 생성
+                : generateProfileReviewHTML(review, currentUser) // profile용 HTML 생성
         );
-        
-        // 다음 페이지가 있는지 확인
-        const hasMore = reviewPage * limit < totalReviews;
-        console.log(`${hasMore}${reviewPage}, ${limit}, ${totalReviews}`)
         
         res.status(200).json({ reviews: reviewHTMLs, currentUser, currentPage: reviewPage, hasMore }); // 현재 사용자 정보 전달
     } catch (error) {

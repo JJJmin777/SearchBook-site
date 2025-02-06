@@ -8,6 +8,7 @@ export const getUserProfile = async(req, res) => {
         const { userId } = req.params;
         const query = req.query.query || null; // 검색 쿼리
         const page = parseInt(req.query.page || "1"); // 현재 리뷰 페이지
+        const limit = 5; // 기본으로 불러올 리뷰 개수
 
         // 초기 리뷰 15개만 로드 
 
@@ -21,12 +22,21 @@ export const getUserProfile = async(req, res) => {
         // 최신순으로 15개 리뷰 로드 
         const reviews = await Review.find({ author: userId })
             .populate({ path: 'book', select: 'title image author' }) // 리뷰에 연결된 책 제목이랑~ 불러오기
+            .populate({ path: 'author', select: 'id' })
             .sort({ createdAt: -1 }) // 최신순
-            .limit(15);
+            .limit(limit + 1); // limit + 1개 가져오기
+
+        // 다음 리뷰가 있는지 확인
+        const hasMore = reviews.length > limit;
+
+        // limit 개수만큼만 반환 (초과 데이터 제거)
+        const reviewToSend = hasMore ? reviews.slice(0, limit) : reviews;
         
         const userTotalReviews = user.reviews.length; // 총 리뷰 갯수
 
-        res.render('profile/show', { user, reviews, currentUser: req.user, userId, userTotalReviews, query, currentPage: page});
+        res.render('profile/show', { 
+            user, reviews: reviewToSend, hasMore, currentUser: req.user, userId, userTotalReviews, query, currentPage: page
+        });
     } catch(error) {
         console.error('Error fetching profile:', error);
         req.flash('error', 'Could not load profile. Please try again.??');
@@ -52,7 +62,7 @@ export const searchUserBooks = async (req, res) => {
             .populate({
                 path: 'book',
                 select: 'title image author' // 필요한 책 데이터
-            });
+            })
 
         // 검색어가 있는 경우 자바스크립트에서 필터링
         if (query) {
@@ -64,7 +74,9 @@ export const searchUserBooks = async (req, res) => {
 
         const userTotalReviews = reviews.length; // 검색된 리뷰 갯수
  
-        res.render('profile/show', { user, reviews, currentUser: req.user, userId, query: req.query.query, userTotalReviews });
+        res.render('profile/show', { 
+            user, reviews, hasMore: null, currentUser: req.user, userId, query: req.query.query, userTotalReviews 
+        });
     } catch (error) {
         console.error(error);
         req.flash('Failed to load reviews');

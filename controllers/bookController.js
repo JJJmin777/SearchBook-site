@@ -52,12 +52,13 @@ export const saveBook = async (req, res) => {
 // 책 상세 페이지
 export const getBookDetails = async (req, res) => {
     try {
-        const bookId = req.params.id
+        const bookId = req.params.id;
+        const limit = 2; // 기본으로 불러올 리뷰 개수
 
         // 책 데이터와 기본 정렬된 리뷰를 가져옵니다 .
         const book = await Book.findById(bookId); // 책 정보만 가져오기
 
-        // 좋아요 순으로 정렬된 리뷰에서 10개만 가져오기
+        // 좋아요 순으로 정렬된 리뷰에서 limi + 1개 가져오기 (추가 리뷰 확인용)
         const reviews = await Review.find({ book: bookId })
             .populate('author', 'username profilePicture') // 작성자 정보 포함
             .populate({
@@ -65,14 +66,18 @@ export const getBookDetails = async (req, res) => {
                 populate: { path: 'author', select: 'username profilePicture' } // 댓글 작성자 정보 포함
             })
             .sort({ likesCount: -1, createdAt: -1 }) // 좋아요 순 정렬
-            .limit(2); // 최대 10개 가져오기
+            .limit(limit + 1); // limit + 1개 가져오기
 
-        // 리뷰를 하트순으로 정렬
-        let sortedReviews = reviews
+        // 다음 리뷰가 있는지 확인
+        const hasMore = reviews.length > limit;
+
+        // limit 개수만큼만 반환 (초과 데이터 제거)
+        const reviewToSend = hasMore ? reviews.slice(0, limit) : reviews;
 
         res.render('search/bookdetails', {
             book,
-            sortedReviews, //기본 정렬된 리뷰 전달
+            sortedReviews: reviewToSend, // 처음부터 limit개만 전달
+            hasMore, // 추가 리뷰가 있는지 여부 전달
             currentUser: req.user || null, // 현재 사용자 정보 전달 
         }); // EJS 템플릿 렌더링
     } catch (error) {

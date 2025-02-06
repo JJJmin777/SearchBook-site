@@ -1,6 +1,6 @@
 
 
-export function generateProfileReviewHTML(review) {
+export function generateProfileReviewHTML(review, currentUser) {
     return `
         <div class="review-card" data-id="${review._id}">
             <img src="${review.book.image}" alt="Book Image" class="book-image">
@@ -11,6 +11,9 @@ export function generateProfileReviewHTML(review) {
              <p class="review-body">${review.body}</p>
                 <button class="toggle-button">Read More</button>
                 <p class="review-date">Reviewed on: ${new Date(review.createdAt).toLocaleDateString()}</p>
+
+                <!-- 액션 버튼 (Edit/Delete) -->
+                ${generateReviewActionsHTML(review, currentUser)}
             </div>
         </div>
     `;
@@ -99,7 +102,7 @@ export function generateBookDetailsReviewHTML(review, currentUser) {
 export function generateReviewActionsHTML(review, currentUser) {
     if (!currentUser) return ''; // currentUser가 null이면 버튼을 렌더링하지 않음
 
-    if (review.author._id == currentUser._id) {
+    if (currentUser && review.author.equals(currentUser)) {
         return `<div class="action-buttons mt-3">
             <a href="/books/${review.book._id}/reviews/${review._id}/edit?returnurl=/books/${review.book._id}"
                 class="btn btn-sm btn-outline-warning me-2">Edit</a>

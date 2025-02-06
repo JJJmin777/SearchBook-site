@@ -49,6 +49,7 @@
                     <a href="/books/<%= review.book._id %>">
                         <h3>
                             <%= review.book.title %>
+                            <%= review.author._id %>
                         </h3>
                     </a>
                     <p class="author">
@@ -63,7 +64,29 @@
                     <button class="toggle-button">Read More</button>
                     <p class="review-date">Reviewed on: <%= review.createdAt.toLocaleDateString() %>
                     </p>
+
+                    <% if (currentUser && review.author.equals(currentUser)) { %>
+                        <div class="action-buttons mt-3">
+        
+                            <a href="/books/<%= review.book._id %>/reviews/<%= review._id %>/edit?returnurl=/books/<%= review.book._id %>"
+                                class="btn btn-sm btn-outline-warning me-2">Edit</a>
+        
+        
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
+                                data-bs-target="#deleteModal-<%= review._id %>">
+                                Delete
+                            </button>
+        
+                            <%- include('../partials/confirmDeleteModal', {
+                                itemId:review._id,
+                                itemName: 'review',
+                                deleteUrl:`/books/${review.book._id}/reviews/${review._id}?_method=DELETE`
+                            }) %>
+                        </div>
+        
+                        <% } %>
                 </div>
+                
             </div>
             <% }); %>
                 <% } else { %>
@@ -73,9 +96,9 @@
                     <% } %>
 </div>
 <!-- Load More Reviews Button: 검색 중이 아닐 때만 표시 -->
-<% if (!query) { %>
+<% if (!query && hasMore) { %>
     <button id="load-more-btn" class="btn btn-primary" 
-    data-user-id="<%= userId %>" data-page-type="profile" data-page="<%= currentPage + 1 %>">
+    data-user-id="<%= userId %>" data-page-type="profile">
     Load More Reviews</button>
 <% } %>
 

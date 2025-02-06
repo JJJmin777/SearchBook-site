@@ -48,8 +48,11 @@
                                     Delete
                                 </button>
 
-                                <%- include('../partials/confirmDeleteModal', { itemId: review._id, itemName: 'review' ,
-                                    deleteUrl: `/books/${review.book._id}/reviews/${review._id}?_method=DELETE` }) %>
+                                <%- include('../partials/confirmDeleteModal', { 
+                                    itemId: review._id, 
+                                    itemName: 'review' ,
+                                    deleteUrl: `/books/${review.book._id}/reviews/${review._id}?_method=DELETE` 
+                                    }) %>
                                     <!-- 오른쪽: 책 보기 버튼 -->
                                     <a href="/books/<%= review.book._id %>" class="btn btn-sm btn-primary">View Book
                                         Details</a>
