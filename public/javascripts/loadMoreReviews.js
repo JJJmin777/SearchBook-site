@@ -18,7 +18,7 @@ export async function loadMoreReviews(bookId, userId, lastReviewId, sortBy, page
         const data = await response.json();
 
         if (!data.reviews || data.reviews.length === 0) {
-            return { reviews: ["dsadasdsa"], hasMore: false }; // 데이터가 없을 경우 false 반환
+            return { reviews: [""], hasMore: false }; // 데이터가 없을 경우 false 반환
         }
 
         const reviewSection = document.getElementById("review-section");

@@ -1,5 +1,6 @@
 import { initializeReviewStates } from "./reviewtoggle.js";
 import { initializeLoadMoreButton } from "./reviewInfiniteButton.js"
+import { initializeBookReviewSearch } from "./bookReviewSearch.js"
 
 export async function sortReviews(event, sortBy, bookId) {
     const loadMoreButton = document.getElementById('load-more-btn');

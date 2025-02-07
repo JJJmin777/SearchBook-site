@@ -45,6 +45,7 @@
 
         <!-- 리뷰 작성 섹션 -->
         <div class="review-section mb-4">
+
             <!-- 로그인 상태: 리뷰 작성 창 활성화 -->
             <% if (currentUser) { %>
                 <h2>Leave Your Review</h2>
@@ -98,10 +99,19 @@
             <% } %>
         </div>
 
+        <!-- 리뷰 검색바 추가 -->
+        <div class="d-flex mb-3">
+            <input type="text" id="review-search" class="form-control me-2" placeholder="Search reviews..." />
+            <button id="review-search-btn" class="btn btn-primary">Search</button>
+        </div>
+
+        <!-- 검색어 표시 영역 -->
+        <div id="search-query-display" class="mt-3"></div>
+
         <!-- 리뷰 정렬 버튼 -->
         <div class="d-flex mb-3">
-            <button class="btn btn-outline-secondary me-2 active" data-sort="likes" data-book-id="<%= book._id %>">Most Liked</button>
-            <button class="btn btn-outline-secondary" data-sort="newest" data-book-id="<%= book._id %>">Newest First</button>
+            <button class="btn btn-outline-secondary review-sort-btn me-2 active" data-sort="likes" data-book-id="<%= book._id %>">Most Liked</button>
+            <button class="btn btn-outline-secondary review-sort-btn" data-sort="newest" data-book-id="<%= book._id %>">Newest First</button>
         </div>
 
         <!-- 리뷰 목록 -->
@@ -120,3 +130,4 @@
 <script type="module" src="/javascripts/reviewtoggle.js"></script>
 <script type="module" src="/javascripts/sortreview.js"></script>
 <script type="module" src="/javascripts/reviewInfiniteButton.js"></script>
+<script type="module" src="/javascripts/bookReviewSearch.js"></script>

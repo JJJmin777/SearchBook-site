@@ -1,5 +1,5 @@
 import express from 'express';
-import { handleSearchResults, saveBook, getBookDetails } from '../controllers/bookController.js'
+import { handleSearchResults, saveBook, getBookDetails, searchReviews } from '../controllers/bookController.js'
 
 const router = express.Router();
 
@@ -11,5 +11,8 @@ router.post('/save', saveBook)
 
 // 책 상세 페이지
 router.get('/:id', getBookDetails)
+
+// 책의 리뷰 검색 API
+router.get('/:id/reviews/search', searchReviews);
 
 export default router;

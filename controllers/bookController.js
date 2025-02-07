@@ -1,6 +1,7 @@
 import { searchBook } from "../utils/naverApi.js";
 import Book from '../models/book.js';
 import Review from "../models/review.js";
+import { generateBookDetailsReviewHTML } from "../utils/reviewHtmlGenerator.js"
 
 // 검색 결과
 export const handleSearchResults = async (req, res) => {
@@ -83,5 +84,35 @@ export const getBookDetails = async (req, res) => {
     } catch (error) {
         req.flash('error', 'Book not found');
         res.redirect('/')
+    }
+};
+
+// 책 리뷰중 검색 로직
+export const searchReviews = async (req, res) => {
+    try {
+        const { id: bookId } = req.params;
+        const { query } = req.query;
+        const currentUser = req.user || null;
+
+        const regex = new RegExp(query, "i"); // 대소문자 구분 없이 검색
+        const reviews = await Review.find({ book:bookId, body: regex })
+            .populate("author", "username profilePicture");
+
+        console.log(`zzz${reviews}`)
+        if (reviews.length === 0) {
+            return res.status(200).json({ reviews: [] }); // 검색 결과가 없으면 빈 배열 반환
+        }
+
+        // 검색된 리뷰를 HTML로 변환
+        const reviewHTMLs = reviews.map(review =>
+            generateBookDetailsReviewHTML(review, currentUser)
+        );
+        
+        console.log(`dasd${reviewHTMLs}`)
+
+        res.status(200).json({ reviews: reviewHTMLs });
+    } catch(error) {
+        console.error("Error searching reviews:", error);
+        res.status(500).json({ error: "Failed to search reviews" });
     }
 };
