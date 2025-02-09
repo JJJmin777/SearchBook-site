@@ -98,7 +98,6 @@ export const searchReviews = async (req, res) => {
         const reviews = await Review.find({ book:bookId, body: regex })
             .populate("author", "username profilePicture");
 
-        console.log(`zzz${reviews}`)
         if (reviews.length === 0) {
             return res.status(200).json({ reviews: [] }); // 검색 결과가 없으면 빈 배열 반환
         }
