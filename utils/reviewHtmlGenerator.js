@@ -8,7 +8,7 @@ export function generateProfileReviewHTML(review, currentUser) {
                 <a href="/books/${review.book._id}"><h3>${review.book.title}</h3></a>
                 <p class="author">${review.book.author}</p>
                 <p><strong>Rating:</strong> ${review.rating}/5 ⭐</p>
-             <p class="review-body">${review.body}</p>
+                <p class="review-body"><strong>Review:</strong>${review.body}</p>
                 <button class="toggle-button">Read More</button>
                 <p class="review-date">Reviewed on: ${new Date(review.createdAt).toLocaleDateString()}</p>
 

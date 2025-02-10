@@ -10,9 +10,9 @@ router.get('/results', handleSearchResults)
 router.post('/save', saveBook)
 
 // 책 상세 페이지
-router.get('/:id', getBookDetails)
+router.get('/:bookId', getBookDetails)
 
 // 책의 리뷰 검색 API
-router.get('/:id/reviews/search', searchReviews);
+router.get('/:bookId/reviews/search', searchReviews);
 
 export default router;

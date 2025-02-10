@@ -8,22 +8,15 @@ export const fetchReviews = async (req, res) => {
         const currentUser = req.user || null;
         const reviewPage = parseInt(req.query.currentPage || "1", 10); // 현재 페이지
 
-        // 검색 요청이면 limit을 적용하지 않고 전체 가져오기
-        const isSearchRequest = query && query.trim().length > 0;
-        const reviewLimit = isSearchRequest ? 0 : parseInt(limit) + 1; // 검색이면 제한 없음, 아니면 Load More용 limit
-
         // 필터 조건 설정
         let searchFilter = {};
         if (bookId) searchFilter.book = bookId;
         if (userId) searchFilter.author = userId;
-        if (query) {
-            searchFilter.body = { $regex: new RegExp(query, "i") }; // 대소문자 구분 없이 검색
-        }
 
         // 이미 로드된 리뷰 이후 데이터를 가져오기 위해 `lastReviewId`를 사용
         if (lastReviewId) {
             const lastReview = await Review.findById(lastReviewId);
-            console.log(lastReview.likesCount)
+
             if (lastReview) {
                 const lastLikesCount = lastReview.likesCount;
                 // 좋아요순 또는 최신순에 따라 조건 변경
@@ -44,8 +37,6 @@ export const fetchReviews = async (req, res) => {
         // 정렬 기준 설정
         const sortCondition = sortBy === 'likes' ? { likesCount: -1, createdAt: -1 } : { createdAt: -1 };
 
-        const totalReviews = isSearchRequest ? null : await Review.countDocuments({ book: bookId });
-
         // 리뷰 데이터 쿼리기준 조회
         const reviews = await Review.find(searchFilter)
             .populate('book', 'title image author')
@@ -60,9 +51,9 @@ export const fetchReviews = async (req, res) => {
                 })
             .sort(sortCondition) // 정렬 적용
             // .skip((reviewPage - 1 ) * limit) // 페이지에 따른 스킵 적용
-            .limit(reviewLimit); // 다음 리뷰가 있는지 확인하기 위해 +1 개수만큼 가져옴
+            .limit(parseInt(limit) + 1); // 다음 리뷰가 있는지 확인하기 위해 +1 개수만큼 가져옴
             // .lean();  데이터를 단순 객체 형태로 변환
-                      
+        
         // 다음 페이지 존재 여부 확인 (limit 개수보다 많으면 true)
         const hasMore = reviews.length > limit;
 

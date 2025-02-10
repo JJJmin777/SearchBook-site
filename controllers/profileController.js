@@ -10,8 +10,6 @@ export const getUserProfile = async(req, res) => {
         const page = parseInt(req.query.page || "1"); // 현재 리뷰 페이지
         const limit = 5; // 기본으로 불러올 리뷰 개수
 
-        // 초기 리뷰 15개만 로드 
-
         const user = await User.findById(userId);
 
         if (!user) {
@@ -32,7 +30,7 @@ export const getUserProfile = async(req, res) => {
         // limit 개수만큼만 반환 (초과 데이터 제거)
         const reviewToSend = hasMore ? reviews.slice(0, limit) : reviews;
         
-        const userTotalReviews = user.reviews.length; // 총 리뷰 갯수
+        const userTotalReviews = await Review.countDocuments({ author: userId }); // 총 리뷰 갯수
 
         res.render('profile/show', { 
             user, reviews: reviewToSend, hasMore, currentUser: req.user, userId, userTotalReviews, query, currentPage: page

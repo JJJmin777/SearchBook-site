@@ -1,26 +1,17 @@
-import { getActiveResourcesInfo } from "process";
 import { initializeReviewStates } from "./reviewtoggle.js";
-
-export function initializeBookReviewSearch() {
-    const searchInput = document.getElementById("review-search"); // 검색 입력창
-    const searchQueryDisplay = document.getElementById("search-query-display"); // 검색어 표시 영역
-    const reviewSortButtons = document.querySelectorAll(".review-sort-btn"); // 리뷰 정렬 버튼들
-
-    if (!searchInput || !searchQueryDisplay || !reviewSortButtons) return;
-
-    // 리뷰 정렬 버튼 클릭 시 검색어 표시 제거 & 입력창 초기화
-    reviewSortButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            searchQueryDisplay.innerHTML = ""; // 검색어 표시 제거
-            searchInput.value = ""; // 입력창 초기화
-        });
-    });
-}
+import { sortReviews } from "./sortreview.js";
 
 // 현재 활성화된 정렬 버튼 찾기 함수
 function getActiveSort() {
+    // 현재 활성화된 정렬 버튼 찾기
     const activeButton = document.querySelector(".review-sort-btn.active");
-    return activeButton ? activeButton.dataset.sort : "likes"; // 기본값: 좋아요순
+    const sortBy = activeButton ? activeButton.dataset.sort : "likes"; // 기본값: 좋아요순
+
+    // 현재 페이지(혹은 DOM)에서 bookId를 가지고 있는 요소 찾기
+    const bookElement = document.querySelector("[data-book-id]");
+    const bookId = bookElement ? bookElement.dataset.bookId : undefined;
+
+    return { sortBy, bookId };
 }
 
 // 리뷰 업데이트 함수 (검색어 & 정렬 기준 기반으로 요청)
@@ -29,13 +20,11 @@ async function updatedReviews() {
     const loadMoreButton = document.getElementById("load-more-btn");
     const searchQueryDisplay = document.getElementById("search-query-display");
     const searchInput = document.getElementById("review-search");
-    const bookElement = document.querySelector("[data-book-id]");
-    const bookId = bookElement ? bookElement.dataset.bookId : undefined;
 
-    if (!searchInput  || !searchQueryDisplay  || !reviewSection || !bookId) return;
+    if (!searchInput  || !searchQueryDisplay  || !reviewSection) return;
 
     const query = searchInput.value.trim();
-    const sortBy = getActiveSort(); // 현재 활성화된 정렬 버튼 기준
+    const { sortBy, bookId } = getActiveSort(); // 현재 활성화된 정렬 버튼 기준
 
     if (!query) {
         alert("Please enter a search term."); // 검색어가 없을 경우 알림
@@ -43,7 +32,7 @@ async function updatedReviews() {
     }
 
     try {
-        const response = await fetch(`/books/${bookId}/reviews/search?query=${query}`);
+        const response = await fetch(`/books/${bookId}/reviews/search?query=${encodeURIComponent(query)}&sortBy=${sortBy}`);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -76,43 +65,60 @@ async function updatedReviews() {
 
     } catch (error) {
         console.error("Error fetching search results:", error);
+        alert("An error occurred while fetching reviews.");
     }
 }
 
 // 검색어 X 버튼 클릭 시 기존 리뷰 목록 복원
 function attachClearSearchEvent() {
     const clearSearchButton = document.getElementById("clear-search-btn");
+    const searchQueryDisplay = document.getElementById("search-query-display");
+    const searchInput = document.getElementById("review-search"); 
+
+    const { sortBy, bookId } = getActiveSort();
     
     if (clearSearchButton) {
-        clearSearchButton.addEventListener("click", async () => {
+        clearSearchButton.addEventListener("click", async (event) => {
             searchQueryDisplay.innerHTML = ""; // 검색어 표시 제거
             searchInput.value = ""; // 입력창 초기화
-            await resetReviews(); // 기존 리뷰 목록으로 복원
+
+            sortReviews(event, sortBy, bookId) // 기존 리뷰 목록으로 복원
         });
     }
 }
 
-// 기존 리뷰 목록 복원 함수
-async function resetReviews() {
-    const reviewSection = document.getElementById("review-section");
-    const bookElement = document.querySelector("[data-book-id]");
-    const bookId = bookElement ? bookElement.dataset.bookId : undefined;
-
-    const sortBy = getActiveSort(); // 현재 활성화된 정렬 버튼 기준
-    
-    if (!reviewSection || !bookId) return;
-
-    try {
-        const response = await fetch(`/api/reviews?bookId=${bookId}&sortBy=${sortBy}`)
-    }
-}
-
+// `DOMContentLoaded` 안에서 함수들 사용
 document.addEventListener("DOMContentLoaded", () => {
     
     const searchButton = document.getElementById("review-search-btn");
-    
-    
-    
+    const reviewSortButtons = document.querySelectorAll(".review-sort-btn");
 
+    if (searchButton) {
+        searchButton.addEventListener("click", updatedReviews);
+    }
     
+    if (reviewSortButtons) {
+        reviewSortButtons.forEach(button => {
+            button.addEventListener("click", (event) => {
+                reviewSortButtons.forEach(btn => btn.classList.remove("active"));
+                button.classList.add("active");
+
+                const sortBy = button.dataset.sort;
+                const bookId = button.dataset.bookId;
+
+                if (!bookId) {
+                    console.error("Book ID is missing");
+                    return;
+                }
+
+                document.getElementById("search-query-display").innerHTML = ""; // 검색어 제거
+                document.getElementById("review-search").value = ""; // 입력창 초기화
+                
+                sortReviews(event, sortBy, bookId)
+            });
+        });
+    }
+
+     // 검색어 삭제 버튼 이벤트 추가
+    attachClearSearchEvent();
 });

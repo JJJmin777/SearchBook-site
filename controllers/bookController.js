@@ -53,7 +53,7 @@ export const saveBook = async (req, res) => {
 // 책 상세 페이지
 export const getBookDetails = async (req, res) => {
     try {
-        const bookId = req.params.id;
+        const bookId = req.params.bookId;
         const limit = 2; // 기본으로 불러올 리뷰 개수
 
         // 책 데이터와 기본 정렬된 리뷰를 가져옵니다 .
@@ -90,13 +90,35 @@ export const getBookDetails = async (req, res) => {
 // 책 리뷰중 검색 로직
 export const searchReviews = async (req, res) => {
     try {
-        const { id: bookId } = req.params;
-        const { query } = req.query;
+        const bookId = req.params.bookId;
+        const { query, sortBy } = req.query;
         const currentUser = req.user || null;
 
-        const regex = new RegExp(query, "i"); // 대소문자 구분 없이 검색
-        const reviews = await Review.find({ book:bookId, body: regex })
-            .populate("author", "username profilePicture");
+        // 검색 요청 필터링
+        if (!query || query.trim().length === 0){
+            return res.status(400).json({ error: "검색어를 입력하세요." });
+        }
+
+        const searchFilter = {
+            book: bookId,
+            body: { $regex: new RegExp(query, "i") }, // 검색 필터 적용 (대소문자 구분 없이 검색)
+        }
+
+        // 정렬 기준 적용
+        const sortCondition = sortBy === 'likes' ? { likesCount: -1, createdAt: -1 } : { createdAt: -1 };
+
+        const reviews = await Review.find(searchFilter)
+            .populate('book', 'title image author')
+            .populate('author', 'username profilePicture') // 작성자 정보 가져오기
+            .populate({
+                path: 'comments', // 리뷰의 댓글
+                populate: {
+                    path: 'author', // 댓글 작성자
+                    select: 'username profilePicture', // 필요한 필드만 가져오기
+                },
+                select: 'body author createdAt', // 댓글의 본문 및 작성자, 작성 시간
+                })
+            .sort(sortCondition) // 정렬 적용
 
         if (reviews.length === 0) {
             return res.status(200).json({ reviews: [] }); // 검색 결과가 없으면 빈 배열 반환
@@ -106,8 +128,6 @@ export const searchReviews = async (req, res) => {
         const reviewHTMLs = reviews.map(review =>
             generateBookDetailsReviewHTML(review, currentUser)
         );
-        
-        console.log(`dasd${reviewHTMLs}`)
 
         res.status(200).json({ reviews: reviewHTMLs });
     } catch(error) {
