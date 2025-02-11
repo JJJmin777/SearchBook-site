@@ -124,6 +124,22 @@
     justify-content: space-between; /* 텍스트와 버튼 간격 조정 */
 }
 
+/* ✅ 책 제목 스타일 */
+.book-title-link {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #2C5F2D; /* 진한 초록색 */
+    font-weight: bold; /* 글씨 굵게 */
+    font-size: 1.4rem; /* 글씨 크기 */
+    transition: color 0.3s ease-in-out; /* 색상 변경 애니메이션 */
+}
+
+/* ✅ 마우스 호버 시 색상 변경 */
+.book-title-link:hover {
+    color: #74C365; /* 밝은 초록색 */
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
+
 /* 텍스트 정렬 */
 .review-content h3 {
     font-size: 1.2rem;

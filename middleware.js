@@ -32,7 +32,7 @@ export const isReviewAuthor = async (req, res, next) => {
 // 유저 확인
 export const isUserAuthorized = async (req, res , next) => {
     const { userId } = req.params;
-    console.log(`${req.user._id}dkdkdkdkdkdkdkddkdk`)
+    // console.log(`${req.user._id}dkdkdkdkdkdkdkddkdk`)
 
     // 현재 로그인한 사용자의 ID와 요청된 userId가 같은지 확인
     if (req.user._id.toString() !== userId) {

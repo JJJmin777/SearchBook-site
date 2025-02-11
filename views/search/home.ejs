@@ -1,27 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search</title>
-
-    <link rel="stylesheet" href="/stylesheets/home.css">
-
+  <meta charset="UTF-8">
+  <title>Book Reviews</title>
+  <!-- 외부 CSS 연결 -->
+  <link rel="stylesheet" href="/stylesheets/home.css">
 </head>
-
 <body>
-    <div class="search-container">
-        <h1>Search Book</h1>
-        <form action="/books/results" method="GET">
-            <!-- <label for="searchQuery">Search Book</label> -->
-            <input type="text" placeholder="Enter book title..." id="searchQuery" name="bookTitle" class="search-input">
-            <br>
-            <button class="btn btn-success search-button">
-                Search
-            </button>
-        </form>
-    </div>
-</body>
+  <!-- 검색 영역 -->
+  <div class="search-container">
+    <h1>Search Book</h1>
+    <form action="/books/results" method="GET">
+      <input
+        type="text"
+        placeholder="Enter book title..."
+        id="searchQuery"
+        name="bookTitle"
+        class="search-input"
+      />
+      <button class="search-button">Search</button>
+    </form>
+  </div>
 
+  <!-- 최근 리뷰 영역 -->
+  <section class="recent-reviews">
+    <h2>Recent Reviews</h2>
+    <% if (recentReviews && recentReviews.length > 0) { %>
+      <ul>
+        <% recentReviews.forEach(review => { %>
+          <li>
+            <!-- 책 제목을 누르면 해당 책 상세 페이지(/books/:id)로 이동하도록 링크 처리 -->
+            <h3>
+              <a
+                href="/books/<%= review.book?._id %>"
+                class="book-link"
+              >
+                <%= review.book?.title || "Untitled Book" %>
+              </a>
+            </h3>
+            <span class="review-meta">
+              by <%= review.author?.username || "Anonymous" %>,
+              <%= new Date(review.createdAt).toLocaleDateString() %>
+            </span>
+            <p>
+              <%= review.body ? review.body.substring(0, 100) : '' %>...
+              <!-- 100자까지 미리보기 -->
+            </p>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No recent reviews yet.</p>
+    <% } %>
+  </section>
+</body>
 </html>

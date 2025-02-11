@@ -22,6 +22,7 @@ import flash from 'connect-flash';
 import methodOverride from 'method-override';
 
 // 라우터 가져오기
+import homeRouter from './routes/home.js';
 import bookRouters from './routes/bookRouter.js';
 import userRouters from './routes/usersRouter.js';
 import reviewRouters from './routes/reviewsRouter.js';
@@ -95,17 +96,12 @@ app.use(express.urlencoded({ extended: true })); // 폼 데이터 파싱
 app.use('/uploads', express.static('uploads'));
 
 // 라우터 등록
+app.use('/', homeRouter);
 app.use('/', userRouters);
 app.use('/books', bookRouters); // 만약 movie나 drama등이 리뷰로 추가 될 수 있어서 books로 묶음
 app.use('/books/:bookId/reviews', reviewRouters);
 app.use('/profile', profileRouters);
 app.use('/', apiReviewRouter);
 app.use('/admin', adminRouter);
-
-
-// 홈 페이지
-app.get('/', (req, res) => {
-    res.render('search/home'); // 검색 폼
-});
 
 export default app;

@@ -11,7 +11,7 @@ export async function loadMoreReviews(bookId, userId, lastReviewId, sortBy, page
         if (pageType) queryParams.append("pageType", pageType);
         if (currentPage) queryParams.append("currentPage", currentPage);
 
-        console.log(queryParams.toString())
+        // console.log(queryParams.toString())
         const response = await fetch(`/api/reviews?${queryParams.toString()}`);
         if (!response.ok) throw new Error(`Failed to load more reviews: ${response.statusText}`);
 

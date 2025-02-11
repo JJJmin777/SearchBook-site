@@ -1,6 +1,6 @@
 /* Footer 기본 스타일 */
 footer {
-    background-color: #40b2f0; /* 푸터 배경색 */
+    background-color: #2C5F2D; /* 푸터 배경색 */
     color: #ffffff; /* 글씨 색상 */
     text-align: center;
     padding: 1rem 0; /* 위아래 여백 */
@@ -12,12 +12,12 @@ footer p {
 }
 
 footer a {
-    color: #ffdd57; /* 링크 색상 */
+    color: #ffffff; /* 링크 색상 */
     text-decoration: underline; /* 밑줄 추가 */
 }
 
 footer a:hover {
-    color: #ffffff; /* 호버 시 색상 변경 */
+    color: #ffdd57; /* 호버 시 색상 변경 */
     text-decoration: none; /* 호버 시 밑줄 제거 */
 }
 

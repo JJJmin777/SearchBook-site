@@ -21,7 +21,7 @@
                         <p class="card-text"><strong><i class="fas fa-pen"></i> Author:</strong> <%= book.author %></p>
                         <p class="card-text"><strong>Publisher:</strong> <%= book.publisher %></p>
                         <p class="card-text"><strong>Price:</strong> ₩<%= book.price %></p>
-                        <a href="<%= book.link %>" target="_blank" class="btn btn-primary">Buy this book</a>
+                        <a href="<%= book.link %>" target="_blank" class="btn btn-success">Buy this book</a>
                     </div>
                 </div>
             </div>
@@ -83,7 +83,7 @@
             <!-- 로그아웃 상태: 리뷰 작성 창 비활성화 -->
             <% } else { %>
                 <div class="d-flex justify-content-start mb-3">
-                    <a href="/login?returnurl=/books/<%= book._id %>" class="btn btn-primary me-2">Login</a>
+                    <a href="/login?returnurl=/books/<%= book._id %>" class="btn btn-success me-2">Login</a>
                     <a href="/register" class="btn btn-secondary">Register</a>
                 </div>
                 <fieldset disabled>
@@ -102,7 +102,7 @@
         <!-- 리뷰 검색바 추가 -->
         <div class="d-flex mb-3">
             <input type="text" id="review-search" class="form-control me-2" placeholder="Search reviews..." />
-            <button id="review-search-btn" class="btn btn-primary">Search</button>
+            <button id="review-search-btn" class="btn btn-success">Search</button>
         </div>
 
         <!-- 검색어 표시 영역 -->

@@ -2,10 +2,11 @@ import { initializeReviewStates } from "./reviewtoggle.js";
 import { initializeLoadMoreButton } from "./reviewInfiniteButton.js"
 
 export async function sortReviews(event, sortBy, bookId) {
-    const loadMoreButton = document.getElementById('load-more-btn');
 
     try {
-        const pageType = loadMoreButton.dataset.pageType;
+        const loadMoreButton = document.getElementById('load-more-btn');
+
+        const pageType = loadMoreButton?.dataset.pageType || "bookdetails"; // 기본값 "bookdetails"
 
         const response = await fetch(`/books/${bookId}/reviews?sort=${sortBy}`);
 
@@ -27,12 +28,13 @@ export async function sortReviews(event, sortBy, bookId) {
         initializeReviewStates();
 
         // Load More 버튼 초기화
-        initializeLoadMoreButton(loadMoreButton, pageType);
-
+        if (loadMoreButton) {
+            initializeLoadMoreButton(loadMoreButton, pageType);
+        }
+        
         // console.log('Reviews sorted successfully');
     } catch (err) {
         console.error('Error in sortReviews:', err);
-        req.flash('error', 'Failed to sort reviews. Please try again later.');
     }
 }
 

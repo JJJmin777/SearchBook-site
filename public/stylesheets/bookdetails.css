@@ -158,14 +158,38 @@
     }
 }
 
-img.profile-picture {
-    width: 77px;
-    height: 77px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #4CAF50;
-    margin-bottom: 15px;
+/* ✅ 프로필 링크 스타일 */
+.review-card .card-title a {
+    font-weight: bold; /* 굵은 글씨 */
+    font-size: 1.2rem; /* 적당한 크기 */
+    text-decoration: none; /* 밑줄 제거 */
+    color: #2C5F2D; /* 진한 초록색 */
+    transition: color 0.3s ease-in-out; /* 부드러운 색상 전환 */
 }
+
+/* ✅ 마우스 호버 시 색상 변경 */
+.review-card .card-title a:hover {
+    color: #74C365; /* 밝은 초록색 */
+    text-decoration: underline; /* 호버 시 밑줄 추가 */
+}
+
+/* ✅ 프로필 이미지 스타일 (더 크게 조정) */
+.profile-picture {
+    width: 70px; /* 기존보다 10px 증가 */
+    height: 70px;
+    border-radius: 50%; /* 동그란 모양 유지 */
+    object-fit: cover; /* 이미지 비율 유지 */
+    margin-right: 18px; /* 오른쪽 여백 */
+    vertical-align: middle; /* 텍스트와 정렬 */
+}
+
+/* ✅ a 태그와 프로필 사진 정렬 */
+.review-card .card-title {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 18px; /* 프로필 사진과 닉네임 간 간격 */
+}
+
 
 
 /* 접기/펼치기 스타일 */

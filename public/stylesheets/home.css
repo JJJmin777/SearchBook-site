@@ -1,48 +1,113 @@
+/* 전체 폰트, 기본 스타일 */
 body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
     background-color: #f5f5f5;
-}
-
-/* 검색 컨테이너 */
-.search-container {
-    text-align: center;
-}
-
-/* 제목 스타일 */
-.search-container h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
     color: #333;
-}
-
-/* 검색 입력창 */
-.search-input {
-    width: 60%;
-    padding: 15px;
+  }
+  
+  /* 검색 영역 스타일 */
+  .search-container {
+    padding: 2rem;
+    text-align: center;
+    background-color: #fafafa;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .search-container h1 {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: #333;
+  }
+  
+  .search-input {
+    width: 300px;
+    padding: 0.5rem 1rem;
     font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 25px;
+    border-radius: 4px;
     outline: none;
-    transition: all 0.3s ease;
-}
-
-.search-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-/* 검색 버튼 */
-.search-button {
-    padding: 15px 30px;
+    margin-right: 0.5rem;
+    transition: border-color 0.2s;
+  }
+  
+  .search-input:focus {
+    border-color: #4caf50; /* 포커스 시 색상 강조 */
+  }
+  
+  .search-button {
+    padding: 0.6rem 1.2rem;
     font-size: 1rem;
-    margin-left: 10px;
-    background-color: #007bff;
-    color: #fff;
     border: none;
-    border-radius: 25px;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.search-button:hover {
-    background-color: #0056b3;
-}
+    transition: background-color 0.2s;
+  }
+  
+  .search-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* 최근 리뷰 영역 스타일 */
+  .recent-reviews {
+    max-width: 700px;
+    margin: 2rem auto; /* 화면 가운데 정렬 */
+    background-color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .recent-reviews h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #4caf50;
+    display: inline-block;
+    padding-bottom: 0.3rem;
+    color: #333;
+  }
+  
+  .recent-reviews ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .recent-reviews li {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .recent-reviews li:last-child {
+    border-bottom: none;
+  }
+  
+  /* 책 제목 링크 스타일 */
+  .book-link {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.2s;
+  }
+  
+  .book-link:hover {
+    color: #4caf50;
+    text-decoration: underline;
+  }
+  
+  .review-meta {
+    display: block;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #999;
+  }
+  
+  .recent-reviews p {
+    margin: 0.5rem 0 0 0;
+    color: #555;
+    line-height: 1.4;
+  }
+  

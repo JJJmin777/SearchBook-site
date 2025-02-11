@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // 리뷰 추가 로드
                 const { reviews, hasMore } = await loadMoreReviews(bookId, userId, lastReviewId, sortBy, pageType, currentPage);
-                console.log(reviews, hasMore)
+                // console.log(reviews, hasMore)
 
                 // **여기서 새로 로드된 리뷰에 대해 초기화**
                 initializeReviewStates();

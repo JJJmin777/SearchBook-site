@@ -16,7 +16,7 @@ export const handleSearchResults = async (req, res) => {
 
         res.render('search/results', { books, query }); // 결과 페이지 렌더링
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 
 };
@@ -45,7 +45,7 @@ export const saveBook = async (req, res) => {
         }
         res.redirect(`/books/${book._id}`);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).send('Error saving the book');
     }
 };

@@ -5,7 +5,7 @@ export function generateProfileReviewHTML(review, currentUser) {
         <div class="review-card" data-id="${review._id}">
             <img src="${review.book.image}" alt="Book Image" class="book-image">
             <div class="review-content">
-                <a href="/books/${review.book._id}"><h3>${review.book.title}</h3></a>
+                <a href="/books/${review.book._id}" class="book-title-link"><h3>${review.book.title}</h3></a>
                 <p class="author">${review.book.author}</p>
                 <p><strong>Rating:</strong> ${review.rating}/5 ⭐</p>
                 <p class="review-body"><strong>Review:</strong>${review.body}</p>
