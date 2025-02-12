@@ -15,8 +15,8 @@
                 <%= user.bio || 'No bio yet.' %>
             </p>
             <% if (currentUser && currentUser._id.toString()===user._id.toString()) { %>
-                <a href="/profile/<%= user._id %>/edit" class="btn btn-primary">정보 수정</a>
-                <a href="/change-password" class="btn btn-primary">비밀번호 변경</a>
+                <a href="/profile/<%= user._id %>/edit" class="btn btn-success">정보 수정</a>
+                <a href="/change-password" class="btn btn-success">비밀번호 변경</a>
                 <% } %>
         </div>
 </div>
@@ -25,7 +25,7 @@
 <div class="search-from">
     <form class="search-form" method="GET" action="/profile/<%= user._id %>/search">
         <input type="text" name="query" placeholder="Search by book title or author" class="search-input">
-        <button type="submit" class="btn btn-primary">Search</button>
+        <button type="submit" class="btn btn-success">Search</button>
     </form>
 </div>
 

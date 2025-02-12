@@ -5,7 +5,7 @@ import createAdminUser from './utils/adminSeeder.js';
 
 dotenv.config();
 
-const dbUrl ='mongodb://127.0.0.1:27017/search-book'; //  process.env.DB_URL
+const dbUrl = process.env.DB_URL; //   'mongodb://127.0.0.1:27017/search-book'
 
 mongoose.set('strictQuery', true);
 mongoose.connect(dbUrl)
