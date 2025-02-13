@@ -5,7 +5,11 @@ import createAdminUser from './utils/adminSeeder.js';
 
 dotenv.config();
 
-const dbUrl = process.env.DB_URL; //   'mongodb://127.0.0.1:27017/search-book'
+const isProduction = process.env.NODE_ENV === "production";
+
+const dbUrl = isProduction
+    ? process.env.DB_URL // 배포 환경에서는 환경 변수에서 가져오기
+    : 'mongodb://127.0.0.1:27017/search-book'; // 로컬 환경에서 사용
 
 mongoose.set('strictQuery', true);
 mongoose.connect(dbUrl)

@@ -4,6 +4,8 @@ import Book from "../models/book.js"
 import sendEmail from "../utils/sendEmail.js";  // 이메일 전송 유틸리티
 import crypto from 'crypto';
 
+const isProduction = process.env.NODE_ENV === "production";
+
 // 등록 페이지
 export const renderRegister = (req, res) => {
     res.render('users/register', {
@@ -29,8 +31,11 @@ export const register = async (req, res, next) => {
         const registerUser = await User.register(user, password);
 
         // 인증 이메일 링크 생성
-        const verificationLink = `https://seachbook-site.onrender.com/verify-email?token=${user.emailToken}`; // http://localhost:3000/verify-email?token=${user.emailToken}
+        const verificationLink = isProduction
+        ? `https://seachbook-site.onrender.com/verify-email?token=${user.emailToken}`
+        : `http://localhost:3000/verify-email?token=${user.emailToken}`;
         const subject = 'Verify Your Email';
+        console.log(verificationLink)
 
         // HTML 이메일 본문 생성
         const html = `
