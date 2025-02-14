@@ -22,7 +22,7 @@ import flash from 'connect-flash';
 import methodOverride from 'method-override';
 
 // 라우터 가져오기
-import homeRouter from './routes/home.js';
+import homeRouter from './routes/homeRouter.js';
 import bookRouters from './routes/bookRouter.js';
 import userRouters from './routes/usersRouter.js';
 import reviewRouters from './routes/reviewsRouter.js';

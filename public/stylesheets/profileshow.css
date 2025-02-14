@@ -17,14 +17,14 @@
 }
 
 .search-form .search-input:focus {
-    border-color: #4CAF50;
+    border-color: #2C5F2D;
     box-shadow: 0 0 8px rgba(76, 240, 64, 0.5);
 }
 
 .search-form .btn {
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
-    background-color: #4CAF50;
+    background-color: #2C5F2D;
     color: white;
     border: none;
     border-radius: 0 4px 4px 0;
@@ -33,7 +33,7 @@
 }
 
 .search-form .btn:hover {
-    background-color: #45a049;
+    background-color: #386A38;
 }
 
 /* 프로필 섹션 */
@@ -55,13 +55,13 @@
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 15px;
-    border: 3px solid #4CAF50;
+    border: 3px solid #2C5F2D;
 }
 
 .profile-info h2 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    color: #4CAF50;
+    color: #2C5F2D;
 }
 
 .profile-info p {
@@ -73,7 +73,7 @@
     display: inline-block;
     margin-top: 10px;
     padding: 8px 15px;
-    background-color: #4CAF50;
+    background-color: #2C5F2D;
     color: #fff;
     border-radius: 5px;
     text-decoration: none;
@@ -161,6 +161,28 @@
     flex-wrap: wrap;
     margin-top: 10px;
 }
+
+.btn-custom-green {
+    background-color: #2C5F2D;
+    color: #fff !important;
+    border: none;
+    /* Bootstrap가 기본적으로 .btn 클래스에 border를 지정할 수도 있으므로, 
+       필요하다면 !important를 붙일 수 있음. */
+  
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    /* 모서리 둥글림 - 공용 버튼 스타일이라면 필요한 값으로 조정 */
+  
+    text-decoration: none;  /* 링크 밑줄 제거 */
+    display: inline-block;  /* 버튼 형태 유지 */
+}
+  
+.btn-custom-green:hover {
+    background-color: #386A38; /* hover 시 조금 더 밝은 녹색 */
+    color: #fff !important;
+    text-decoration: none;
+}
+  
 
 /* 리뷰 본문 */
 .review-body {

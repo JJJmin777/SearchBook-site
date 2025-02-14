@@ -12,7 +12,7 @@
 .page-title {
     text-align: center;
     font-size: 1.8rem;
-    color: #4CAF50;
+    color: #2C5F2D;
     margin-bottom: 20px;
     font-weight: bold;
 }
@@ -65,7 +65,7 @@ textarea.form-control {
     object-fit: cover;
     border-radius: 50%;
     margin: 10px 0;
-    border: 3px solid #4CAF50;
+    border: 3px solid #2C5F2D;
 }
 
 /* 체크박스 스타일 */
@@ -97,11 +97,11 @@ input[type="checkbox"] {
 }
 
 .btn-primary {
-    background-color: #4CAF50;
+    background-color: #2C5F2D;
     color: #fff;
     transition: background-color 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #388E3C;
+    background-color: #386A38;
 }

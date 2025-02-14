@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-export const commentSchema = new Schema({
+export const reportSchema = new Schema({
     review: { 
         type: Schema.Types.ObjectId,
         ref: "Review",
@@ -22,16 +22,11 @@ export const commentSchema = new Schema({
         type: String,
         required: true
     },
-    status: {
-        type: String,
-        enum: ["Pending", "Reviewed", "Dismissed"],
-        default: "Pending"
-    },
     createdAt: {
         type: Date,
         default: Date.now
     },
 });
 
-const Report = mongoose.model("Report", ReportSchema);
+const Report = mongoose.model("Report", reportSchema);
 export default Report;

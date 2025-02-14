@@ -2,6 +2,7 @@ import Review from "../models/review.js";
 import User from "../models/user.js";
 import Book from "../models/book.js"
 import Comment from "../models/comment.js";
+import Report from "../models/report.js"
 import getBookAverageRating from '../utils/getBookAverageRating.js';
 
 // 관리자 대시보드 페이지 렌더링
@@ -19,8 +20,10 @@ export const getAdminDashboard = async (req, res) => {
         page = parseInt(page) || 1;
         let reviews = [];
         let users = [];
+        let reports = [];
         let totalreviews = 0;
         let totalUsers = 0;
+        let totalReports = 0;
 
         if (type === "reviews" || !type) {
             const reviewQuery = search
@@ -53,17 +56,44 @@ export const getAdminDashboard = async (req, res) => {
                 .limit(PAGE_SIZE);
         }
 
+        if (type === "reports" || !type) {
+            const reportQuery = search
+                ? { reason: { $regex: search, $options: "i" } }
+                : {};
+
+            totalReports = await Report.countDocuments(reportQuery);
+            reports = await Report.find(reportQuery)
+                .populate("reportedBy", "username email")
+                .populate({
+                    path: "review",
+                    populate: { path: "author", select: "username email" } // 리뷰 작성자 정보 포함
+                })
+                .sort(sort === "oldest" ? { createdAt: 1 } : { createdAt: -1 })
+                .skip((page - 1) * PAGE_SIZE)
+                .limit(PAGE_SIZE);
+        }
+        console.log("📌 Admin Dashboard Type:", type);
+        console.log("📌 Fetched Reports:", reports);
+
+        const totalPages = type === "users" 
+                ? Math.ceil(totalUsers / PAGE_SIZE) 
+                : type === "reports"
+                ? Math.ceil(totalReports / PAGE_SIZE)
+                : Math.ceil(totalreviews / PAGE_SIZE);
+
         // `search`와 `type` 변수를 EJS에 전달
         res.render("admin/dashboard", { 
             reviews, 
-            users, 
+            users,
+            reports, 
             search, 
             type,
             sort,
             page,
             totalreviews,
             totalUsers,
-            totalPages: type === "users" ? Math.ceil(totalUsers / PAGE_SIZE) : Math.ceil(totalreviews / PAGE_SIZE),
+            totalReports,
+            totalPages,
         });
     } catch(error) {
         console.error("❌ Error fetching admin dashboard data:", error);
@@ -109,5 +139,27 @@ export const deleteReviewByAdmin = async (req, res) => {
         console.error("❌ Error deleting review:", error);
         req.flash("error", "Failed to delete review.");
         res.redirect("/admin/dashboard");
+    }
+};
+
+// 리포트 삭제
+export const deleteReportByAdmin = async (req, res) => {
+    try {
+        if (!req.user || !req.user.isAdmin) {
+            req.flash("error", "Access denied.");
+            return res.redirect("/admin/dashboard");
+        }
+        
+        const reportId = req.params.reportId;
+
+        // 신고 데이터 삭제
+        await Report findByIdAndDelete(reportId);
+
+        req.flash("success", "Report deleted successfully.");
+        res.redirect("/admin/dashboard?type=reports"); // 신고 관리 페이지로 리디렉트
+    } catch (error) {
+        console.error("❌ Error deleting report:", error);
+        req.flash("error", "Failed to delete report.");
+        res.redirect("/admin/dashboard?type=reports");
     }
 };

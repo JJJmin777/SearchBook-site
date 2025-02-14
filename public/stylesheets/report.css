@@ -1,0 +1,55 @@
+/* ✅ Report 페이지 스타일 */
+.report-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.report-title {
+    text-align: center;
+    color: #d9534f; /* Bootstrap Danger Color */
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.report-info {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.report-textarea {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
+}
+
+.report-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.report-submit {
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+.report-submit:hover {
+    background-color: #c9302c;
+}
+
+.report-cancel {
+    background-color: #6c757d;
+    border-color: #545b62;
+}
+
+.report-cancel:hover {
+    background-color: #5a6268;
+}

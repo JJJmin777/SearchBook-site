@@ -1,4 +1,3 @@
-
 <link rel="stylesheet" href="/stylesheets/dashboard.css">
 
 <div class="container mt-4">
@@ -10,6 +9,7 @@
             <h4>관리 메뉴</h4>
             <button id="review-btn" class="btn btn-primary w-100 my-2">리뷰 관리</button>
             <button id="user-btn" class="btn btn-secondary w-100 my-2">유저 관리</button>
+            <button id="report-btn" class="btn btn-danger w-100 my-2">신고 관리</button>
         </div>
 
         <div class="content">
@@ -20,6 +20,7 @@
                     <select name="type" class="form-select">
                         <option value="reviews" <%= type === 'reviews' ? 'selected' : '' %>>리뷰</option>
                         <option value="users" <%= type === 'users' ? 'selected' : '' %>>유저</option>
+                        <option value="reports" <%= type === 'reports' ? 'selected' : '' %>>신고</option>
                     </select>
                     <select name="sort" class="form-select">
                         <option value="newest">최신순</option>
@@ -31,7 +32,7 @@
             </form>
 
             <!-- ✅ 리뷰 목록 -->
-            <div id="reviews-section" class="<%= type === 'users' ? 'hidden' : '' %>">
+            <div id="reviews-section" class="<%= type === 'reviews' ? '' : 'hidden' %>">
                 <h2>All Reviews</h2>
                 <table class="table table-bordered">
                     <thead>
@@ -68,7 +69,7 @@
                 </ul>
             </div>
             <!-- ✅ 유저 목록 -->
-            <div id="users-section" class="<%= (!type || type === 'reviews') ? 'hidden' : '' %>">
+            <div id="users-section" class="<%= type === 'users' ? '' : 'hidden' %>">
                 <h2>All Users</h2>
                 <table class="table table-bordered">
                     <thead>
@@ -98,7 +99,46 @@
                     <% } %>
                 </ul>
             </div>
+            <!-- ✅ 신고 목록 -->
+            <div id="reports-section" class="<%= type === 'reports' ? '' : 'hidden' %>">
+                <h2>Reported Reviews</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Reported By</th>
+                            <th>Review Content</th>
+                            <th>Report Reason</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% reports.forEach(report => { %>
+                            <tr>
+                                <td><%= report.reportedBy.username %> (<%= report.reportedBy.email %>)</td>
+                                <td class="break-word"><%= report.review.body %></td>
+                                <td class="break-word"><%= report.reason %></td>
+                                <td>
+                                    <form action="/admin/reports/<%= report._id %>/delete" method="POST">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete Report</button>
+                                    </form>
+                                    <form action="/admin/reviews/<%= report.review._id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="btn btn-sm btn-warning">Delete Review</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
 
+                <!-- ✅ 페이징 -->
+                <ul class="pagination">
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <li class="<%= page === i ? 'active' : '' %>">
+                            <a href="/admin/dashboard?type=reports&page=<%= i %>&search=<%= search %>&sort=<%= sort %>"><%= i %></a>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

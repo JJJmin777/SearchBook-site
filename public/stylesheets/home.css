@@ -40,7 +40,7 @@ body {
     padding: 0.6rem 1.2rem;
     font-size: 1rem;
     border: none;
-    background-color: #4caf50;
+    background-color: #2C5F2D;
     color: #fff;
     border-radius: 4px;
     cursor: pointer;
@@ -48,7 +48,7 @@ body {
   }
   
   .search-button:hover {
-    background-color: #45a049;
+    background-color: #386A38;
   }
   
   /* 최근 리뷰 영역 스타일 */

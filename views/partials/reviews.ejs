@@ -18,7 +18,7 @@
             <h6 class="card-subtitle mb-2 text-muted">Reviewed on: <%= review.createdAt.toLocaleDateString() %>
             </h6>
 
-            <!-- 좋아요 및 댓글 버튼 -->
+            <!-- 좋아요 및 댓글 버튼, report 버튼 -->
             <div class="d-flex align-items-center">
                 <button class="btn btn-sm btn-outline-primary like-button" data-book-id="<%= review.book._id %>"
                     data-review-id="<%= review._id %>"
@@ -36,6 +36,10 @@
                         <%= review.comments.length %>
                     </span>)
                 </button>
+                <a href="/books/<%= review.book._id %>/reviews/<%= review._id %>/report" 
+                    class="btn btn-sm btn-outline-danger ms-auto">
+                     🚨 Report
+                 </a>
             </div>
 
             <!-- 댓글 영역 -->

@@ -2,6 +2,7 @@ import express from 'express';
 import { createReview, deleteReview, toggleLike, addComment, getSortedReviews, deleteComment, renderEditReviewPage, updateReview } from '../controllers/reviewController.js';
 import { isLoggedIn, isReviewAuthor } from '../middleware.js';
 import catchAsync from '../utils/catchAsync.js';
+import { showReportPage, submitReport } from '../controllers/reportController.js';
 
 const router = express.Router({mergeParams: true});
 
@@ -28,5 +29,10 @@ router.post('/:reviewId/comments', addComment);
 // 코멘트 삭제
 router.delete('/:reviewId/comments/:commentId', isLoggedIn, deleteComment);
 
+// 신고 페이지 보여주기
+router.get("/:reviewId/report", isLoggedIn, showReportPage);
+
+// 신고 제출
+router.post("/:reviewId/report", isLoggedIn, submitReport);
 
 export default router

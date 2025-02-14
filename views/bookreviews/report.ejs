@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="/stylesheets/report.css">
+
+<div class="container report-container">
+    <h2 class="report-title">Report Review</h2>
+    <p class="report-info">
+        You're reporting a review by <strong><%= review.author.username %></strong> 
+        for the book "<strong><%= book.title %>"</strong>.
+    </p>
+
+    <form action="/books/<%= book._id %>/reviews/<%= review._id %>/report" method="POST" class="report-form">
+        <div class="mb-3">
+            <label for="reason" class="form-label">Reason for Reporting:</label>
+            <textarea class="form-control report-textarea" id="reason" name="reason" rows="4" required></textarea>
+        </div>
+
+        <div class="report-buttons">
+            <button type="submit" class="btn btn-danger report-submit">Submit Report</button>
+            <a href="/books/<%= book._id %>" class="btn btn-secondary report-cancel">Cancel</a>
+        </div>
+    </form>
+</div>

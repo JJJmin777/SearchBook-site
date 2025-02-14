@@ -75,6 +75,28 @@
     background-color: #bd2130;
 }
 
+.btn-custom-green {
+    background-color: #2C5F2D;
+    color: #fff !important;
+    border: none;
+    /* Bootstrap가 기본적으로 .btn 클래스에 border를 지정할 수도 있으므로, 
+       필요하다면 !important를 붙일 수 있음. */
+  
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    /* 모서리 둥글림 - 공용 버튼 스타일이라면 필요한 값으로 조정 */
+  
+    text-decoration: none;  /* 링크 밑줄 제거 */
+    display: inline-block;  /* 버튼 형태 유지 */
+}
+  
+.btn-custom-green:hover {
+    background-color: #386A38; /* hover 시 조금 더 밝은 녹색 */
+    color: #fff !important;
+    text-decoration: none;
+}
+  
+
 /* 전체 컨테이너를 Flexbox로 설정 */
 .book-container {
     display: flex; /* 가로 정렬 */

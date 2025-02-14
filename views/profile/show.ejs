@@ -6,7 +6,7 @@
             class="profile-picture">
         <div class="profile-info">
             <h2>
-                <a href="/profile/<%= user._id %>"><%= user.username %>'s Profile</a>
+                <a href="/profile/<%= user._id %>" class="btn-custom-green"><%= user.username %>'s Profile</a>
             </h2>
             <p><strong>Email:</strong>
                 <%= user.email %>
@@ -15,8 +15,8 @@
                 <%= user.bio || 'No bio yet.' %>
             </p>
             <% if (currentUser && currentUser._id.toString()===user._id.toString()) { %>
-                <a href="/profile/<%= user._id %>/edit" class="btn btn-success">정보 수정</a>
-                <a href="/change-password" class="btn btn-success">비밀번호 변경</a>
+                <a href="/profile/<%= user._id %>/edit" class="btn btn-custom-green">정보 수정</a>
+                <a href="/change-password" class="btn btn-custom-green">비밀번호 변경</a>
                 <% } %>
         </div>
 </div>
@@ -25,7 +25,7 @@
 <div class="search-from">
     <form class="search-form" method="GET" action="/profile/<%= user._id %>/search">
         <input type="text" name="query" placeholder="Search by book title or author" class="search-input">
-        <button type="submit" class="btn btn-success">Search</button>
+        <button type="submit" class="btn btn-custom-green">Search</button>
     </form>
 </div>
 
