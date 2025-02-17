@@ -151,9 +151,15 @@ export const deleteReportByAdmin = async (req, res) => {
         }
         
         const reportId = req.params.reportId;
+        const report = await Report.findById(reportId);
+
+        if (!report) {
+            req.flash("error", "Report not found.");
+            return res.redirect("/admin/dashboard");
+        }
 
         // 신고 데이터 삭제
-        await Report findByIdAndDelete(reportId);
+        await Report.findByIdAndDelete(reportId);
 
         req.flash("success", "Report deleted successfully.");
         res.redirect("/admin/dashboard?type=reports"); // 신고 관리 페이지로 리디렉트
