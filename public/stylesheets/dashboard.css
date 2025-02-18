@@ -5,3 +5,34 @@
 .break-word { word-break: break-word; }
 .pagination { display: flex; justify-content: center; list-style: none; padding: 0; }
 .pagination li { margin: 5px; }
+
+/* ✅ 신고 및 리뷰 삭제 버튼 스타일 */
+.delete-report-btn, .delete-review-btn {
+    width: 100px; /* 버튼 너비 */
+    padding: 5px 10px; /* 패딩 조정 */
+    font-size: 14px; /* 글자 크기 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* 🚨 신고 삭제 버튼 (빨간색) */
+.delete-report-btn {
+    background-color: #dc3545; /* Bootstrap Danger 색상 */
+    border: 1px solid #dc3545;
+    color: white;
+}
+
+.delete-report-btn:hover {
+    background-color: #c82333; /* 좀 더 어두운 빨강 */
+}
+
+/* 📝 리뷰 삭제 버튼 (노란색) */
+.delete-review-btn {
+    background-color: #ffc107; /* Bootstrap Warning 색상 */
+    border: 1px solid #ffc107;
+    color: black;
+}
+
+.delete-review-btn:hover {
+    background-color: #e0a800; /* 어두운 노랑 */
+}

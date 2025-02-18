@@ -118,12 +118,18 @@
                                 <td class="break-word"><%= report.review.body %></td>
                                 <td class="break-word"><%= report.reason %></td>
                                 <td>
-                                    <form action="/admin/reports/<%= report._id %>?_method=DELETE" method="POST">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete Report</button>
-                                    </form>
-                                    <form action="/admin/reviews/<%= report.review._id %>?_method=DELETE" method="POST">
-                                        <button type="submit" class="btn btn-sm btn-warning">Delete Review</button>
-                                    </form>
+                                    <div class="report-actions">
+                                        <form action="/admin/reports/<%= report._id %>?_method=DELETE" method="POST">
+                                            <button type="submit" class="btn delete-report-btn btn-sm">
+                                                🚨 Delete
+                                            </button>
+                                        </form>
+                                        <form action="/admin/reviews/<%= report.review._id %>?_method=DELETE" method="POST">
+                                            <button type="submit" class="btn delete-review-btn btn-sm mt-2">
+                                                📝 Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         <% }) %>
