@@ -95,7 +95,23 @@
     color: #fff !important;
     text-decoration: none;
 }
-  
+
+.review-section h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2C5F2D;
+    margin-bottom: 20px;
+}
+
+/* 📌 폼 라벨 스타일 (h2와 동일하게 적용) */
+.form-label {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #2C5F2D;
+    display: block; /* 블록 요소로 변환하여 중앙 정렬 */
+    margin-bottom: 20px;
+}
+
 
 /* 전체 컨테이너를 Flexbox로 설정 */
 .book-container {
@@ -140,6 +156,7 @@
     color: #555; /* 회색 글씨 */
     margin-top: 10px;
 }
+
 
 /* 작은 화면 (모바일): 중앙 정렬로 전환 */
 @media (max-width: 768px) {
