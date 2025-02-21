@@ -106,7 +106,7 @@ export const deleteReviewByAdmin = async (req, res) => {
     try {
         if (!req.user || !req.user.isAdmin) {
             req.flash("error", "Access denied.");
-            return res.redirect("/admin/dashboard");
+            return res.redirect("/admin/dashboard?type=reviews");
         }
 
         const reviewId = req.params.reviewId;
@@ -115,7 +115,7 @@ export const deleteReviewByAdmin = async (req, res) => {
         const review = await Review.findById(reviewId);
         if (!review) {
             req.flash("error", "Review not found.");
-            return res.redirect("/admin/dashboard");
+            return res.redirect("/admin/dashboard?type=reviews");
         }
 
         // 2. 댓글(Comment) 컬렉션에서 해당 리뷰 관련 댓글들 삭제
@@ -130,24 +130,27 @@ export const deleteReviewByAdmin = async (req, res) => {
         // 5. 리뷰 자체 삭제
         await Review.findByIdAndDelete(reviewId);
 
+        // 6. 리뷰와 관련된 신고 삭제
+        await Report.deleteMany({ review: reviewId});
+
         // 책의 평균 평점, 리뷰 개수 재계산
         await getBookAverageRating(review.book, true);
 
         req.flash("error", "Review deleted successfully.");
-        res.redirect("/admin/dashboard");
+        res.redirect("/admin/dashboard?type=reviews");
     } catch(error) {
         console.error("❌ Error deleting review:", error);
         req.flash("error", "Failed to delete review.");
-        res.redirect("/admin/dashboard");
+        res.redirect("/admin/dashboard?type=reviews");
     }
 };
 
-// 리포트 삭제
+// 리포트 삭제 (관리자만 가능)
 export const deleteReportByAdmin = async (req, res) => {
     try {
         if (!req.user || !req.user.isAdmin) {
             req.flash("error", "Access denied.");
-            return res.redirect("/admin/dashboard");
+            return res.redirect("/admin/dashboard?type=reports");
         }
         
         const reportId = req.params.reportId;
@@ -155,7 +158,7 @@ export const deleteReportByAdmin = async (req, res) => {
 
         if (!report) {
             req.flash("error", "Report not found.");
-            return res.redirect("/admin/dashboard");
+            return res.redirect("/admin/dashboard?type=reports");
         }
 
         // 신고 데이터 삭제
@@ -167,5 +170,53 @@ export const deleteReportByAdmin = async (req, res) => {
         console.error("❌ Error deleting report:", error);
         req.flash("error", "Failed to delete report.");
         res.redirect("/admin/dashboard?type=reports");
+    }
+};
+
+// 유저 삭제 (관리자만 가능)
+export const deleteUserByAdmin = async (req, res) => {
+    try {
+        if (!req.user || !req.user.isAdmin) {
+            req.flash("error", "Access denied.");
+            return res.redirect("/admin/dashboard?type=users");
+        }
+
+        const userId = req.params.userId;
+
+        // 1. 삭제할 유저 찾기
+        const user = await User.findById(userId);
+        if (!user) {
+            req.flash("error", "User not found.");
+            return res.redirect("/admin/dashboard?type=users");
+        }
+
+        // 2. 유저가 작성한 리뷰 삭제 (해당 유저가 작성한 리뷰들)
+        const userReviews = await Review.find({ author: userId });
+        for (const review of userReviews) {
+            // 해당 리뷰의 댓글도 삭제
+            await Comment.deleteMany({ reviews: review._id });
+
+            // 해당 리뷰가 포함된 책에서 리뷰 ID 제거
+            await Book.findByIdAndUpdate(review.book, { $pull: { reviews: review._id } });
+
+            // 리뷰 삭제
+            await Review.findByIdAndDelete(review._id);
+        }
+
+        // 3. 유저가 작성한 댓글 삭제
+        await Comment.deleteMany({ author: userId });
+
+        // 4. 유저가 신고한 리뷰 신고 삭제
+        await Report.deleteMany({ reportedBy: userId });
+
+        // 5. 유저 계정 삭제
+        await User.findByIdAndDelete(userId);
+
+        req.flash("success", "User deleted successfully.");
+        res.redirect("/admin/dashboard?type=users");
+    } catch (error) {
+        console.error("❌ Error deleting user:", error);
+        req.flash("error", "Failed to delete user.");
+        res.redirect("/admin/dashboard?type=users");
     }
 };

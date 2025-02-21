@@ -77,6 +77,7 @@
                             <th>Username</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,6 +86,13 @@
                                 <td><%= user.username %></td>
                                 <td><%= user.email %></td>
                                 <td><%= user.isAdmin ? "Admin" : "User" %></td>
+                                <td>
+                                    <form action="/admin/users/<%= user._id %>?_method=DELETE" method="POST">
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            🗑 Delete
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         <% }) %>
                     </tbody>
