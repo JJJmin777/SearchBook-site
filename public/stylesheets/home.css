@@ -109,5 +109,9 @@ body {
     margin: 0.5rem 0 0 0;
     color: #555;
     line-height: 1.4;
+    word-wrap: break-word; /* 단어가 너무 길 경우 줄바꿈 */
+    overflow-wrap: break-word; /* 최신 브라우저 지원 */
+    white-space: normal; /* 기본적으로 줄바꿈 허용 */
+    max-width: 100%; /* 부모 요소를 벗어나지 않도록 설정 */
   }
   

@@ -21,6 +21,9 @@
                     <li class="nav-item"><a class="nav-link" href="/profile/<%= currentUser._id %>">My
                         Profile</a></li>
                     <% } %>
+                <% if (currentUser && currentUser.isAdmin) { %>
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Admin Dashboard</a></li>
+                <% } %>
             </ul>
 
             <!-- Right Links -->

@@ -35,7 +35,6 @@ export const register = async (req, res, next) => {
         ? `https://seachbook-site.onrender.com/verify-email?token=${user.emailToken}`
         : `http://localhost:3000/verify-email?token=${user.emailToken}`;
         const subject = 'Verify Your Email';
-        console.log(verificationLink)
 
         // HTML 이메일 본문 생성
         const html = `
