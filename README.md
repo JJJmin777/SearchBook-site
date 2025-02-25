@@ -103,6 +103,20 @@
 - **Authentication:** Passport.js (Local Strategy)
 - **Deployment:** Render
 
+## 🏗 Build Environment (빌드 환경)
+
+| 항목            | 버전 |
+|---------------|-----|
+| Node.js      | v22.11.0 |
+| npm          | 10.9.0 |
+| MongoDB      | 6.0.4 |
+| Git          | 2.46.2 |
+| 패키지 매니저  | npm |
+| IDE          | VS Code |
+| Cloudinary   | ✅ 사용 |
+| Naver API    | ✅ 사용 |
+| reCAPTCHA    | ✅ 사용 |
+
 ## 📥 Installation (설치 방법)
 1. 프로젝트 클론
    ```sh
