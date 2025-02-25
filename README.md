@@ -70,10 +70,10 @@
      ![리뷰 정렬 검색 2](https://github.com/user-attachments/assets/ac49175a-ac1a-4e22-a2fc-bfeff7b87913)
 
        
-- #### 🔐 로그인/회원가입 (Passport.js 사용, **Google reCAPTCHA 적용**: 로그인 및 회원가입 시 reCAPTCHA로 **스팸 방지**)
-     ##### 🔑 **회원가입시 인증 **
-     - ######  📩 이메일 인증**: 회원가입 시 Nodemailer를 사용해 **Gmail SMTP**로 인증 메일 전송
-     - ###### 📬 인증 링크 포함**: 사용자가 이메일의 링크를 클릭하면 계정이 활성화됨
+- #### 🔐 로그인/회원가입 (Passport.js 사용, "Google reCAPTCHA 적용": 로그인 및 회원가입 시 reCAPTCHA로 "스팸 방지")
+     ##### 🔑 회원가입시 인증 
+     - ######  📩 이메일 인증: 회원가입 시 Nodemailer를 사용해 "Gmail SMTP"로 인증 메일 전송
+     - ###### 📬 인증 링크 포함: 사용자가 이메일의 링크를 클릭하면 계정이 활성화됨
 
 
      ![회원가입](https://github.com/user-attachments/assets/45ae8bfd-be55-45fe-ae71-a72a8b897b1e)
@@ -83,8 +83,8 @@
 
 
      ##### 🔑 비밀번호 찾기
-     - ###### 📩 이메일 인증**: 비밀번호 찾기시 Nodemailer를 사용해 **Gmail SMTP**로 비밀번호 재설정 메일 전송
-     - ###### 📬 인증 링크 포함**: 사용자가 이메일의 링크를 클릭하고 새로운 비밀번호 설정
+     - ###### 📩 이메일 인증: 비밀번호 찾기시 Nodemailer를 사용해 "Gmail SMTP"로 비밀번호 재설정 메일 전송
+     - ###### 📬 인증 링크 포함: 사용자가 이메일의 링크를 클릭하고 새로운 비밀번호 설정
 
 
      ![비밀번호 찾기 1](https://github.com/user-attachments/assets/9af9d4ff-f5fa-4cc7-be30-7ad75c4393e3)
