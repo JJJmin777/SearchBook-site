@@ -20,9 +20,6 @@
 | Git          | 2.46.2 |
 | 패키지 매니저  | npm |
 | IDE          | VS Code |
-| Cloudinary   | ✅ 사용 |
-| Naver API    | ✅ 사용 |
-| reCAPTCHA    | ✅ 사용 |
 
 
 ## 📌 Features (기능)
