@@ -104,4 +104,15 @@ app.use('/profile', profileRouters);
 app.use('/', apiReviewRouter);
 app.use('/admin', adminRouter);
 
+// 404 오류 처리 미들웨어
+app.use((req, res, next) => {
+    res.status(404).render("partials/error", { errorMessage: "페이지를 찾을 수 없습니다." });
+});
+
+// 500 서버 오류 처리
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).render("error", { errorMessage: "서버 오류가 발생했습니다. 관리자에게 문의하세요." });
+});
+
 export default app;
