@@ -25,6 +25,7 @@ jobs:
           # SSH 설정 폴더 생성
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          cat ~/.ssh/id_rsa  # 🔍 디버깅용 - private key가 제대로 입력되었는지 확인
           chmod 600 ~/.ssh/id_rsa
 
           # 디버깅용 SSH 키 확인 (필요 시 삭제 가능)
