@@ -1,19 +1,39 @@
-- name: Setup SSH and Deploy
-  env:
-    SERVER_HOST: ${{ secrets.SERVER_HOST }}
-    SERVER_USER: ${{ secrets.SERVER_USER }}
-    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-  run: |
-    mkdir -p ~/.ssh
-    echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    chmod 600 ~/.ssh/id_rsa
-    ls -lah ~/.ssh  # SSH 파일 확인 (디버깅용)
-    cat ~/.ssh/id_rsa  # SSH 키 내용 확인 (디버깅 후 삭제)
+name: Deploy to AWS EC2
 
-    ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
-      cd $DEPLOY_PATH
-      git pull origin main
-      npm install
-      pm2 restart all
-    EOF
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ✅ 1. GitHub 저장소 코드 가져오기
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # ✅ 2. AWS EC2에 배포하기 위한 SSH 설정
+      - name: Setup SSH and Deploy
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}   # AWS EC2 퍼블릭 IP
+          SERVER_USER: ${{ secrets.SERVER_USER }}   # AWS 유저명 (ex: ec2-user, ubuntu)
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}   # GitHub Secrets에 저장된 SSH 키
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}   # EC2 내 프로젝트 경로
+        run: |
+          # SSH 설정 폴더 생성
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # 디버깅용 SSH 키 확인 (필요 시 삭제 가능)
+          ls -lah ~/.ssh
+          
+          # ✅ 3. EC2 서버에 SSH로 접속하여 배포 수행
+          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST << 'EOF'
+            cd $DEPLOY_PATH
+            git pull origin main
+            npm install
+            pm2 restart all
+          EOF
