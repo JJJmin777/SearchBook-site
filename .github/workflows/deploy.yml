@@ -20,21 +20,17 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}   # AWS EC2 퍼블릭 IP
           EC2_USER: ${{ secrets.EC2_USER }}   # AWS 유저명 (ex: ubuntu, ec2-user)
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}   # GitHub Secrets에 저장된 SSH 키
-          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}   # EC2 내 프로젝트 경로
+          ENV_FILE: ${{ secrets.ENV_FILE }}  # .env 파일 GitHub Secrets에 저장 후 자동 생성
         run: |
-          # SSH 설정 폴더 생성
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
 
-          # 디버깅용 SSH 키 확인 (필요 시 삭제 가능)
-          ls -lah ~/.ssh
-
-          # ✅ 3. EC2 서버에 SSH로 접속하여 배포 수행
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
-            cd $DEPLOY_PATH || exit 1
+            cd /home/$EC2_USER/app || exit 1
             git pull origin main
+            echo "$ENV_FILE" > .env
             npm install
             pm2 restart all
           EOF
