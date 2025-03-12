@@ -28,7 +28,7 @@ jobs:
           ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
 
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
-            cd /home/$EC2_USER/app || exit 1
+            cd /home/$ubuntu/app || exit 1
             git pull origin main
             echo "$ENV_FILE" > .env
             npm install
