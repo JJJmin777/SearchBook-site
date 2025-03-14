@@ -20,17 +20,38 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_HOST }}   # AWS EC2 퍼블릭 IP
           EC2_USER: ${{ secrets.EC2_USER }}   # AWS 유저명 (ex: ubuntu, ec2-user)
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}   # GitHub Secrets에 저장된 SSH 키
-          ENV_FILE: ${{ secrets.ENV_FILE }}  # .env 파일 GitHub Secrets에 저장 후 자동 생성
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
 
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << EOF
-            cd /home/ubuntu/app || exit 1
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+            echo "🚀 서버에 접속하여 배포를 시작합니다..."
+
+            cd /home/$USER/app || exit 1
+            echo "📂 디렉토리 이동 완료"
+
             git pull origin main
+            echo "🔄 최신 코드 가져오기 완료"
+
             npm install
-            sudo npm install -g pm2  # 🚀 sudo 추가하여 pm2 설치
-            pm2 start server.js --name app || pm2 restart app
+            echo "📦 npm 패키지 설치 완료"
+
+            # ✅ PM2 설치 확인 및 실행
+            if ! command -v pm2 &> /dev/null
+            then
+                echo "⚙️ pm2가 설치되지 않음. 설치 중..."
+                sudo npm install -g pm2
+            fi
+
+            # ✅ PM2 프로세스 재시작 (환경 변수 적용)
+            pm2 start server.js --name app || pm2 restart app --update-env
+            echo "🚀 PM2 프로세스 시작 또는 재시작 완료"
+
+            pm2 save
+            pm2 startup | bash
+            echo "🔄 PM2가 부팅 시 자동 실행되도록 설정됨"
+
+            echo "✅ 배포 완료!"
           EOF
