@@ -7,7 +7,8 @@
 - **Backend:** Node.js, Express.js, MongoDB, Mongoose
 - **Frontend:** EJS, Bootstrap, Custom CSS
 - **Authentication:** Passport.js (Local Strategy)
-- **Deployment:** Render
+- **Deployment:** AWS EC2
+- **CI/CD:** GitHub Actions
 
 
 ## 🏗 Build Environment (빌드 환경)
@@ -129,7 +130,7 @@
 
 ## 📌 시스템 아키텍처
 
-![book_site 시스템 아키텍쳐 drawio](https://github.com/user-attachments/assets/50ec2036-21d6-4df4-841e-8bc32d058b2a)
+![시스템 아키텍쳐](https://github.com/user-attachments/assets/66e414c8-5d75-434d-a692-7f9a50e0dce1)
 
 
 ## 📢 마케팅 전략: YouTube Shorts 활용
