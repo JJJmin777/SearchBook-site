@@ -1,1 +1,71 @@
+name: Deploy to AWS EC2
 
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ✅ 1. GitHub 저장소 코드 가져오기
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # ✅ 2. AWS EC2에 배포하기 위한 SSH 설정
+      - name: Setup SSH and Deploy
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}   # AWS EC2 퍼블릭 IP
+          EC2_USER: ${{ secrets.EC2_USER }}   # AWS 유저명 (ex: ubuntu, ec2-user)
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}   # GitHub Secrets에 저장된 SSH 키
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST << 'EOF'
+            echo "🚀 서버에 접속하여 배포를 시작합니다..."
+
+            # ✅ 3. 배포 디렉터리 이동 (경로 확인 필요)
+            cd /home/$USER/app || exit 1
+            echo "📂 디렉토리 이동 완료"
+
+            # ✅ 4. 최신 코드 가져오기
+            git pull origin main
+            echo "🔄 최신 코드 가져오기 완료"
+
+            # ✅ 5. npm 패키지 설치
+            npm install
+            echo "📦 npm 패키지 설치 완료"
+
+            # ✅ 6. .env 파일이 있는지 확인
+            if [ ! -f .env ]; then
+              echo "⚠️ .env 파일이 없습니다! 환경 변수가 필요합니다."
+              exit 1
+            fi
+
+            # ✅ 7. PM2가 설치되지 않았다면 설치
+            if ! command -v pm2 &> /dev/null
+            then
+                echo "⚙️ pm2가 설치되지 않음. 설치 중..."
+                sudo npm install -g pm2
+            fi
+
+            # ✅ 8. PM2 프로세스 초기화 후 재시작
+            pm2 stop all
+            pm2 delete all
+            pm2 start server.js --name app --env production
+            pm2 save
+            pm2 restart app --update-env
+            echo "🚀 PM2 프로세스 시작 또는 재시작 완료"
+
+            # ✅ 9. 서버 재부팅 시 PM2 자동 실행 설정
+            pm2 save
+            pm2 startup | bash
+            echo "🔄 PM2가 부팅 시 자동 실행되도록 설정됨"
+
+            echo "✅ 배포 완료!"
+          EOF
